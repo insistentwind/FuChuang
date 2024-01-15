@@ -1,0 +1,12 @@
+package com.ning.domain.systemConstants;
+
+public class SystemConstants {
+    /**
+     * 招聘状态：否
+     */
+    public static final int WORK_STATUS_NO = 0;
+    /**
+     * 招聘状态：是
+     */
+    public static final int WORK_STATUS_YES = 1;
+}
