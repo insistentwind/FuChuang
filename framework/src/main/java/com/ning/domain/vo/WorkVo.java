@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class WorkVo {
+
+    private Integer id;
+
     private String title;
 
     private String salary;

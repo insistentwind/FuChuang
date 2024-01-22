@@ -1,0 +1,59 @@
+package com.ning.Controller;
+
+import com.ning.domain.entity.User;
+import com.ning.domain.result.Result;
+import com.ning.domain.vo.UserVo;
+import com.ning.enums.AppHttpCodeEnum;
+import com.ning.exception.SystemException;
+import com.ning.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @Author: qjn
+ * @Date: 2024/1/16 12:08
+ */
+@RestController
+@Slf4j
+@Api(tags = "登录相关接口")
+@RequestMapping
+public class UserLoginController {
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 登录接口
+     * @param user
+     * @return
+     */
+    @PostMapping("/login")
+    @ApiOperation("登录接口")
+    public Result<UserVo> login(@RequestBody User user){
+        log.info("用户登录:{}",user);
+        if(!StringUtils.hasText(user.getUsername()) ||
+                !StringUtils.hasText(user.getPassword())){
+            //提示需要传输用户名或者密码
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME_OR_PASSWORD);
+        }
+        return userService.login(user);
+    }
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    @PostMapping("/register")
+    @ApiOperation("用户注册")
+    public Result<String> userRegister(@RequestBody User user){
+        log.info("用户注册的信息：{}",user);
+        return userService.register(user);
+    }
+}

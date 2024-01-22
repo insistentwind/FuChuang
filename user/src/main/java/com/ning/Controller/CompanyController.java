@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2024/1/15 18:07
  */
 @RestController
-@Api("公司相关接口")
+@Api(tags = "公司相关接口")
 @Slf4j
 @RequestMapping("/company")
 public class CompanyController {

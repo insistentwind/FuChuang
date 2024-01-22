@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@Api("简历内容相关接口")
+@Api(tags = "简历内容相关接口")
 @RequestMapping("/work")
 public class WorkController {
 
@@ -30,14 +30,12 @@ public class WorkController {
 
     /**
      * 分页条件查询对应简历内容
-     * @param pageSize
-     * @param pageNum
-     * @param work
+     * @param workDto
      * @return
      */
     @ApiOperation("分页条件查询对应职位内容")
     @GetMapping ("/page")
-    public Result<PageResult> page( WorkDto workDto){
+    public Result<PageResult> page(WorkDto workDto){
         log.info("分页条件查询对应简历内容:{}",workDto);
         return workService.getListByTag(workDto);
     }

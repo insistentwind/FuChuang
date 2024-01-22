@@ -1,6 +1,6 @@
 package com.ning.Controller;
 
-import com.ning.constant.MessageConstant;
+import com.ning.constants.MessageConstant;
 import com.ning.utils.AliOssUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
