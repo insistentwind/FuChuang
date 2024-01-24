@@ -8,6 +8,7 @@ import com.ning.domain.entity.Company;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.domain.vo.CompanyVo;
 import com.ning.mapper.CompanyMapper;
 import com.ning.service.CompanyService;
 import com.ning.utils.BeanCopyUtils;
@@ -46,6 +47,17 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         page(page,wrapper);
 
         return Result.success(new PageResult(page.getRecords().size(),page.getRecords()));
+    }
+    /**
+     * 根据id查询公司
+     * @param id
+     * @return
+     */
+    @Override
+    public Result<CompanyVo> getCompanyById(Integer id) {
+        Company company = getById(id);
+        CompanyVo companyVo = BeanCopyUtils.copyBean(company, CompanyVo.class);
+        return Result.success(companyVo);
     }
 }
 

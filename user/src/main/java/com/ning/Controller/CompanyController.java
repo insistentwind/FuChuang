@@ -3,15 +3,16 @@ package com.ning.Controller;
 import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.CompanyVo;
 import com.ning.service.CompanyService;
 import com.ning.service.impl.CompanyServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: qjn
@@ -35,5 +36,17 @@ public class CompanyController {
     public Result<PageResult> page(CompanyDto companyDto){
         log.info("分页查询条件:{}",companyDto);
         return companyService.getListByDto(companyDto);
+    }
+
+    /**
+     * 根据id查询公司
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据id查询公司")
+    @GetMapping("/{id}")
+    public Result<CompanyVo> getCompanyByTag(@PathVariable Integer id){
+        log.info("查询的公司id是：{}",id);
+        return companyService.getCompanyById(id);
     }
 }

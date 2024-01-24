@@ -36,7 +36,9 @@ public class Work  {
     
     private String link;
 
+    private String maxSa;
 
+    private String minSa;
 
 }
 

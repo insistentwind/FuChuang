@@ -53,6 +53,15 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
                     .eq(work.getEducation() != null,Work::getEducation,work.getEducation());
             wrapper.orderByDesc(Work::getSalary);
         }
+        //薪资查询
+        if(work!= null && work.getSalary()!= null) {
+            String salary = workDto.getSalary();
+            String[] split = salary.split("-");
+            String start = split[0] + "k";
+            String end = (split[1].replace("[^\\d.]", ""));
+            wrapper.le(Work::getMinSa,end)
+                    .ge(Work::getMaxSa,start);
+        }
 
         Page<Work> page = new Page<Work>(pageNum,pageSize);
         page(page,wrapper);
@@ -60,23 +69,23 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 
         System.out.println("total的数量:" + page.getTotal());
         //这里是薪资范围查询
-        if(work!= null && work.getSalary()!= null){
-            String salary = work.getSalary();
-            String[] split = salary.split("-");
-            int start = Integer.parseInt(split[0]);
-            int end = Integer.parseInt(split[1].replace("[^\\d.]", ""));
-
-            records = records.stream().map(item -> {
-                String newSalary = item.getSalary();
-                String[] newSplite = newSalary.split("-");
-                int s = Integer.parseInt(newSplite[0]);
-                int e = Integer.parseInt(newSplite[1].replace("[^\\d.]", ""));
-                if ((s >= start && s <= end) || (e >= start && e <= end)) {
-                    return item;
-                }
-                return null;
-            }).collect(Collectors.toList());
-        }
+//        if(work!= null && work.getSalary()!= null){
+//            String salary = work.getSalary();
+//            String[] split = salary.split("-");
+//            int start = Integer.parseInt(split[0]);
+//            int end = Integer.parseInt(split[1].replace("[^\\d.]", ""));
+//
+//            records = records.stream().map(item -> {
+//                String newSalary = item.getSalary();
+//                String[] newSplite = newSalary.split("-");
+//                int s = Integer.parseInt(newSplite[0]);
+//                int e = Integer.parseInt(newSplite[1].replace("[^\\d.]", ""));
+//                if ((s >= start && s <= end) || (e >= start && e <= end)) {
+//                    return item;
+//                }
+//                return null;
+//            }).collect(Collectors.toList());
+//        }
 
         return Result.success(new PageResult(records.size(),records));
     }
@@ -87,8 +96,17 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
      */
     @Override
     public Result<String> saveByWork(Work work) {
+        work = setMaxMinSa(work);
         save(work);
         return Result.success();
+    }
+
+    private Work setMaxMinSa(Work work){
+        String salary = work.getSalary();
+        String[] split = salary.split("-");
+        work.setMinSa(split[0] + "k");
+        work.setMaxSa(split[1].replace("[^\\d.]", ""));
+        return work;
     }
 
     /**
@@ -111,6 +129,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Override
     public Result<String> updateByWork(WorkDto workDto) {
         Work work = BeanCopyUtils.copyBean(workDto, Work.class);
+        work = setMaxMinSa(work);
         updateById(work);
         return Result.success();
     }

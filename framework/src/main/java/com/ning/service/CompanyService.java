@@ -5,6 +5,7 @@ import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.CompanyVo;
 
 
 /**
@@ -20,5 +21,11 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<PageResult> getListByDto(CompanyDto companyDto);
+    /**
+     * 根据id查询公司
+     * @param id
+     * @return
+     */
+    Result<CompanyVo> getCompanyById(Integer id);
 }
 
