@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@Api(tags = "简历内容相关接口")
+@Api(tags = "职位相关接口")
 @RequestMapping("/work")
 public class WorkController {
 

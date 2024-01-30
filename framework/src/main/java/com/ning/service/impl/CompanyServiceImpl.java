@@ -38,11 +38,16 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
         Company company = BeanCopyUtils.copyBean(companyDto, Company.class);
         if(company != null){
-            wrapper.like(company.getName() != null,Company::getName,company.getName())
-                    .like(company.getJob() != null,Company::getJob,company.getJob())
-                    .like(company.getAddress() != null,Company::getAddress,company.getAddress());
+            //地址
+            wrapper.like(company.getAddress() != null,Company::getAddress,company.getAddress())
+                    //行业
+                    .like(company.getIndustry() != null,Company::getIndustry,company.getIndustry())
+                    //融资
+                    .like(company.getStage() != null,Company::getStage,company.getState())
+                    //规模
+                    .like(company.getFund() != null, Company::getFund,company.getFund());
         }
-        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
+//        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
         Page<Company> page = new Page<>(pageNum,pageSize);
         page(page,wrapper);
 

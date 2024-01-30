@@ -22,7 +22,8 @@ public class Resume  {
     @TableId
     private Integer id;
 
-    
+    private Integer userId;
+
     private String birthplace;
     
     private String advantages;

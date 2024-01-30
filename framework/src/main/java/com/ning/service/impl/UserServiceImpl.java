@@ -4,11 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.MessageConstant;
 import com.ning.constants.SystemConstants;
+import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.dto.UserDto;
+import com.ning.domain.entity.Resume;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserVo;
+import com.ning.handler.global.GlobalExceptionHandler;
 import com.ning.mapper.UserMapper;
+import com.ning.service.ResumeService;
 import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.JwtUtil;
@@ -17,10 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -37,6 +43,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
    private RedisCache redisCache;
    @Autowired
    private PasswordEncoder passwordEncoder;
+
+   @Autowired
+   private ResumeService resumeService;
 
     /**
      * 用户登录接口
@@ -96,9 +105,45 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //密码加密
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
+        user.setCreateTime(LocalDateTime.now());
         save(user);
         return Result.success("注册成功");
     }
+
+    /**
+     * 获取当前用户的简历信息
+     * @return
+     */
+    @Override
+    public Result<ResumeVo> getReusme() {
+        UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDto.getUser();
+        LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Resume::getUserId,user.getId());
+        Resume resume = resumeService.getOne(wrapper);
+        ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
+        return Result.success(resumeVo);
+    }
+
+    /**
+     * 修改当前用户的信息
+     * @param user
+     * @return
+     */
+    @Override
+    public Result<String> updateByUser(User user) {
+        UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = userDto.getUser();
+        Integer id = nowUser.getId();
+        if(id == null){
+            throw new RuntimeException("当前用户信息为空,请重试");
+        }
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(id != null,User::getId,id);
+        update(user,wrapper);
+        return null;
+    }
+
 
     private boolean usernameExist(String username) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();

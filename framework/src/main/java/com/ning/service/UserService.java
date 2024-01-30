@@ -1,6 +1,7 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserVo;
@@ -25,5 +26,17 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<String> register(User user);
+
+    /**
+     * 获取当前用户的简历信息
+     * @return
+     */
+    Result<ResumeVo> getReusme();
+    /**
+     * 修改当前用户的信息
+     * @param user
+     * @return
+     */
+    Result<String> updateByUser(User user);
 }
 

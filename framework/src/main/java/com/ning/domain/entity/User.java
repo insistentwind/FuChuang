@@ -2,6 +2,8 @@ package com.ning.domain.entity;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +50,8 @@ public class User  {
     private String seeCollect;
     //简历id
     private Integer resumeId;
+    //注册时间
+    private LocalDateTime createTime;
 
 
 
