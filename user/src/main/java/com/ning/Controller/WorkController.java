@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -87,5 +86,17 @@ public class WorkController {
     public Result<String> delete(@RequestParam List<Integer> ids){
         log.info("需要删除的职位信息:{}",ids);
         return workService.deleteByIds(ids);
+    }
+
+    /**
+     * 更新redis中对应的职位浏览量
+     * @param id
+     * @return
+     */
+    @PutMapping("/updateViewCount/{id}")
+    @ApiOperation("更新职位浏览量")
+    public Result<String> updateViewCount(@PathVariable("id") Long id){
+        log.info("需要更新浏览的职位id是：{}",id);
+        return workService.updateViewCount(id);
     }
 }

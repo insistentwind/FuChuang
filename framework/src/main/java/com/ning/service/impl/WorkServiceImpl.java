@@ -1,30 +1,27 @@
 package com.ning.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.mysql.cj.util.StringUtils;
 import com.ning.domain.dto.WorkDto;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 
+import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.WorkVo;
 import com.ning.mapper.WorkMapper;
 
 import com.ning.service.WorkService;
 import com.ning.utils.BeanCopyUtils;
-import org.apache.poi.util.StringUtil;
+import com.ning.utils.RedisCache;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * (Resume)表服务实现类
@@ -36,6 +33,10 @@ import java.util.stream.Collectors;
 public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements WorkService {
     @Autowired
     private WorkMapper workMapper;
+    @Autowired
+    private RedisCache redisCache;
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 分页条件查询对应简历内容
      * @param workDto
@@ -141,6 +142,21 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Override
     public Result<String> deleteByIds(List<Integer> ids) {
         removeBatchByIds(ids);
+        return Result.success();
+    }
+    /**
+     * 更新redis中对应的职位浏览量
+     * @param id
+     * @return
+     */
+    @Override
+    public Result<String> updateViewCount(Long id) {
+        try {
+            redisTemplate.opsForHash().increment(SystemConstants.WORK_VIEW_COUNT,id.toString(),1);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.toString());
+        }
         return Result.success();
     }
 }

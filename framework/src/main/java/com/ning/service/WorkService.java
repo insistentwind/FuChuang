@@ -48,5 +48,11 @@ public interface WorkService extends IService<Work> {
      * @return
      */
     Result<String> deleteByIds(List<Integer> ids);
+    /**
+     * 更新redis中对应的职位浏览量
+     * @param id
+     * @return
+     */
+    Result<String> updateViewCount(Long id);
 }
 

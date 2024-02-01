@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 /**
- * (Resume)表实体类
+ * (Work)表实体类
  *
  * @author makejava
- * @since 2024-01-09 23:25:47
+ * @since 2024-02-01 16:24:37
  */
 @SuppressWarnings("serial")
 @Data
@@ -22,23 +22,31 @@ public class Work  {
     @TableId
     private Integer id;
 
+    //公司名
     private String company;
-    
+    //职位名
     private String title;
-    
+    //薪资
     private String salary;
-    
+    //学历要求
     private String education;
-    
+    //职位描述
     private String description;
-    
+    //工作地点
     private String address;
-    
+    //链接
     private String link;
-
+    //最大薪资
     private String maxSa;
-
+    //最低薪资
     private String minSa;
+    //浏览量
+    private Long viewCount;
+
+    public Work(Integer id, long viewCount) {
+        this.id = id;
+        this.viewCount = viewCount;
+    }
 
 }
 

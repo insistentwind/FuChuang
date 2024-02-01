@@ -31,4 +31,6 @@ public class WorkDto {
     private String address;
 
     private String link;
+
+    private Long viewCount;
 }

@@ -9,4 +9,6 @@ public class SystemConstants {
      * 招聘状态：是
      */
     public static final int WORK_STATUS_YES = 1;
+
+    public static final String WORK_VIEW_COUNT = "articleViewCount";
 }
