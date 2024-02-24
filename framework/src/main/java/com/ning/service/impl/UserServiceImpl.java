@@ -10,6 +10,7 @@ import com.ning.domain.entity.Resume;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserVo;
+import com.ning.exception.BaseException;
 import com.ning.handler.global.GlobalExceptionHandler;
 import com.ning.mapper.UserMapper;
 import com.ning.service.ResumeService;
@@ -17,6 +18,7 @@ import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.JwtUtil;
 import com.ning.utils.RedisCache;
+import com.ning.utils.observerUtils.ObserverGenerate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -62,7 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //TODO 看是账号不存在还是密码错误
         //判断是否认证通过
         if(Objects.isNull(authenticate)){
-            throw new RuntimeException(MessageConstant.PLEASE_CHECK);
+            throw new BaseException(MessageConstant.PLEASE_CHECK);
         }
         //获取用户id生成jwt存入到token
         UserDto userDto = (UserDto) authenticate.getPrincipal();
@@ -87,26 +89,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //验证邮箱等个人信息
         if(!StringUtils.hasText(user.getUsername()) ||
                 !StringUtils.hasText(user.getPassword()) ||
-                !StringUtils.hasText(user.getMail()) ||
-                !StringUtils.hasText(user.getName()) ||
-                !StringUtils.hasText(user.getIdCard()) ||
-                !StringUtils.hasText(user.getTele())){
+                !StringUtils.hasText(user.getMail())
+//                !StringUtils.hasText(user.getName()) ||
+//                !StringUtils.hasText(user.getIdCard()) ||
+//                !StringUtils.hasText(user.getTele())
+        ){
             //用户名，昵称，邮箱，密码
-            throw new RuntimeException(MessageConstant.PERSONAL_MSG_NOT_COMPLETE);
+            throw new BaseException(MessageConstant.PERSONAL_MSG_NOT_COMPLETE);
         }
         if(usernameExist(user.getUsername())){
             //账号已存在
-            throw new RuntimeException(MessageConstant.ACCOUNT_ALREADY_EXISTS);
+            throw new BaseException(MessageConstant.ACCOUNT_ALREADY_EXISTS);
         }
-        else if(nameExist(user.getName())){
-            //用户名已存在
-            throw new RuntimeException(MessageConstant.NAME_ALREADY_EXISTS);
-        }
+//        else if(nameExist(user.getName())){
+//            //用户名已存在
+//            throw new Exception(MessageConstant.NAME_ALREADY_EXISTS);
+//        }
         //密码加密
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
         user.setCreateTime(LocalDateTime.now());
         save(user);
+        // 用户注册成功，创建一个该用户对应的观察者类
+        ObserverGenerate.generate(user.getUsername());
         return Result.success("注册成功");
     }
 
@@ -136,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User nowUser = userDto.getUser();
         Integer id = nowUser.getId();
         if(id == null){
-            throw new RuntimeException("当前用户信息为空,请重试");
+            throw new BaseException("当前用户信息为空,请重试");
         }
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(id != null,User::getId,id);

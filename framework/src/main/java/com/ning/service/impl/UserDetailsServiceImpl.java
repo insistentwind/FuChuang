@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.constants.MessageConstant;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.User;
+import com.ning.exception.BaseException;
 import com.ning.mapper.UserMapper;
 import com.ning.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             User user = userService.getOne(wrapper);
 
             if(Objects.isNull(user)){
-                throw new RuntimeException(MessageConstant.ACCOUNT_NOT_FOUND);
+                throw new BaseException(MessageConstant.ACCOUNT_NOT_FOUND);
             }
             log.info("账户存在");
 

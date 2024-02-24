@@ -83,6 +83,7 @@ public class FavorController {
      * @return
      */
     @GetMapping("/{id}")
+    @ApiOperation("根据id查询该用户的所有收藏")
     public Result<List<WorkVo>> getAllFavors(@PathVariable Integer id){
         return favorService.getAllFavors(id);
     }
@@ -93,6 +94,7 @@ public class FavorController {
      * @return
      */
     @GetMapping
+    @ApiOperation("查询当前用户的所有收藏")
     public Result<List<WorkVo>> getUserFavors(){
         UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Integer id = userDto.getUser().getId();

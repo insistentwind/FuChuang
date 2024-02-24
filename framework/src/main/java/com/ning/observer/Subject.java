@@ -1,13 +1,12 @@
-package com.ning.domain;
+package com.ning.observer;
 
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 /**
- * @author qjn
+ * @author Eval
  * @create 2021/4/10 23:26
  *
  * 被观察者抽象类

@@ -27,4 +27,6 @@ public class WorkVo {
     private String address;
     //链接
     private String link;
+    //浏览量
+    private Long viewCount;
 }

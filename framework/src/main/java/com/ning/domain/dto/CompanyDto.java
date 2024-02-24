@@ -51,7 +51,5 @@ public class CompanyDto {
     //启动资金
     private String fund;
 
-
-
 }
 

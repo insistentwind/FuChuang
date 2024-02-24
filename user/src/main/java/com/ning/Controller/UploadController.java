@@ -39,7 +39,7 @@ public class UploadController {
         }
         try {
             //原始文件名
-//            String originalFilename = file.getOriginalFilename();
+//          String originalFilename = file.getOriginalFilename();
             //截取原始文件的后缀,从最后一个.处开始截取
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             //构造新的文件名

@@ -11,6 +11,7 @@ import com.ning.domain.result.Result;
 
 import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.WorkVo;
+import com.ning.exception.BaseException;
 import com.ning.mapper.WorkMapper;
 
 import com.ning.service.WorkService;
@@ -111,7 +112,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     }
 
     /**
-     * 根据id查询职位,回显
+     * 根据id查询职位信息,回显
      * @param id
      * @return
      */
@@ -120,6 +121,10 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         Work work = getById(id);
         WorkVo workVo = new WorkVo();
         BeanUtils.copyProperties(work,workVo);
+
+        Long viewCount = (Long) redisTemplate.opsForHash().get(SystemConstants.WORK_VIEW_COUNT,id.toString());
+        workVo.setViewCount(viewCount);
+
         return Result.success(workVo);
     }
     /**
@@ -155,7 +160,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             redisTemplate.opsForHash().increment(SystemConstants.WORK_VIEW_COUNT,id.toString(),1);
         }
         catch (Exception e){
-            throw new RuntimeException(e.toString());
+            throw new BaseException(e.toString());
         }
         return Result.success();
     }

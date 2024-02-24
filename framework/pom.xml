@@ -111,6 +111,13 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--代码生成器依赖-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <!--<scope>test</scope>-->
+        </dependency>
+
     </dependencies>
     <build>
         <!-- 扫描项目下所有的文件 -->

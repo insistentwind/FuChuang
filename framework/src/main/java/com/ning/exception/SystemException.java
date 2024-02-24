@@ -5,7 +5,7 @@ import com.ning.enums.AppHttpCodeEnum;
 /**
  *
  */
-public class SystemException extends RuntimeException{
+public class SystemException extends BaseException{
 
     private int code;
 
@@ -23,6 +23,12 @@ public class SystemException extends RuntimeException{
         super(httpCodeEnum.getMsg());
         this.code = httpCodeEnum.getCode();
         this.msg = httpCodeEnum.getMsg();
+    }
+
+    public SystemException(String msg) {
+        super(msg);
+        this.code = 500;
+        this.msg = msg;
     }
     
 }

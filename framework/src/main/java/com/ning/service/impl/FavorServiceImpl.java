@@ -6,6 +6,7 @@ import com.ning.domain.entity.Favor;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.WorkVo;
+import com.ning.exception.BaseException;
 import com.ning.mapper.FavorMapper;
 import com.ning.service.FavorService;
 import com.ning.utils.BeanCopyUtils;
@@ -48,7 +49,7 @@ public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements
     public Result<String> unFavor(FavorDto favorDto) {
         Favor favor = BeanCopyUtils.copyBean(favorDto, Favor.class);
         if(favorMapper.getByFavor(favor) != null){
-            throw new RuntimeException("未收藏该职位!");
+            throw new BaseException("未收藏该职位!");
         }
         removeById(favor);
         return Result.success();
