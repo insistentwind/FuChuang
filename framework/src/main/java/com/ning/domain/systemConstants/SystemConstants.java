@@ -17,4 +17,8 @@ public class SystemConstants {
      */
     public static final Integer NOTIFY_STATUS = 2;
 
+    /**
+     * 未读消息
+     */
+    public static final Integer CHAT_NO_READ = 0;
 }

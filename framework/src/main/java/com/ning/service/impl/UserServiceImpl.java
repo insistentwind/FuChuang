@@ -144,9 +144,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BaseException("当前用户信息为空,请重试");
         }
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(id != null,User::getId,id);
+        wrapper.eq(User::getId,id);
         update(user,wrapper);
-        return null;
+        return Result.success("修改成功");
     }
 
 
