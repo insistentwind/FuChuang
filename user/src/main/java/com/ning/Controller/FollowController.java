@@ -5,6 +5,7 @@ import com.ning.domain.dto.FollowDto;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.result.Result;
+import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.observer.Observer;
 import com.ning.observer.Subject;
 import com.ning.service.CompanyService;
@@ -82,7 +83,13 @@ public class FollowController {
     @ApiOperation("新增关注公司")
     public Result<String> addFollow(@RequestBody FollowDto followDto){
         log.info("新增关注：{}",followDto);
-        //调用find查询是否已经关注过此公司
+        Integer companyId = followDto.getCompanyId();
+        Company company = companyService.getById(companyId);
+        if(company == null){
+            throw new RuntimeException("没有此公司,请检查后重试");
+        }
+        // 调用find查询是否已经关注过此公司
+        // 这是下面自己写的方法
         FollowDto one = find(followDto);
         if(one != null){
             //已经关注了
@@ -96,23 +103,26 @@ public class FollowController {
             //获取当前用户
         UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             //根据用户名反射创建对象
+        Integer userId = userDto.getUser().getId();
         //这里拿到了已创建好名字的类的实例对象
-        Observer observer = createObserver(userDto.getUser().getUsername());
+//        Observer observer = createObserver(userDto.getUser().getUsername());
         // 2. 根据关注的公司id查询公司信息
-        Company company = companyService.getById(followDto.getCompanyId());
+//        Company company = companyService.getById(followDto.getCompanyId());
         String companyName = company.getCompanyName();
-        //如果不存在公司观察对象(有文件，没对象)，则创建
-        if(!SingleUtil.map.containsKey(companyName)){
-            //3.根据关注的公司名称反射创建对象
-            Subject subject = createSubject(companyName);
-            //4.存放到singleUtil的全局Map中
-            SingleUtil.map.put(companyName,subject);
-        }
-        // 5. 添加到观察者列表中
-        // 添加到map的subject（公司）对象的list中
-        SingleUtil.map.get(companyName).addObserver(observer);
+//        //如果不存在公司观察对象(有文件，没对象)，则创建
+//        if(!SingleUtil.map.containsKey(companyName)){
+//            //3.根据关注的公司名称反射创建对象
+//            Subject subject = createSubject(companyName);
+//            //4.存放到singleUtil的全局Map中
+//            SingleUtil.map.put(companyName,subject);
+//        }
+//        // 5. 添加到观察者列表中
+//        // 添加到map的subject（公司）对象的list中
+//        SingleUtil.map.get(companyName).addObserver(observer);
 
         //可以用redis进行替代
+        //把<公司名字，用户名字>放入键名为companylist的hashmap中
+        redisTemplate.opsForHash().put(companyName,userId,userDto.getUser().getUsername());
 //        redisCache.setCacheMapValue(companyName, userDto.getUsername(), userDto.getUsername());
         return Result.success("关注成功");
     }
@@ -133,6 +143,9 @@ public class FollowController {
 //            //好像删不了？？
 //            SingleUtil.map.get(company.getCompanyName()).removeObservers();
 //        }
+        Company company = companyService.getById(followDto.getCompanyId());
+        redisTemplate.opsForHash().delete(company.getCompanyName(),followDto.getUserId());
+
         return followService.cancelFollow(followDto);
     }
 

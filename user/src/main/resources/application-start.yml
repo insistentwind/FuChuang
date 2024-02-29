@@ -15,4 +15,5 @@ fc:
   redis:
     host: 124.220.208.63
     port: 6379
+    password: xiandan*19780815
     database: 10

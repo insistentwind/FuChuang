@@ -1,11 +1,14 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
+
+import java.util.List;
 
 
 /**
@@ -27,5 +30,29 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<CompanyVo> getCompanyById(Integer id);
+    /**
+     * 更新公司的信息
+     * @param companyDto
+     * @return
+     */
+    Result<String> updateByCompany(CompanyDto companyDto);
+    /**
+     * 根据公司名称查询公司信息（公司名称是唯一的，只查出一条记录）
+     * @param companyName
+     * @return
+     */
+    Result<CompanyVo> getByCompanyName(String companyName);
+    /**
+     * 新增公司
+     * @param companyDo
+     * @return
+     */
+    Result<String> createCompany(CompanyDo companyDo);
+    /**
+     * 删除公司
+     * @param ids
+     * @return
+     */
+    Result<String> deleteBatch(List<Integer> ids);
 }
 

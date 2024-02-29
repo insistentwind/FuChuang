@@ -29,10 +29,10 @@ public interface NotifyService extends IService<Notify> {
     Result<String> updateByUsername(NotifyDto notifyDto);
     /**
      * 根据用户名和状态码查询该用户收到的所有通知
-     * @param username
+     * @param userId
      * @param isRead
      * @return
      */
-    Result<List<NotifyDto>> getList(String username, Integer isRead);
+    Result<List<NotifyDto>> getList(Integer userId, Integer isRead);
 }
 

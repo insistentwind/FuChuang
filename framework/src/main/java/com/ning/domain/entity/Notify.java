@@ -27,7 +27,7 @@ public class Notify  {
     //消息内容
     private String content;
     //用户名
-    private String username;
+    private Integer userId;
     //消息是否已读(0未读，1已读)
     private Integer isRead;
     //通知时间

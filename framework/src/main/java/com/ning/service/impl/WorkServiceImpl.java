@@ -55,7 +55,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
                     .eq(work.getEducation() != null,Work::getEducation,work.getEducation());
             wrapper.orderByDesc(Work::getSalary);
         }
-        //薪资查询
+        // TODO 这里还不确定，是薪资查询
         if(work!= null && work.getSalary()!= null) {
             String salary = workDto.getSalary();
             String[] split = salary.split("-");

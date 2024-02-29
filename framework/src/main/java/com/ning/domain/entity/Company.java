@@ -53,7 +53,8 @@ public class Company  {
     private String state;
     //启动资金
     private String fund;
-
+    //逻辑删除 0为未删除，1为删除
+    private Integer delFlag;
 
 
 }

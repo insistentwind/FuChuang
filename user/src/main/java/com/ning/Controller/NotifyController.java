@@ -48,24 +48,25 @@ public class NotifyController {
 
     /**
      * 根据用户名和状态码查询该用户收到的所有通知
-     * @param username
+     * @param userId
      * @param isRead
      * @return
      */
     @GetMapping()
     @ApiOperation("根据用户名和状态码查询该用户收到的所有通知")
-    public Result<List<NotifyDto>> getList(@RequestParam String username, @RequestParam Integer isRead) {
-        return notifyService.getList(username,isRead);
+    public Result<List<NotifyDto>> getList(@RequestParam Integer userId, @RequestParam Integer isRead) {
+        return notifyService.getList(userId,isRead);
     }
 
     /**
      * 根据用户名查询该用户收到的所有通知
-     * @param username
+     * @param userId
      * @return
      */
     @GetMapping("/all")
     @ApiOperation("根据用户名查询该用户收到的所有通知")
-    public Result<List<NotifyDto>> getAll(@RequestParam String username) {
-        return notifyService.getList(username, SystemConstants.NOTIFY_STATUS);
+    public Result<List<NotifyDto>> getAll(@RequestParam Integer userId) {
+        return notifyService.getList(userId, SystemConstants.NOTIFY_STATUS);
     }
+
 }

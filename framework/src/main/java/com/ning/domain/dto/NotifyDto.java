@@ -23,7 +23,7 @@ public class NotifyDto {
     //消息内容
     private String content;
     //用户id
-    private String username;
+    private Integer userId;
     //消息是否已读
     private Integer isRead;
 

@@ -21,4 +21,5 @@ public class SystemConstants {
      * 未读消息
      */
     public static final Integer CHAT_NO_READ = 0;
+    public static final String COMPANY = "companyList";
 }

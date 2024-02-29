@@ -111,7 +111,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setCreateTime(LocalDateTime.now());
         save(user);
         // 用户注册成功，创建一个该用户对应的观察者类
-        ObserverGenerate.generate(user.getUsername());
+//        ObserverGenerate.generate(user.getUsername());
         return Result.success("注册成功");
     }
 

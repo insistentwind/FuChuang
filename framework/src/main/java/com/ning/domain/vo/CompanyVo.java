@@ -13,13 +13,6 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class CompanyVo {
-
-    private Integer id;
-
-    //登录账户
-    private String username;
-    //登录密码
-    private String password;
     //账号所属的公司名
     private String companyName;
     //账号昵称
@@ -38,8 +31,6 @@ public class CompanyVo {
     private String industry;
     //职位招聘人
     private String hr;
-    //公司注册时间
-    private Date createTime;
     //公司类型
     private String type;
     //管理类型

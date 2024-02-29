@@ -59,14 +59,14 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
 
     /**
      * 根据用户名和状态码查询该用户收到的所有通知
-     * @param username
+     * @param userId
      * @param isRead
      * @return
      */
     @Override
-    public Result<List<NotifyDto>> getList(String username, Integer isRead) {
+    public Result<List<NotifyDto>> getList(Integer userId, Integer isRead) {
         LambdaQueryWrapper<Notify> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Notify::getUsername, username)
+        wrapper.eq(Notify::getUserId, userId)
                 .eq(!Objects.equals(isRead, SystemConstants.NOTIFY_STATUS),Notify::getIsRead, isRead);
 
         List<Notify> list = list(wrapper);

@@ -1,25 +1,17 @@
-package com.ning.domain.dto;
+package com.ning.domain.Do;
 
-
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-
+/**
+ * @author: qjn
+ * @create: 2024/02/29 21:47
+ **/
 @Data
-public class CompanyDto {
-
-    private int pageNum;
-
-    //每页显示记录数
-    private int pageSize;
-
-    private Integer id;
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class CompanyDo {
     //登录账户
     private String username;
     //登录密码
@@ -48,6 +40,4 @@ public class CompanyDto {
     private String state;
     //启动资金
     private String fund;
-
 }
-
