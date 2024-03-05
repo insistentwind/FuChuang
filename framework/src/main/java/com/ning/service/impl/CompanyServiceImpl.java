@@ -6,18 +6,26 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.entity.Company;
+import com.ning.domain.entity.User;
+import com.ning.domain.entity.UserCompany;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.CompanyVo;
 import com.ning.mapper.CompanyMapper;
+import com.ning.mapper.UserCompanyMapper;
+import com.ning.mapper.UserMapper;
 import com.ning.service.CompanyService;
 import com.ning.utils.BeanCopyUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,7 +39,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Autowired
     private CompanyMapper companyMapper;
     @Autowired
+    private UserMapper userMapper;
+    @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserCompanyMapper userCompanyMapper;
 
     /**
      * 分页查询公司
@@ -50,19 +64,26 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             throw new RuntimeException("信息为空，请检查后重试");
         }
         //地址
-        wrapper.like(company.getAddress() != null, Company::getAddress, company.getAddress())
-                //行业
-                .like(company.getIndustry() != null, Company::getIndustry, company.getIndustry())
-                //融资
-                .like(company.getStage() != null, Company::getStage, company.getState())
-                //规模
-                .like(company.getFund() != null, Company::getFund, company.getFund());
+//        wrapper.like(company.getAddress() != null, Company::getAddress, company.getAddress())
+//                //行业
+//                .like(company.getIndustry() != null, Company::getIndustry, company.getIndustry())
+//                //融资
+//                .like(company.getStage() != null, Company::getStage, company.getState())
+//                //规模
+//                .like(company.getFund() != null, Company::getFund, company.getFund());
+
+        wrapper.like(StringUtils.hasText(companyDto.getCompanyName()),Company::getCompanyName,companyDto.getCompanyName())
+                .like(StringUtils.hasText(companyDto.getAddress()),Company::getAddress,companyDto.getAddress())
+                .eq(StringUtils.hasText(companyDto.getStage()),Company::getStage,companyDto.getStage())
+                .like(StringUtils.hasText(companyDto.getIndustry()),Company::getIndustry,companyDto.getIndustry())
+                .eq(StringUtils.hasText(companyDto.getType()),Company::getType,companyDto.getType());
 
 //        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
         Page<Company> page = new Page<>(pageNum, pageSize);
         page(page, wrapper);
-
-        return Result.success(new PageResult(page.getRecords().size(), page.getRecords()));
+        List<Company> records = page.getRecords();
+        List<CompanyVo> companyVos = BeanCopyUtils.copyBeanList(records, CompanyVo.class);
+        return Result.success(new PageResult(page.getRecords().size(), companyVos));
     }
 
     /**
@@ -101,8 +122,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Company::getCompanyName,companyName);
         Company company = getOne(wrapper);
-        CompanyVo companyVo = BeanCopyUtils.copyBean(company, CompanyVo.class);
-        return Result.success(companyVo);
+        if(company!=null){
+            CompanyVo companyVo = BeanCopyUtils.copyBean(company, CompanyVo.class);
+            return Result.success(companyVo);
+        }
+        return Result.error("没有此公司");
     }
     /**
      * 新增公司
@@ -110,11 +134,28 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return
      */
     @Override
+    @Transactional
     public Result<String> createCompany(CompanyDo companyDo) {
         Company company = BeanCopyUtils.copyBean(companyDo, Company.class);
+        company.setCreateTime(LocalDateTime.now());
         save(company);
+        User user = new User();
+        user.setIsCompany(SystemConstants.IS_COMPANY)
+                .setCreateTime(LocalDateTime.now())
+                .setName(companyDo.getNickName())
+                .setMail(companyDo.getMail())
+                .setSex(companyDo.getSex())
+                .setTele(companyDo.getTele())
+                .setUsername(companyDo.getUsername());
+        String password = passwordEncoder.encode(companyDo.getPassword());
+        user.setPassword(password);
+        userMapper.insert(user);
+        UserCompany userCompany = new UserCompany();
+        userCompany.setUserId(user.getId());
+        userCompany.setCompanyId(company.getId());
+        userCompanyMapper.insert(userCompany);
         // redis哈希键初始化
-        redisTemplate.opsForHash().put(company.getCompanyName(),0,0);
+        redisTemplate.opsForHash().put(company.getCompanyName(),"",0);
         return Result.success("创建成功");
     }
     /**

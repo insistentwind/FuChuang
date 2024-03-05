@@ -122,7 +122,7 @@ public class FollowController {
 
         //可以用redis进行替代
         //把<公司名字，用户名字>放入键名为companylist的hashmap中
-        redisTemplate.opsForHash().put(companyName,userId,userDto.getUser().getUsername());
+        redisTemplate.opsForHash().put(companyName,userId.toString(),userDto.getUser().getUsername());
 //        redisCache.setCacheMapValue(companyName, userDto.getUsername(), userDto.getUsername());
         return Result.success("关注成功");
     }
@@ -144,7 +144,7 @@ public class FollowController {
 //            SingleUtil.map.get(company.getCompanyName()).removeObservers();
 //        }
         Company company = companyService.getById(followDto.getCompanyId());
-        redisTemplate.opsForHash().delete(company.getCompanyName(),followDto.getUserId());
+        redisTemplate.opsForHash().delete(company.getCompanyName(),followDto.getUserId().toString());
 
         return followService.cancelFollow(followDto);
     }
@@ -166,6 +166,7 @@ public class FollowController {
      * @param followDto
      * @return
      */
+    @ApiOperation("查询是否已经关注了某一个公司")
     @GetMapping("/find")
     public FollowDto find(FollowDto followDto){
         log.info("查询是否存在关注");

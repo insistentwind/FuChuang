@@ -1,6 +1,7 @@
 package com.ning.Controller;
 
 import com.ning.constants.MessageConstant;
+import com.ning.service.ResumeService;
 import com.ning.utils.AliOssUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,7 @@ public class UploadController {
             String objectName = UUID.randomUUID().toString() + extension;
             //文件的请求路径
             String filePath = aliOssUtil.upload(file.getBytes(), objectName);
+
             return Result.success(filePath);
         } catch (IOException e) {
             log.error("文件上传失败: {}",e);

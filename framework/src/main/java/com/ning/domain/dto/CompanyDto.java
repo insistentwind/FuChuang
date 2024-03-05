@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -20,10 +21,6 @@ public class CompanyDto {
 
     private Integer id;
 
-    //登录账户
-    private String username;
-    //登录密码
-    private String password;
     //账号所属的公司名
     private String companyName;
     //账号昵称

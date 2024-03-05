@@ -33,9 +33,6 @@ public class CompanyVo {
     private String hr;
     //公司类型
     private String type;
-    //管理类型
-    private String state;
-    //启动资金
-    private String fund;
+
 
 }

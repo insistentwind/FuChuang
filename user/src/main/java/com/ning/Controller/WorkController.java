@@ -7,6 +7,7 @@ import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.dto.WorkDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Notify;
+import com.ning.domain.entity.Relation;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
@@ -14,6 +15,7 @@ import com.ning.domain.vo.WorkVo;
 import com.ning.mapper.CompanyMapper;
 import com.ning.service.CompanyService;
 import com.ning.service.NotifyService;
+import com.ning.service.RelationService;
 import com.ning.service.WorkService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.SingleUtil;
@@ -22,9 +24,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -47,18 +51,31 @@ public class WorkController {
     private NotifyService notifyService;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RelationService relationService;
 
     /**
-     * 分页条件查询对应简历内容
+     * 分页条件查询对应职位
      *
      * @param workDto
      * @return
      */
-    @ApiOperation("分页条件查询对应职位内容")
+    @ApiOperation("分页条件查询对应职位")
     @GetMapping("/page")
     public Result<PageResult> page(WorkDto workDto) {
-        log.info("分页条件查询对应简历内容:{}", workDto);
+        log.info("分页条件查询对应职位:{}", workDto);
         return workService.getListByTag(workDto);
+    }
+
+    /**
+     * 根据分类id查询信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/category/{id}")
+    @ApiOperation("根据分类id查询信息，由于没有分类信息，暂定")
+    public Result<List<WorkVo>> getList(@PathVariable Long id){
+        return workService.getList(id);
     }
 
     /**
@@ -67,35 +84,52 @@ public class WorkController {
      * @param work
      * @return
      */
-    @ApiOperation("发布职位")
+    @ApiOperation("发布职位,需要权限，但暂未设置权限")
     @PostMapping("/save")
+    @Transactional
     public Result<String> save(@RequestBody Work work) {
         log.info("需要新增的职位信息：{}", work);
         //职位发布后，通知对应的观察者（用户）
-        String companyName = work.getCompany();
+//        String companyName = work.getCompany();
+        Integer companyId = work.getCompanyId();
+        Company company = companyService.getById(companyId);
+        String companyName = company.getCompanyName();
+
+
         // 判断全局map中是否存在对应的被观察者类
-        if (!redisTemplate.hasKey(companyName)) {
-            // 不存在此键
-            throw new RuntimeException("不存在此公司");
-        }
+//        if (!redisTemplate.hasKey(companyName)) {
+//            // 不存在此键
+//            throw new RuntimeException("不存在此公司");
+//        }
 
         String message = companyName + "发布了新职位——" + work.getTitle() + ",快去看看吧";
         //TODO 还需要做的是启动的时候把所有的观察者和被观察者放入redis中
-        Set<Integer> set = redisTemplate.opsForHash().keys(companyName);
-        //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
-        Iterator<Integer> iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Integer key = iterator.next();
-            NotifyDto notifyDto = new NotifyDto();
-            notifyDto.setUserId(key);
-            // 此处是发布了新的职位
+        try {
+            Set<Integer> set = redisTemplate.opsForHash().keys(companyName);
+            //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
+            Iterator<Integer> iterator = set.iterator();
+            while (iterator.hasNext()) {
+                Integer key = iterator.next();
+                NotifyDto notifyDto = new NotifyDto();
+                notifyDto.setUserId(key);
+                // 此处是发布了新的职位
 //            notifyDto.setContent(SingleUtil.messageMap.get(key));//通知的信息，需要更改
-            notifyDto.setContent(message);
-            Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
-            notify.setTime(LocalDateTime.now());
-            //保存消息
-            notifyService.save(notify);
+                notifyDto.setContent(message);
+                Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
+                notify.setTime(LocalDateTime.now());
+                //保存消息
+                notifyService.save(notify);
+            }
         }
+        catch (Exception e){
+
+        }
+        work.setCompany(companyName);
+        workService.save(work);
+        Relation relation = new Relation();
+        relation.setWorkId(work.getId()).setCompanyId(companyId);
+        relationService.save(relation);
+        return Result.success();
 
 //        if(SingleUtil.map.containsKey(companyName)){
 //            //2.通知观察者发布职位
@@ -121,16 +155,15 @@ public class WorkController {
 //            //4.清空messageMap中的数据
 //            SingleUtil.messageMap.clear();
 //        }
-        return workService.saveByWork(work);
     }
 
     /**
-     * 根据id查询职位,回显
+     * 根据id查询职位详细信息,回显
      *
      * @param id
      * @return
      */
-    @ApiOperation("根据id查询职位")
+    @ApiOperation("根据id查询职位详细信息")
     @GetMapping("/{id}")
     public Result<WorkVo> getById(@PathVariable Integer id) {
         log.info("查询的职位id：{}", id);
@@ -147,7 +180,7 @@ public class WorkController {
     @PutMapping
     public Result<String> update(@RequestBody WorkDto workDto) {
         log.info("更新职位信息:{}", workDto);
-        //todo 公司名称是否可以更改
+        //todo 公司名称不能更改，这里要自动更新
         return workService.updateByWork(workDto);
     }
 
@@ -159,6 +192,7 @@ public class WorkController {
      */
     @ApiOperation("批量删除职位")
     @DeleteMapping
+    @Transactional
     public Result<String> delete(@RequestParam List<Integer> ids) {
         log.info("需要删除的职位信息:{}", ids);
 
@@ -168,22 +202,38 @@ public class WorkController {
 //            wrapper.eq(Company::getCompanyName,work.getCompany());
 //            Company company = companyService.getOne(wrapper);
             String companyName = work.getCompany();
+            try {
+                Relation relation = new Relation();
+                relation.setCompanyId(work.getCompanyId())
+                        .setWorkId(work.getId());
+
+                relationService.removeById(relation);
+            }
+            catch (Exception e){
+
+            }
+
 
             String message = companyName + "下架了职位——" + work.getTitle() + "，快去看看吧！";
 
-            if (redisTemplate.hasKey(companyName) == null) {
-                throw new RuntimeException("不存在此公司");
+//            if (redisTemplate.hasKey(companyName) == null) {
+//                throw new RuntimeException("不存在此公司");
+//            }
+            try {
+                Set<Integer> set = redisTemplate.opsForHash().keys(companyName);
+                Iterator<Integer> iterator = set.iterator();
+                while (iterator.hasNext()) {
+                    Integer user = iterator.next();
+                    NotifyDto notifyDto = new NotifyDto();
+                    notifyDto.setUserId(user);
+                    notifyDto.setContent(message);
+                    Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
+                    notify.setTime(LocalDateTime.now());
+                    notifyService.save(notify);
+                }
             }
-            Set<Integer> set = redisTemplate.opsForHash().keys(companyName);
-            Iterator<Integer> iterator = set.iterator();
-            while (iterator.hasNext()) {
-                Integer user = iterator.next();
-                NotifyDto notifyDto = new NotifyDto();
-                notifyDto.setUserId(user);
-                notifyDto.setContent(message);
-                Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
-                notify.setTime(LocalDateTime.now());
-                notifyService.save(notify);
+            catch (Exception e){
+
             }
 
 
@@ -209,10 +259,7 @@ public class WorkController {
 //            }
 
         }
-
         return workService.deleteByIds(ids);
-
-
     }
 
     /**

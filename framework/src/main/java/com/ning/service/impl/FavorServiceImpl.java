@@ -48,7 +48,7 @@ public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements
     @Override
     public Result<String> unFavor(FavorDto favorDto) {
         Favor favor = BeanCopyUtils.copyBean(favorDto, Favor.class);
-        if(favorMapper.getByFavor(favor) != null){
+        if(favorMapper.getByFavor(favor) == null){
             throw new BaseException("未收藏该职位!");
         }
         removeById(favor);

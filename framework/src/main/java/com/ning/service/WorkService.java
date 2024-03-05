@@ -23,12 +23,12 @@ public interface WorkService extends IService<Work> {
      * @return
      */
     Result<PageResult> getListByTag(WorkDto workDto);
-    /**
-     * 新增职位接口
-     * @param work
-     * @return
-     */
-    Result<String> saveByWork(Work work);
+//    /**
+//     * 新增职位接口
+//     * @param work
+//     * @return
+//     */
+//    Result<String> saveByWork(Work work);
 
     /**
      * 根据id查询职位,回显
@@ -54,5 +54,11 @@ public interface WorkService extends IService<Work> {
      * @return
      */
     Result<String> updateViewCount(Long id);
+    /**
+     * 根据分类id查询信息
+     * @param id
+     * @return
+     */
+    Result<List<WorkVo>> getList(Long id);
 }
 

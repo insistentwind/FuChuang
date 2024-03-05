@@ -3,10 +3,10 @@
 <mapper namespace="com.ning.mapper.HistoryMapper">
 
 
-    <select id="getListByUserId" resultType="com.ning.domain.dto.ResumeVo">
-        SELECT resume.*
+    <select id="getListByUserId" resultType="com.ning.domain.vo.WorkVo">
+        SELECT work.*
         FROM history
-        LEFT JOIN resume ON resume_id=history.resume_id
-        where user_id = #{id}
+        LEFT JOIN work ON work.id=history.work_id
+        where history.user_id = #{id}
     </select>
 </mapper>

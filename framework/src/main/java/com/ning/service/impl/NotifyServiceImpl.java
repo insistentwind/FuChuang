@@ -8,6 +8,7 @@ import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.entity.Notify;
 import com.ning.domain.result.Result;
 import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.domain.vo.NotifyVo;
 import com.ning.mapper.NotifyMapper;
 import com.ning.service.NotifyService;
 import com.ning.utils.BeanCopyUtils;
@@ -45,12 +46,13 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
     /**
      * 根据用户名修改消息状态为已读
      *
-     * @param notifyDto
+     * @param id
      * @return
      */
     @Override
-    public Result<String> updateByUsername(NotifyDto notifyDto) {
-        Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
+    public Result<String> updateByUsername(Integer id) {
+        Notify notify = new Notify();
+        notify.setId(id);
         notify.setIsRead(1);
         notify.setTime(LocalDateTime.now());
         updateById(notify);
@@ -64,15 +66,15 @@ public class NotifyServiceImpl extends ServiceImpl<NotifyMapper, Notify> impleme
      * @return
      */
     @Override
-    public Result<List<NotifyDto>> getList(Integer userId, Integer isRead) {
+    public Result<List<NotifyVo>> getList(Integer userId, Integer isRead) {
         LambdaQueryWrapper<Notify> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Notify::getUserId, userId)
                 .eq(!Objects.equals(isRead, SystemConstants.NOTIFY_STATUS),Notify::getIsRead, isRead);
 
         List<Notify> list = list(wrapper);
-        List<NotifyDto> notifyDtos = BeanCopyUtils.copyBeanList(list, NotifyDto.class);
+        List<NotifyVo> NotifyVos = BeanCopyUtils.copyBeanList(list, NotifyVo.class);
 
-        return Result.success(notifyDtos);
+        return Result.success(NotifyVos);
     }
 
 

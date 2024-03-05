@@ -31,6 +31,8 @@ public class ResumeVo {
     private String educations;
     
     private String certificates;
+    //简历链接
+    private String link;
 
 }
 

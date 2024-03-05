@@ -11,14 +11,12 @@ import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserVo;
 import com.ning.exception.BaseException;
-import com.ning.handler.global.GlobalExceptionHandler;
 import com.ning.mapper.UserMapper;
 import com.ning.service.ResumeService;
 import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.JwtUtil;
 import com.ning.utils.RedisCache;
-import com.ning.utils.observerUtils.ObserverGenerate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +28,8 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * (User)表服务实现类
@@ -105,6 +105,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //            //用户名已存在
 //            throw new Exception(MessageConstant.NAME_ALREADY_EXISTS);
 //        }
+        if (!StringUtils.hasText(user.getName())){
+            String name = "fuchuang" + UUID.randomUUID().toString();
+            user.setName(name);
+        }
         //密码加密
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
@@ -145,6 +149,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getId,id);
+        if (StringUtils.hasText(user.getPassword())){
+            String password = passwordEncoder.encode(user.getPassword());
+            user.setPassword(password);
+        }
         update(user,wrapper);
         return Result.success("修改成功");
     }

@@ -22,4 +22,9 @@ public class SystemConstants {
      */
     public static final Integer CHAT_NO_READ = 0;
     public static final String COMPANY = "companyList";
+    //注册的用户是公司hr
+    public static final Integer IS_COMPANY = 1;
+    //注册的用户是公司hr
+    public static final Integer IS_NOT_COMPANY = 0;
+
 }

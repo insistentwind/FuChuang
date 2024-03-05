@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
+
 /**
  * (User)表实体类
  *
@@ -20,6 +22,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("user")
+@Accessors(chain = true)
 public class User  {
     @TableId
     private Integer id;
@@ -52,7 +55,8 @@ public class User  {
     private Integer resumeId;
     //注册时间
     private LocalDateTime createTime;
-
+    //是否为公司hr(0否，1是)
+    private Integer isCompany;
 
 
 }

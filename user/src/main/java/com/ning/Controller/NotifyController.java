@@ -3,6 +3,7 @@ package com.ning.Controller;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.result.Result;
 import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.domain.vo.NotifyVo;
 import com.ning.service.NotifyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,14 +37,14 @@ public class NotifyController {
     }
 
     /**
-     * 根据用户名修改消息状态为已读
-     * @param notifyDto
+     * 根据id修改消息状态为已读
+     * @param id
      * @return
      */
-    @PutMapping("")
+    @PutMapping("/{id}")
     @ApiOperation("根据用户名修改消息状态为已读")
-    public Result<String> update(@RequestBody NotifyDto notifyDto) {
-        return notifyService.updateByUsername(notifyDto);
+    public Result<String> update(@PathVariable Integer id) {
+        return notifyService.updateByUsername(id);
     }
 
     /**
@@ -54,7 +55,7 @@ public class NotifyController {
      */
     @GetMapping()
     @ApiOperation("根据用户名和状态码查询该用户收到的所有通知")
-    public Result<List<NotifyDto>> getList(@RequestParam Integer userId, @RequestParam Integer isRead) {
+    public Result<List<NotifyVo>> getList(@RequestParam Integer userId, @RequestParam Integer isRead) {
         return notifyService.getList(userId,isRead);
     }
 
@@ -65,7 +66,7 @@ public class NotifyController {
      */
     @GetMapping("/all")
     @ApiOperation("根据用户名查询该用户收到的所有通知")
-    public Result<List<NotifyDto>> getAll(@RequestParam Integer userId) {
+    public Result<List<NotifyVo>> getAll(@RequestParam Integer userId) {
         return notifyService.getList(userId, SystemConstants.NOTIFY_STATUS);
     }
 

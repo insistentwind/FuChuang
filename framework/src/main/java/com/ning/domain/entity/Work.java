@@ -2,6 +2,8 @@ package com.ning.domain.entity;
 
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,8 @@ import lombok.experimental.Accessors;
 public class Work  {
     @TableId
     private Integer id;
-
+    @TableField(exist = false)
+    private Integer companyId;
     //公司名
     private String company;
     //职位名

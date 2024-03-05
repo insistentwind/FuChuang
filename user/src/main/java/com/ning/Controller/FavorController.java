@@ -41,7 +41,7 @@ public class FavorController {
     @ApiOperation("添加收藏")
     public Result<String> create(@RequestBody FavorDto favorDto){
         log.info("添加收藏信息:{}",favorDto);
-        FavorDto entity = find(favorDto);
+        Favor entity = find(favorDto);
         if(entity != null){
             //说明已经被收藏了
             throw new RuntimeException("该职位已被收藏");
@@ -54,15 +54,13 @@ public class FavorController {
      * @param favorDto
      * @return
      */
-    public FavorDto find(FavorDto favorDto){
+    public Favor find(FavorDto favorDto){
         Integer userId = favorDto.getUserId();
         Integer workId = favorDto.getWorkId();
         LambdaQueryWrapper<Favor> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Favor::getUserId,userId)
                         .eq(Favor::getWorkId,workId);
-        Favor favor = favorService.getOne(wrapper);
-        FavorDto dto = BeanCopyUtils.copyBean(favor, FavorDto.class);
-        return dto;
+        return favorService.getOne(wrapper);
     }
 
     /**

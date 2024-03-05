@@ -11,14 +11,21 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDo {
-    //登录账户
+public class CompanyDo{
+
+    //账户
     private String username;
-    //登录密码
+    //密码
     private String password;
+    //电话
+    private String tele;
+    //邮箱
+    private String mail;
+    //性别
+    private Integer sex;
     //账号所属的公司名
     private String companyName;
-    //账号昵称
+    //hr名字
     private String nickName;
     //公司地址
     private String address;

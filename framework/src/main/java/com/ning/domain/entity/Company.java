@@ -1,5 +1,6 @@
 package com.ning.domain.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import java.io.Serializable;
@@ -23,10 +24,6 @@ public class Company  {
     @TableId
     private Integer id;
 
-    //登录账户
-    private String username;
-    //登录密码
-    private String password;
     //账号所属的公司名
     private String companyName;
     //账号昵称
@@ -46,7 +43,7 @@ public class Company  {
     //职位招聘人
     private String hr;
     //公司注册时间
-    private Date createTime;
+    private LocalDateTime createTime;
     //公司类型
     private String type;
     //管理类型
@@ -55,6 +52,7 @@ public class Company  {
     private String fund;
     //逻辑删除 0为未删除，1为删除
     private Integer delFlag;
+
 
 
 }

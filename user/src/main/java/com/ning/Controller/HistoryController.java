@@ -1,15 +1,16 @@
 package com.ning.Controller;
 
 import com.ning.domain.dto.ResumeVo;
-import com.ning.domain.entity.History;
-import com.ning.domain.entity.Resume;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.HistoryVo;
+import com.ning.domain.vo.WorkVo;
 import com.ning.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +35,19 @@ public class HistoryController {
      */
     @ApiOperation("查询当前用户的浏览历史")
     @GetMapping
-    public Result<List<ResumeVo>> getHistoryByUserId(){
+    public Result<List<HistoryVo>> getHistoryByUserId(){
         log.info("查询当前用户历史记录");
         return historyService.getHistoryByUser();
+    }
+
+    /**
+     * 根据历史记录id查询职位详细信息
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据历史记录id查询职位详细信息")
+    @GetMapping("/{id}")
+    public Result<WorkVo> getHistoryById(@PathVariable Integer id){
+        return historyService.getHistoryById(id);
     }
 }

@@ -3,8 +3,7 @@ package com.ning.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.entity.History;
-import com.ning.domain.entity.Resume;
-import org.apache.ibatis.annotations.Select;
+import com.ning.domain.vo.WorkVo;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public interface HistoryMapper extends BaseMapper<History> {
      * @return
      */
 //    SELECT resume.* FROM history LEFT JOIN resume ON resume_id=history.resume_id where user_id = #{id}
-    List<ResumeVo> getListByUserId(Integer id);
+    List<WorkVo> getListByUserId(Integer id);
 
 }
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.entity.Notify;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.NotifyVo;
 
 import java.util.List;
 
@@ -23,16 +24,16 @@ public interface NotifyService extends IService<Notify> {
 
     /**
      * 根据用户名修改消息状态为已读
-     * @param notifyDto
+     * @param id
      * @return
      */
-    Result<String> updateByUsername(NotifyDto notifyDto);
+    Result<String> updateByUsername(Integer id);
     /**
      * 根据用户名和状态码查询该用户收到的所有通知
      * @param userId
      * @param isRead
      * @return
      */
-    Result<List<NotifyDto>> getList(Integer userId, Integer isRead);
+    Result<List<NotifyVo>> getList(Integer userId, Integer isRead);
 }
 

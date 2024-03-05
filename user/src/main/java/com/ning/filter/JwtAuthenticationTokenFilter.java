@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mysql.cj.util.StringUtils;
 import com.ning.constants.MessageConstant;
 import com.ning.constants.SystemConstants;
+import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.utils.JwtUtil;
@@ -62,10 +63,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String userId = claims.getSubject();
         //从redis中获取用户信息
-        User user = redisCache.getCacheObject(SystemConstants.USER_LOGIN + userId);
+        UserDto userDto = redisCache.getCacheObject(SystemConstants.USER_LOGIN + userId);
 
         //如果获取不到redis中的值
-        if(Objects.isNull(user)){
+        if(Objects.isNull(userDto)){
             //说明登录过期
             log.info("登录过期");
             Result<String> result = Result.error(MessageConstant.USER_NOT_LOGIN);
@@ -75,7 +76,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         //存入SecurityContextHolder
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user,null,null);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDto,null,null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         log.info("校验成功，放行");
         //放行

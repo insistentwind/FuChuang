@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.WorkDto;
+import com.ning.domain.entity.Company;
+import com.ning.domain.entity.History;
+import com.ning.domain.entity.Relation;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
@@ -12,16 +16,24 @@ import com.ning.domain.result.Result;
 import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
+import com.ning.mapper.CompanyMapper;
+import com.ning.mapper.HistoryMapper;
+import com.ning.mapper.RelationMapper;
 import com.ning.mapper.WorkMapper;
 
+import com.ning.service.RelationService;
 import com.ning.service.WorkService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.RedisCache;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +50,14 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     private RedisCache redisCache;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RelationMapper relationMapper;
+    @Autowired
+    private CompanyMapper companyMapper;
+    @Autowired
+    private HistoryMapper historyMapper;
+
+    private static String KEY = "work_category";
     /**
      * 分页条件查询对应简历内容
      * @param workDto
@@ -49,25 +69,30 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         int pageSize = workDto.getPageSize();
         Work work = BeanCopyUtils.copyBean(workDto, Work.class);
         LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-        if( work!= null){
-            wrapper.like(work.getDescription() != null,Work::getDescription,work.getDescription())
-                    .like(work.getCompany() != null,Work::getCompany,work.getCompany())
-                    .eq(work.getEducation() != null,Work::getEducation,work.getEducation());
-            wrapper.orderByDesc(Work::getSalary);
-        }
-        // TODO 这里还不确定，是薪资查询
-        if(work!= null && work.getSalary()!= null) {
-            String salary = workDto.getSalary();
-            String[] split = salary.split("-");
-            String start = split[0] + "k";
-            String end = (split[1].replace("[^\\d.]", ""));
-            wrapper.le(Work::getMinSa,end)
-                    .ge(Work::getMaxSa,start);
-        }
-
         Page<Work> page = new Page<Work>(pageNum,pageSize);
-        page(page,wrapper);
-        List<Work> records = page.getRecords();
+        List<Work> records = new ArrayList<>();
+        if( work!= null){
+            wrapper.like(StringUtils.hasText(work.getTitle()),Work::getTitle,work.getTitle())
+                    .like(StringUtils.hasText(work.getAddress()),Work::getAddress,work.getAddress())
+                    .eq(StringUtils.hasText(work.getEducation()),Work::getEducation,work.getEducation())
+                    .le(StringUtils.hasText(work.getMaxSa()),Work::getMaxSa,work.getMaxSa())
+                    .ge(StringUtils.hasText(work.getMinSa()),Work::getMinSa,work.getMinSa());
+//            wrapper.orderByDesc(Work::getSalary);
+            page(page,wrapper);
+            records = page.getRecords();
+        }
+        // 薪资查询
+//        if(work!= null && work.getSalary()!= null) {
+//            String salary = workDto.getSalary();
+//            String[] split = salary.split("-");
+//            String start = split[0] + "k";
+//            String end = (split[1].replace("[^\\d.]", ""));
+//            wrapper.le(Work::getMinSa,end)
+//                    .ge(Work::getMaxSa,start);
+//        }
+        else{
+            records = page.getRecords();
+        }
 
         System.out.println("total的数量:" + page.getTotal());
         //这里是薪资范围查询
@@ -89,19 +114,20 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 //            }).collect(Collectors.toList());
 //        }
 
-        return Result.success(new PageResult(records.size(),records));
+        return Result.success(new PageResult(Integer.valueOf(records.size()),records));
     }
-    /**
-     * 新增职位接口
-     * @param work
-     * @return
-     */
-    @Override
-    public Result<String> saveByWork(Work work) {
-        work = setMaxMinSa(work);
-        save(work);
-        return Result.success();
-    }
+//    /**
+//     * 新增职位接口
+//     * @param work
+//     * @return
+//     */
+//    @Override
+//    public Result<String> saveByWork(Work work) {
+//        work = setMaxMinSa(work);
+//        save(work);
+//        Integer workId = work.getId();
+//        return Result.success();
+//    }
 
     private Work setMaxMinSa(Work work){
         String salary = work.getSalary();
@@ -117,13 +143,34 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
      * @return
      */
     @Override
+    @Transactional
     public Result<WorkVo> getByWorkId(Integer id) {
         Work work = getById(id);
         WorkVo workVo = new WorkVo();
         BeanUtils.copyProperties(work,workVo);
+        try {
+            // 如果用户是已经登录的用户，那么将此次浏览放入历史记录中
+            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Integer userId = userDto.getUser().getId();
 
-        Long viewCount = (Long) redisTemplate.opsForHash().get(SystemConstants.WORK_VIEW_COUNT,id.toString());
-        workVo.setViewCount(viewCount);
+
+            LambdaQueryWrapper<History> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(History::getWorkId,id).eq(History::getUserId,userId);
+            History selectOne = historyMapper.selectOne(wrapper);
+            if(selectOne == null){
+
+                History history = new History();
+                history.setWorkId(id).setUserId(userId).setTitle(work.getTitle());
+                historyMapper.insert(history);
+            }
+
+        }
+        catch (Exception e){
+            //不处理
+        }
+
+        Integer viewCount = (Integer) redisTemplate.opsForHash().get(SystemConstants.WORK_VIEW_COUNT,id.toString());
+        workVo.setViewCount(Long.valueOf(viewCount));
 
         return Result.success(workVo);
     }
@@ -133,9 +180,22 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
      * @return
      */
     @Override
+    @Transactional
     public Result<String> updateByWork(WorkDto workDto) {
         Work work = BeanCopyUtils.copyBean(workDto, Work.class);
-        work = setMaxMinSa(work);
+        //这个是设置了最大和最小的薪资
+        if(workDto.getMinSa() != null&& workDto.getMaxSa() != null){
+            work.setMinSa(workDto.getMinSa())
+                    .setMaxSa(workDto.getMaxSa())
+                    .setSalary(work.getMinSa()+"-"+work.getMaxSa());
+        }
+
+        LambdaQueryWrapper<Relation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Relation::getWorkId,workDto.getId());
+        Relation relation = relationMapper.selectOne(wrapper);
+        Company company = companyMapper.selectById(relation.getCompanyId());
+        work.setCompany(company.getCompanyName());
+
         updateById(work);
         return Result.success();
     }
@@ -163,6 +223,23 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             throw new BaseException(e.toString());
         }
         return Result.success();
+    }
+    /**
+     * 根据分类id查询信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Result<List<WorkVo>> getList(Long id) {
+        List<WorkVo> workList= (List<WorkVo>)redisTemplate.opsForHash().get(KEY, id);
+        if(workList != null && workList.size()>0){
+            return Result.success(workList);
+        }
+        else{
+            // TODO 根据分类查询对应的职位信息
+            redisTemplate.opsForHash().put(KEY,id,null);
+            return Result.success();
+        }
     }
 }
 

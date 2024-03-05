@@ -3,7 +3,6 @@ package com.ning.Controller;
 import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;
-import com.ning.domain.entity.Resume;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserVo;

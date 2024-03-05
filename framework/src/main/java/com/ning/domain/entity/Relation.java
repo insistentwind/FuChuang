@@ -1,35 +1,34 @@
 package com.ning.domain.entity;
 
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.experimental.Accessors;
 
 /**
- * (History)表实体类
+ * (Relation)表实体类
  *
  * @author makejava
- * @since 2024-03-01 15:45:53
+ * @since 2024-03-01 15:20:03
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("history")
+@TableName("relation")
 @Accessors(chain = true)
-public class History {
+public class Relation  {
     @TableId
     private Integer id;
 
-    //用户id
-    private Integer userId;
-    //职位id
+    
+    private Integer companyId;
+    
     private Integer workId;
-    //职位名称
-    private String title;
 
 
 

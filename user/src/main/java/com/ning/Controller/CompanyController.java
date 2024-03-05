@@ -5,12 +5,14 @@ import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
+import com.ning.exception.BaseException;
 import com.ning.service.CompanyService;
 import com.ning.service.impl.CompanyServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -95,6 +97,9 @@ public class CompanyController {
     @ApiOperation("根据公司名称查询公司信息")
     @GetMapping("/search")
     public Result<CompanyVo> getByName(@RequestParam String companyName) {
+        if (!StringUtils.hasText(companyName)){
+            throw new BaseException("请检查输入");
+        }
         return companyService.getByCompanyName(companyName);
     }
 
