@@ -1,9 +1,11 @@
-package com.ning.domain.message.impl.request;// SendResponse.java
+package com.ning.websocket.message.impl.request;// SendResponse.java
 
-import com.ning.domain.message.Message;
+import com.ning.websocket.message.Message;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class SendToUserRequest implements Message {
 
     public static final String TYPE = "SEND_TO_USER_REQUEST";

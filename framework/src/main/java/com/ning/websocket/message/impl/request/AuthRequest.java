@@ -1,6 +1,6 @@
-package com.ning.domain.message.impl.request;
+package com.ning.websocket.message.impl.request;
 
-import com.ning.domain.message.Message;
+import com.ning.websocket.message.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +21,10 @@ public class AuthRequest implements Message {
      */
     private String accessToken;
 
+    public AuthRequest setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        return this;
+    }
     // ... 省略 set/get 方法
 
 }

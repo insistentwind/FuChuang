@@ -82,4 +82,14 @@ public class UserLoginController {
         log.info("修改的用户信息是：{}",user);
         return userService.updateByUser(user);
     }
+
+    /**
+     * 用户注销
+     * @return
+     */
+    @ApiOperation("用户注销")
+    @PostMapping("/logout")
+    public Result<String> logout(){
+        return userService.logout();
+    }
 }

@@ -39,5 +39,7 @@ public class Chat  {
     //0未读，1已读
     private Integer status;
 
+    private Integer delFlag;
+
 }
 

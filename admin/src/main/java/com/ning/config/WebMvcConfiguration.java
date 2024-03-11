@@ -5,15 +5,11 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -61,12 +57,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     public Docket docket2() {
         log.info("准备生成接口文档");
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("服创接口文档")
+                .title("服创管理端接口文档")
                 .version("2.0")
-                .description("服创项目接口文档")
+                .description("服创管理端接口文档")
                 .build();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
-                .groupName("用户端接口")
+                .groupName("管理端接口")
                 .apiInfo(apiInfo)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ning"))//指定扫描的包

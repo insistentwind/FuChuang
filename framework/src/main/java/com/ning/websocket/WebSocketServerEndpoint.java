@@ -1,17 +1,19 @@
-package com.ning.chat;
+package com.ning.websocket;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ning.domain.entity.Chat;
 import com.ning.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-
 import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +41,30 @@ public class WebSocketServerEndpoint {
     Integer  ContactID = -1;
 
     private static ChatService chatService;
+
+
+//    // 这里初始化messageHandler集合
+//
+//    /**
+//     * 消息类型与 MessageHandler 的映射
+//     *
+//     * 注意，这里设置成静态变量。虽然说 WebsocketServerEndpoint 是单例，但是 Spring Boot 还是会为每个 WebSocket 创建一个 WebsocketServerEndpoint Bean 。
+//     */
+//    private static final Map<String, MessageHandler> HANDLERS = new HashMap<>();
+//
+//    @Autowired
+//    private ApplicationContext applicationContext;
+//
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        // 通过 ApplicationContext 获得所有 MessageHandler Bean
+//        applicationContext.getBeansOfType(MessageHandler.class).values() // 获得所有 MessageHandler Bean
+//                .forEach(messageHandler -> HANDLERS.put(messageHandler.getType(), messageHandler)); // 添加到 handlers 中
+//        log.info("[afterPropertiesSet][消息处理器数量：{}]", HANDLERS.size());
+//    }
+
+
+
 
     @Resource
     public void setChatService(ChatService chatService){

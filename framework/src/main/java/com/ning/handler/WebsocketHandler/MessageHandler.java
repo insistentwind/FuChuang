@@ -1,4 +1,6 @@
-package com.ning.websocket.message;// MessageHandler.java
+package com.ning.handler.WebsocketHandler;// MessageHandler.java
+
+import com.ning.websocket.message.Message;
 
 import javax.websocket.Session;
 

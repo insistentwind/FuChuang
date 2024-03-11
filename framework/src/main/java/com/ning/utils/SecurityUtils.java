@@ -1,11 +1,11 @@
 package com.ning.utils;
 
-import com.ning.domain.entity.LoginUser;
+import com.ning.domain.dto.UserDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * @Author 三更  B站： https://space.bilibili.com/663528522
+ * @Author qjn
  */
 public class SecurityUtils
 {
@@ -13,9 +13,9 @@ public class SecurityUtils
     /**
      * 获取用户
      **/
-    public static LoginUser getLoginUser()
+    public static UserDto getLoginUser()
     {
-        return (LoginUser) getAuthentication().getPrincipal();
+        return (UserDto) getAuthentication().getPrincipal();
     }
 
     /**
@@ -26,11 +26,11 @@ public class SecurityUtils
     }
 
     public static Boolean isAdmin(){
-        Long id = getLoginUser().getUser().getId();
+        Integer id = getLoginUser().getUser().getId();
         return id != null && id.equals(1L);
     }
 
-    public static Long getUserId() {
+    public static Integer getUserId() {
         return getLoginUser().getUser().getId();
     }
 }

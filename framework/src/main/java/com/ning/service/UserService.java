@@ -3,8 +3,13 @@ package com.ning.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.entity.User;
+import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.UserPageVo;
+import com.ning.domain.vo.UserRoleVo;
 import com.ning.domain.vo.UserVo;
+
+import java.util.List;
 
 
 /**
@@ -38,5 +43,28 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<String> updateByUser(User user);
+    /**
+     * 用户注销
+     * @return
+     */
+    Result<String> logout();
+    /**
+     * 分页条件查询用户信息
+     *
+     * @param userPageVo
+     * @return
+     */
+    Result<PageResult> pageByUserPageVo(UserPageVo userPageVo);
+    /**
+     * 新增用户
+     * @return
+     */
+    Result<String> insertByUserRoleVo(UserRoleVo userRoleVo);
+    /**
+     * 删除固定的某个用户（逻辑删除）
+     * @param id
+     * @return
+     */
+    Result<String> deleteById(List<Long> id);
 }
 

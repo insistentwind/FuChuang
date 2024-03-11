@@ -22,6 +22,8 @@ public class UserVo {
 
     //姓名
     private String name;
+    //头像
+    private String avatar;
     //求职状态（是否立刻到岗，1是，0否）
     private Integer status;
     //性别（1男，0女）

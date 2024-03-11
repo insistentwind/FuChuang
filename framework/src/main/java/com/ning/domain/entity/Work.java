@@ -49,6 +49,8 @@ public class Work  {
     //浏览量
     private Long viewCount;
 
+    private Integer delFlag;
+
     public Work(Integer id, long viewCount) {
         this.id = id;
         this.viewCount = viewCount;

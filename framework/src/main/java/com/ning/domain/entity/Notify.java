@@ -33,6 +33,8 @@ public class Notify  {
     //通知时间
     private LocalDateTime time;
 
+    private Integer delFlag;
+
 
 
 }

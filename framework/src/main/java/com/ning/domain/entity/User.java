@@ -33,6 +33,8 @@ public class User  {
     private String username;
     //密码
     private String password;
+    //头像
+    private String avatar;
     //求职状态（是否立刻到岗，1是，0否）
     private Integer status;
     //性别（1男，0女）
@@ -57,6 +59,8 @@ public class User  {
     private LocalDateTime createTime;
     //是否为公司hr(0否，1是)
     private Integer isCompany;
+
+    private Integer delFlag;
 
 
 }

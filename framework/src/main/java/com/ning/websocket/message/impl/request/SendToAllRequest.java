@@ -1,7 +1,11 @@
-package com.ning.domain.message.impl.request;// SendToAllRequest.java
+package com.ning.websocket.message.impl.request;// SendToAllRequest.java
 
-import com.ning.domain.message.Message;
+import com.ning.websocket.message.Message;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class SendToAllRequest implements Message {
 
     public static final String TYPE = "SEND_TO_ALL_REQUEST";

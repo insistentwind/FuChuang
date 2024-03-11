@@ -29,6 +29,12 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
+
+    /**
+     * 新增和删除公司应该在管理端作业
+     * 还有更新公司
+     */
+
     /**
      * 新增公司
      * @param companyDo

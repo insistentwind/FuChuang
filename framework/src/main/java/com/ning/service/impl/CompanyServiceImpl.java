@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.entity.Company;
+import com.ning.domain.entity.Follow;
 import com.ning.domain.entity.User;
 import com.ning.domain.entity.UserCompany;
 import com.ning.domain.result.PageResult;
@@ -13,9 +14,11 @@ import com.ning.domain.result.Result;
 import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.CompanyVo;
 import com.ning.mapper.CompanyMapper;
+import com.ning.mapper.FollowMapper;
 import com.ning.mapper.UserCompanyMapper;
 import com.ning.mapper.UserMapper;
 import com.ning.service.CompanyService;
+import com.ning.service.FollowService;
 import com.ning.utils.BeanCopyUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserCompanyMapper userCompanyMapper;
+    @Autowired
+    private FollowMapper followMapper;
 
     /**
      * 分页查询公司
@@ -166,6 +171,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public Result<String> deleteBatch(List<Integer> ids) {
         try {
+            LambdaQueryWrapper<Follow> wrapper = new LambdaQueryWrapper<>();
+            for (Integer id : ids) {
+                wrapper.eq(Follow::getCompanyId,id);
+                followMapper.delete(wrapper);
+            }
             removeByIds(ids);
         }
         catch (Exception e){

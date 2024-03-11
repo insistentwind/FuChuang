@@ -1,6 +1,6 @@
-package com.ning.domain.message.impl.request;// SendToOneRequest.java
+package com.ning.websocket.message.impl.request;// SendToOneRequest.java
 
-import com.ning.domain.message.Message;
+import com.ning.websocket.message.Message;
 import lombok.Data;
 
 @Data

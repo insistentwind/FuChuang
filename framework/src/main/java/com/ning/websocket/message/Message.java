@@ -1,4 +1,4 @@
-package com.ning.domain.message;
+package com.ning.websocket.message;
 
 /**
  * @author: qjn

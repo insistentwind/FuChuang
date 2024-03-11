@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="user:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="UserClient ver1.1">
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/OssConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/WebMvcConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/MenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/RoleController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/filter/JwtAuthenticationTokenFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/service/LoginService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/service/serviceImpl/LoginServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application-start.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/UserRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/AdminUserInfoVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/MenuVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/RoutersVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/TreeSelectVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserInfoVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPageVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserRoleVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/AuthMessageHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/MessageHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/SendToAllHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/SendToOneHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/MenuMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RoleMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/UserRoleMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/MenuService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/RoleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserRoleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/MenuServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/RoleServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserRoleServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/SecurityUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/WebSocketUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/AuthRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/SendToAllRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/SendToOneRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/SendToUserRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/UserJoinNoticeRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/response/AuthResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/response/SendResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/MenuMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/RoleMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/chat/WSConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/WSConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/chat/WebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/WebSocketServerEndpoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Notify.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Notify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Work.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Work.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserLoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserLoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/config/WebMvcConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/config/WebMvcConfiguration.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaFXApplication" />
+        <option value="Interface" />
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="second" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/user/src/main/java/com/ning/Controller/HistoryController.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\Maven\apache-maven-3.6.1\mvn_repo" />
+        <option name="mavenHome" value="D:/Maven/apache-maven-3.6.1" />
+        <option name="userSettingsFile" value="D:\Maven\.m2\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2agAo6e6xHWQJ0w7ty9SP5P3uGN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;database.data.extractors.current.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/若依源码&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.itangcent.idea.plugin.configurable.AccountConfigurable&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;54e20aa9d8ba8a6f0c8ca4c2ecdfc299&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ning.service.impl" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\FuChuang\FuChuang\admin\src\main\java\com\ning" />
+      <recent name="E:\FuChuang\FuChuang\admin\src\main\resources" />
+      <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\utils\observerUtils" />
+      <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\utils" />
+      <recent name="E:\FuChuang\FuChuang\user\src\main\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.ning" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ning.domain.vo" />
+      <recent name="com.ning.utils" />
+      <recent name="com.ning.domain.entity" />
+      <recent name="com.ning.domain.dto" />
+      <recent name="com.ning.domain" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AdminApplication">
+    <configuration name="JwtUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.ning.utils.JwtUtil" />
+      <module name="framework" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ning.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SplitSalary.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="user" />
+      <option name="PACKAGE_NAME" value="com.ning" />
+      <option name="MAIN_CLASS_NAME" value="com.ning.SplitSalary" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="user-1.0-SNAPSHOT.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/user/target/user-1.0-SNAPSHOT.jar" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <module name="admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ning.AdminApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <module name="user" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ning.UserApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="SPRING_BOOT_MAIN_CLASS" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.UserApplication" />
+        <item itemvalue="JUnit.SplitSalary.test" />
+        <item itemvalue="Application.JwtUtil" />
+        <item itemvalue="JAR Application.user-1.0-SNAPSHOT.jar" />
+        <item itemvalue="Spring Boot.UserApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpringBootOptions">
+    <option name="showAdditionalConfigNotification" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="" />
+      <created>1704730019704</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1704730019704</updated>
+      <workItem from="1704730020752" duration="1100000" />
+      <workItem from="1704731128874" duration="4327000" />
+      <workItem from="1704792567662" duration="10881000" />
+      <workItem from="1704821813122" duration="110000" />
+      <workItem from="1704822214367" duration="137000" />
+      <workItem from="1705239605156" duration="1256000" />
+      <workItem from="1705305010322" duration="9710000" />
+      <workItem from="1705320309997" duration="102000" />
+      <workItem from="1705320416496" duration="729000" />
+      <workItem from="1705373227356" duration="7870000" />
+      <workItem from="1705384664495" duration="6573000" />
+      <workItem from="1705735940468" duration="10438000" />
+      <workItem from="1705892027979" duration="7183000" />
+      <workItem from="1706089904780" duration="3557000" />
+      <workItem from="1706533607760" duration="2170000" />
+      <workItem from="1706586856304" duration="8913000" />
+      <workItem from="1706620807613" duration="731000" />
+      <workItem from="1706774816553" duration="9598000" />
+      <workItem from="1706784891903" duration="845000" />
+      <workItem from="1706864594155" duration="656000" />
+      <workItem from="1707131060258" duration="4377000" />
+      <workItem from="1707203253692" duration="1789000" />
+      <workItem from="1708165440479" duration="1857000" />
+      <workItem from="1708693536039" duration="865000" />
+      <workItem from="1708697426459" duration="2024000" />
+      <workItem from="1708700037080" duration="424000" />
+      <workItem from="1708700471919" duration="633000" />
+      <workItem from="1708768572373" duration="12490000" />
+      <workItem from="1708866302630" duration="3881000" />
+      <workItem from="1708934761074" duration="12368000" />
+      <workItem from="1709043534323" duration="3611000" />
+      <workItem from="1709130092495" duration="3042000" />
+      <workItem from="1709189115921" duration="52000" />
+      <workItem from="1709189182873" duration="439000" />
+      <workItem from="1709189797824" duration="7570000" />
+      <workItem from="1709277134844" duration="5316000" />
+      <workItem from="1709468190970" duration="2894000" />
+      <workItem from="1709556012938" duration="3181000" />
+      <workItem from="1709563400882" duration="19000" />
+      <workItem from="1709563457005" duration="774000" />
+      <workItem from="1709628793823" duration="503000" />
+      <workItem from="1709629305166" duration="81000" />
+      <workItem from="1709629411132" duration="555000" />
+      <workItem from="1709629975470" duration="1211000" />
+      <workItem from="1709631194990" duration="18724000" />
+      <workItem from="1709729523884" duration="5240000" />
+      <workItem from="1709987248802" duration="425000" />
+      <workItem from="1709987687298" duration="46000" />
+      <workItem from="1709990432178" duration="4850000" />
+      <workItem from="1710074504074" duration="1539000" />
+      <workItem from="1710160125348" duration="6096000" />
+    </task>
+    <task id="LOCAL-00001" summary="1">
+      <created>1705320423753</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705320423753</updated>
+    </task>
+    <task id="LOCAL-00002" summary="2">
+      <created>1705892144167</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705892144167</updated>
+    </task>
+    <task id="LOCAL-00003" summary="多模块打包完成">
+      <created>1706110748307</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1706110748307</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add utils ad Exceptionhandler">
+      <created>1706616424536</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706616424536</updated>
+    </task>
+    <task id="LOCAL-00005" summary="redis定时更新浏览量、收藏职位">
+      <created>1706785366152</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1706785366152</updated>
+    </task>
+    <task id="LOCAL-00006" summary="设置用户文件注册配置，添加观察者类替代redis优化运行速率;关注职位上新提醒">
+      <created>1708785170225</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1708785170225</updated>
+    </task>
+    <task id="LOCAL-00007" summary="初版websocket实现">
+      <created>1708958127753</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1708958127753</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Front ver1.0">
+      <created>1709219842740</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1709219842740</updated>
+    </task>
+    <task id="LOCAL-00009" summary="UserClient ver1.1">
+      <created>1709650752234</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1709650752234</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1" />
+    <MESSAGE value="2" />
+    <MESSAGE value="多模块打包完成" />
+    <MESSAGE value="add utils ad Exceptionhandler" />
+    <MESSAGE value="redis定时更新浏览量、收藏职位" />
+    <MESSAGE value="设置用户文件注册配置，添加观察者类替代redis优化运行速率;关注职位上新提醒" />
+    <MESSAGE value="初版websocket实现" />
+    <MESSAGE value="Front ver1.0" />
+    <MESSAGE value="UserClient ver1.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="UserClient ver1.1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java</url>
+          <line>118</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.ning.domain.dto.UserDto" memberName="username" />
+        <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
+        <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
+        <PinnedItemInfo parentTag="com.ning.domain.dto.UserDto" memberName="password" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

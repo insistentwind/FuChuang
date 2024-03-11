@@ -1,9 +1,10 @@
-package com.ning.domain.message.impl.response;
+package com.ning.websocket.message.impl.response;
 
-import com.ning.domain.message.Message;
+import com.ning.websocket.message.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * @author: qjn
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 public class AuthResponse implements Message {
     public static final String TYPE = "AUTH_RESPONSE";
 

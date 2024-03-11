@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   profiles:
     active: dev
@@ -24,9 +24,9 @@ mybatis-plus:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.ning.domain.entity
-#  configuration:
-#    # 日志
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    # 日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       ##逻辑删除字段

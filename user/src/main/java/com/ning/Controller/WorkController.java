@@ -1,9 +1,7 @@
 package com.ning.Controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.dto.NotifyDto;
+import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.WorkDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Notify;
@@ -11,24 +9,24 @@ import com.ning.domain.entity.Relation;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
+import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.WorkVo;
-import com.ning.mapper.CompanyMapper;
+import com.ning.exception.BaseException;
 import com.ning.service.CompanyService;
 import com.ning.service.NotifyService;
 import com.ning.service.RelationService;
 import com.ning.service.WorkService;
 import com.ning.utils.BeanCopyUtils;
-import com.ning.utils.SingleUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -78,6 +76,20 @@ public class WorkController {
         return workService.getList(id);
     }
 
+    private void check(){
+        Integer isCompany;
+        try {
+            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            isCompany = userDto.getUser().getIsCompany();
+        }
+        catch (Exception e){
+            throw new BaseException("请先登录后再操作");
+        }
+        if(!isCompany.equals(SystemConstants.IS_COMPANY)){
+            throw new BaseException("没有该权限");
+        }
+    }
+
     /**
      * 发布职位接口
      *
@@ -91,6 +103,8 @@ public class WorkController {
         log.info("需要新增的职位信息：{}", work);
         //职位发布后，通知对应的观察者（用户）
 //        String companyName = work.getCompany();
+        check();
+
         Integer companyId = work.getCompanyId();
         Company company = companyService.getById(companyId);
         String companyName = company.getCompanyName();
@@ -105,13 +119,11 @@ public class WorkController {
         String message = companyName + "发布了新职位——" + work.getTitle() + ",快去看看吧";
         //TODO 还需要做的是启动的时候把所有的观察者和被观察者放入redis中
         try {
-            Set<Integer> set = redisTemplate.opsForHash().keys(companyName);
+            Set<String> set = redisTemplate.opsForHash().keys(companyName);
             //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
-            Iterator<Integer> iterator = set.iterator();
-            while (iterator.hasNext()) {
-                Integer key = iterator.next();
+            for (String key : set) {
                 NotifyDto notifyDto = new NotifyDto();
-                notifyDto.setUserId(key);
+                notifyDto.setUserId(Integer.valueOf(key));
                 // 此处是发布了新的职位
 //            notifyDto.setContent(SingleUtil.messageMap.get(key));//通知的信息，需要更改
                 notifyDto.setContent(message);
@@ -122,7 +134,7 @@ public class WorkController {
             }
         }
         catch (Exception e){
-
+            System.out.println(e.getMessage());
         }
         work.setCompany(companyName);
         workService.save(work);
@@ -130,31 +142,6 @@ public class WorkController {
         relation.setWorkId(work.getId()).setCompanyId(companyId);
         relationService.save(relation);
         return Result.success();
-
-//        if(SingleUtil.map.containsKey(companyName)){
-//            //2.通知观察者发布职位
-//            SingleUtil.map.get(companyName).setState(1);
-//            //职位名称
-//            SingleUtil.map.get(companyName).setPositionName(work.getTitle());
-//            //调用方法，让公司类通知其所有观察者类
-        // 下面这个方法调用了观察者类的方案，通知了所有被观察者，并且存入了messagemap
-//            SingleUtil.map.get(companyName).notifyObservers();
-//            // 3. 将工具类SingleUtil中的全局messageMap中的数据一一存放到通知表notify中
-//            Set<String> set = SingleUtil.messageMap.keySet();
-//            //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
-//            Iterator<String> iterator = set.iterator();
-//            while (iterator.hasNext()) {
-//                String key = iterator.next();
-//                NotifyDto notifyDto = new NotifyDto();
-//                notifyDto.setUsername(key);
-//                notifyDto.setContent(SingleUtil.messageMap.get(key));
-//                Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
-//                //保存消息
-//                notifyService.save(notify);
-//            }
-//            //4.清空messageMap中的数据
-//            SingleUtil.messageMap.clear();
-//        }
     }
 
     /**
@@ -180,6 +167,7 @@ public class WorkController {
     @PutMapping
     public Result<String> update(@RequestBody WorkDto workDto) {
         log.info("更新职位信息:{}", workDto);
+        check();
         //todo 公司名称不能更改，这里要自动更新
         return workService.updateByWork(workDto);
     }
@@ -195,7 +183,7 @@ public class WorkController {
     @Transactional
     public Result<String> delete(@RequestParam List<Integer> ids) {
         log.info("需要删除的职位信息:{}", ids);
-
+        check();
         for (Integer id : ids) {
             Work work = workService.getById(id);
 //            LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
@@ -220,12 +208,12 @@ public class WorkController {
 //                throw new RuntimeException("不存在此公司");
 //            }
             try {
-                Set<Integer> set = redisTemplate.opsForHash().keys(companyName);
-                Iterator<Integer> iterator = set.iterator();
+                Set<String> set = redisTemplate.opsForHash().keys(companyName);
+                Iterator<String> iterator = set.iterator();
                 while (iterator.hasNext()) {
-                    Integer user = iterator.next();
+                    String user = iterator.next();
                     NotifyDto notifyDto = new NotifyDto();
-                    notifyDto.setUserId(user);
+                    notifyDto.setUserId(Integer.valueOf(user));
                     notifyDto.setContent(message);
                     Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
                     notify.setTime(LocalDateTime.now());
@@ -235,28 +223,6 @@ public class WorkController {
             catch (Exception e){
 
             }
-
-
-            // 判断全局map中是否存在对应的被观察者类
-//            if (SingleUtil.map.containsKey(companyName)) {
-//                // 2. 通知所有观察者下架职位了
-//                SingleUtil.map.get(companyName).setState(0);
-//                SingleUtil.map.get(companyName).setPositionName(work.getTitle());
-//                SingleUtil.map.get(companyName).notifyObservers();
-//                // 3. 将工具类SingleUtil中的全局messageMap中的数据一一存放到通知表notify中
-//                Set<String> set = SingleUtil.messageMap.keySet();
-//                Iterator<String> iterator = set.iterator();
-//                while (iterator.hasNext()) {
-//                    String key = iterator.next();
-//                    NotifyDto notifyDtO = new NotifyDto();
-//                    notifyDtO.setUsername(key);
-//                    notifyDtO.setContent(SingleUtil.messageMap.get(key));
-//                    Notify notify = BeanCopyUtils.copyBean(notifyDtO, Notify.class);
-//                    notifyService.save(notify);
-//                }
-//                // 4. 清空全局messageMap中的数据
-//                SingleUtil.messageMap.clear();
-//            }
 
         }
         return workService.deleteByIds(ids);

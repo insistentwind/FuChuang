@@ -22,4 +22,21 @@ public class SystemConstants {
      * 后台用户
      */
     public static final String ADMIN = "1";
+    /**
+     * C：菜单
+     */
+    public static final String MENU = "C";
+    /**
+     * F：按钮
+     */
+    public static final String BUTTON = "F";
+    /**
+     * M：目录
+     */
+    public static final String CONTENT = "M";
+
+    /**
+     * 是否启用，0启用
+     */
+    public static final String STATUS_NORMAL = "0";
 }

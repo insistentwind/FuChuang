@@ -1,6 +1,7 @@
 package com.ning.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.MessageConstant;
 import com.ning.constants.SystemConstants;
@@ -8,11 +9,17 @@ import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.Resume;
 import com.ning.domain.entity.User;
+import com.ning.domain.entity.UserRole;
+import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.UserPageVo;
+import com.ning.domain.vo.UserRoleVo;
 import com.ning.domain.vo.UserVo;
 import com.ning.exception.BaseException;
 import com.ning.mapper.UserMapper;
+import com.ning.mapper.UserRoleMapper;
 import com.ning.service.ResumeService;
+import com.ning.service.UserRoleService;
 import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.JwtUtil;
@@ -27,8 +34,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -48,6 +55,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
    @Autowired
    private ResumeService resumeService;
+   @Autowired
+   private UserRoleService userRoleService;
 
     /**
      * 用户登录接口
@@ -157,6 +166,91 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.success("修改成功");
     }
 
+    /**
+     * 用户注销
+     * @return
+     */
+    @Override
+    public Result<String> logout() {
+        //获取token并解析获得user信息
+        //通过springsecurity获取，每个线程中只保存其自己的信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        //获取userId
+        Integer userId = userDto.getUser().getId();
+        //删除redis中的用户信息
+        redisCache.deleteObject(SystemConstants.USER_LOGIN + userId);
+        return Result.success();
+    }
+    /**
+     * 分页条件查询用户信息
+     *
+     * @param userPageVo
+     * @return
+     */
+    @Override
+    public Result<PageResult> pageByUserPageVo(UserPageVo userPageVo) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.hasText(userPageVo.getTele()),User::getTele,userPageVo.getTele())
+                .like(StringUtils.hasText(userPageVo.getUsername()),User::getUsername,userPageVo.getUsername())
+                .eq(StringUtils.hasText(userPageVo.getStatus()),User::getStatus, userPageVo.getStatus());
+        Page<User> page = new Page<>(userPageVo.getPageNum(), userPageVo.getPageSize());
+        page(page,wrapper);
+        List<User> records = page.getRecords();
+        return Result.success(new PageResult(records.size(),records));
+    }
+
+    /**
+     * 新增用户
+     * @param userRoleVo
+     * @return
+     */
+    @Override
+    public Result<String> insertByUserRoleVo(UserRoleVo userRoleVo) {
+
+        //​	需要新增用户功能。新增用户时可以直接关联角色。
+        //​	注意：新增用户时注意密码加密存储。
+        String password = passwordEncoder.encode(userRoleVo.getPassword());
+        //​	用户名不能为空，否则提示：必需填写用户名
+        if(userRoleVo.getUserName().isEmpty()){
+            throw new RuntimeException("错误，必须填写用户名");
+        }
+        //​	用户名必须之前未存在，否则提示：用户名已存在
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername,userRoleVo.getUserName());
+        User one = getOne(wrapper);
+        if(one != null){
+            throw new RuntimeException("新增失败，用户名已存在");
+        }
+        //​	邮箱必须之前未存在，否则提示：邮箱已存在
+        LambdaQueryWrapper<User> wrapper3 = new LambdaQueryWrapper<>();
+        wrapper3.eq(User::getMail,userRoleVo.getMail());
+        User third = getOne(wrapper3);
+        if(third != null){
+            throw new RuntimeException("新增失败，邮箱已存在");
+        }
+        User user = BeanCopyUtils.copyBean(userRoleVo, User.class);
+        user.setPassword(password);
+        save(user);
+        Integer userId = user.getId();
+        List<String> roleIds = userRoleVo.getRoleIds();
+        roleIds.forEach(item -> {
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(userId).setRoleId(Integer.valueOf(item));
+            userRoleService.save(userRole);
+        });
+        return Result.success();
+    }
+    /**
+     * 删除固定的某个用户（逻辑删除）
+     * @param ids
+     * @return
+     */
+    @Override
+    public Result<String> deleteById(List<Long> ids) {
+        ids.forEach(this::removeById);
+        return Result.success("删除成功");
+    }
 
     private boolean usernameExist(String username) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();

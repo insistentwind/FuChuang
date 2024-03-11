@@ -1,10 +1,11 @@
-package com.ning.domain.message.impl.response;// SendResponse.java
+package com.ning.websocket.message.impl.response;// SendResponse.java
 
-import com.ning.domain.message.Message;
+import com.ning.websocket.message.Message;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
-
+@Accessors(chain = true)
 public class SendResponse implements Message {
 
     public static final String TYPE = "SEND_RESPONSE";

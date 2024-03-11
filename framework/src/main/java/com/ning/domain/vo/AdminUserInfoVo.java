@@ -21,9 +21,11 @@ import java.util.List;
 @Builder
 public class AdminUserInfoVo {
 
-    private List<String> permissions;
+//    private List<String> permissions;
+
+    private MenuVo permissions;
 
     private List<String> roles;
 
-    private UserInfoVo user;
+    private UserInfoVo userInfoVo;
 }

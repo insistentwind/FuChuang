@@ -5,7 +5,6 @@ import com.mysql.cj.util.StringUtils;
 import com.ning.constants.MessageConstant;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.UserDto;
-import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.utils.JwtUtil;
 import com.ning.utils.RedisCache;
