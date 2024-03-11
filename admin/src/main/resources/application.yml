@@ -1,0 +1,45 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: dev
+  datasource:
+    druid:
+      driver-class-name: ${fc.datasource.driver-class-name}
+      url: jdbc:mysql://${fc.datasource.host}:${fc.datasource.port}/${fc.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${fc.datasource.username}
+      password: ${fc.datasource.password}
+  redis:
+    host: ${fc.redis.host}
+    port: ${fc.redis.port}
+    database: ${fc.redis.database}
+#    password: ${fc.redis.password}
+  #文件上传的配置
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+mybatis-plus:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ning.domain.entity
+#  configuration:
+#    # 日志
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      ##逻辑删除字段
+      logic-delete-field: delFlag
+      #删除为1
+      logic-delete-value: 1
+      #未删除为0
+      logic-not-delete-value: 0
+      #设置数据库字段自动id
+      id-type: auto
+
+alioss:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  access-key-id: LTAI5tJKucGDTSptHqUMaNm6
+  access-key-secret: SImboVg8yt9x1oEZRZZGkgxkkD9QjO
+  bucket-name: insistentwind

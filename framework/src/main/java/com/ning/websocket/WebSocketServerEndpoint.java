@@ -3,9 +3,9 @@ package com.ning.chat;
 import com.alibaba.fastjson.JSONObject;
 import com.ning.domain.entity.Chat;
 import com.ning.service.ChatService;
-import com.qiniu.util.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import javax.websocket.*;
@@ -13,7 +13,6 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -22,10 +21,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author: qjn
  * @create: 2024/02/25 22:16
  **/
-@Component
+@Controller
 @Slf4j
 @ServerEndpoint("/ws/message/{uID}")
-public class WebSocket {
+public class WebSocketServerEndpoint {
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
     // 存储当前连接的用户id
@@ -33,7 +32,7 @@ public class WebSocket {
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
     //虽然@Component默认是单例模式的，但springboot还是会为每个websocket连接初始化一个bean，所以可以用一个静态set保存起来。
     //  注：底下WebSocket是当前类名
-    private static CopyOnWriteArraySet<WebSocket> webSockets = new CopyOnWriteArraySet<>();
+    private static CopyOnWriteArraySet<WebSocketServerEndpoint> webSockets = new CopyOnWriteArraySet<>();
     // CopyOnWriteArraySet 是 Java 中的一个线程安全的集合类，它提供了一种在并发环境下安全地访问集合元素的方式。
     // 用来存在线连接数
     private static Map<String, Session> sessionPool = new ConcurrentHashMap<>();
@@ -43,7 +42,7 @@ public class WebSocket {
 
     @Resource
     public void setChatService(ChatService chatService){
-        WebSocket.chatService = chatService;
+        WebSocketServerEndpoint.chatService = chatService;
     }
 
     /**
@@ -243,7 +242,7 @@ public class WebSocket {
      */
     private void sendAllMessage(String message) {
         log.info("【websocket消息】广播消息:" + message);
-        for (WebSocket webSocket : webSockets) {
+        for (WebSocketServerEndpoint webSocket : webSockets) {
             try {
                 if (webSocket.session.isOpen()) {
                     webSocket.session.getAsyncRemote().sendText(message);
