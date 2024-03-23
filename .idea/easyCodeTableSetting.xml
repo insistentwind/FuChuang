@@ -79,106 +79,114 @@
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="账号所属的公司名" />
+                    <option name="comment" value="加密id" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="companyName" />
+                    <option name="name" value="encryptBrandid" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="账号昵称" />
+                    <option name="comment" value="行业" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="nickName" />
+                    <option name="name" value="brandIndustry" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="公司介绍网址" />
+                    <option name="comment" value="公司名称" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="abbrHtml" />
+                    <option name="name" value="brandName" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="公司当前要招聘的职位网址" />
+                    <option name="comment" value="公司图标" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="abbrJob" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="公司地址" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="address" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="是否融资" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="stage" />
+                    <option name="name" value="brandLogo" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="公司规模" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="scale" />
+                    <option name="name" value="brandScaleName" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="所属的行业" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="industry" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="职位招聘人" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="hr" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="公司注册时间" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="createTime" />
-                    <option name="type" value="java.util.Date" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="公司类型" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="type" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="管理类型" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="state" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="启动资金&#13;&#10;" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="fund" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="逻辑删除 0为未删除，1为删除" />
+                    <option name="comment" value="删除标志位" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="delFlag" />
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="更新人" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="updateBy" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="创建者" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="createBy" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="更新时间" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="updateTime" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="创建时间" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="createTime" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
                 </list>
               </option>
               <option name="name" value="Company" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="fuchuang_a15.deliver">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="用户id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="userId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="职位id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="workId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="Deliver" />
               <option name="preName" value="" />
               <option name="saveModelName" value="framework" />
               <option name="savePackageName" value="" />
@@ -398,59 +406,192 @@
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="用户id" />
+                    <option name="comment" value="姓名" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="userId" />
-                    <option name="type" value="java.lang.Integer" />
+                    <option name="name" value="name" />
+                    <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="出生日期" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="birthplace" />
+                    <option name="name" value="bir" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="年龄" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="age" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="个人优势" />
+                    <option name="comment" value="邮箱" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="advantages" />
+                    <option name="name" value="email" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="工作经历（实习经历）" />
+                    <option name="comment" value="性别（0女，1男）" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="works" />
+                    <option name="name" value="gend" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="电话" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="tel" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="期望的职位" />
+                    <option name="comment" value="最高学历" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="desires" />
+                    <option name="name" value="acad" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="项目经历" />
+                    <option name="comment" value="籍贯" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="projects" />
+                    <option name="name" value="nati" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="落户市县" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="live" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="政治面貌" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="poli" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="毕业院校" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="unv" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="工作经历" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="workExperience" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="教育经历" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="educations" />
+                    <option name="name" value="education" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="资格证书" />
+                    <option name="comment" value="项目经历" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="certificates" />
+                    <option name="name" value="projectExperience" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="教育培训经历" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="trainingExperience" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="获奖情况" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="awards" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="自我评价" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="selfAssessment" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="求职意向" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="careerObjective" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="技能与特长" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="skills" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="个人爱好" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="interests" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="证书获得" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="certifications" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="语言能力" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="languageSkills" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="发表论文" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="publications" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="人生格言" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="philosophy" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="主修课程" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="majorCourses" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="自我介绍" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="selfIntroduction" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="其它情况" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="other" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                 </list>
@@ -475,7 +616,7 @@
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="id" />
-                    <option name="type" value="java.lang.Long" />
+                    <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="菜单名称" />
@@ -538,7 +679,7 @@
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="status" />
-                    <option name="type" value="java.lang.String" />
+                    <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="权限标识" />
@@ -709,14 +850,14 @@
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="roleId" />
-                    <option name="type" value="java.lang.Long" />
+                    <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="菜单ID" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="menuId" />
-                    <option name="type" value="java.lang.Long" />
+                    <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                 </list>
               </option>
@@ -759,6 +900,13 @@
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="password" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="头像" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="avatar" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
@@ -811,24 +959,44 @@
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="简历投递历史记录" />
+                    <option name="comment" value="更新人" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="uploadCollect" />
-                    <option name="type" value="java.lang.String" />
+                    <option name="name" value="updateBy" />
+                    <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="简历查看历史记录" />
+                    <option name="comment" value="更新时间" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="seeCollect" />
-                    <option name="type" value="java.lang.String" />
+                    <option name="name" value="udpateTime" />
+                    <option name="type" value="java.util.Date" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="简历id" />
+                    <option name="comment" value="创建人" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="resumeId" />
+                    <option name="name" value="createBy" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="创建时间" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="createTime" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="是否为公司hr(0否，1是)" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="isCompany" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="delFlag" />
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                 </list>
@@ -868,6 +1036,42 @@
                 </list>
               </option>
               <option name="name" value="UserCompany" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="fuchuang_a15.user_resume">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="用户id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="userId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="简历id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="resumeId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="UserResume" />
               <option name="preName" value="" />
               <option name="saveModelName" value="framework" />
               <option name="savePackageName" value="" />
@@ -924,24 +1128,24 @@
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="公司名" />
+                    <option name="comment" value="分类id" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="company" />
+                    <option name="name" value="classifyId" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="职位名" />
+                    <option name="comment" value="职位介绍" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="description" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="职位名称" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="title" />
-                    <option name="type" value="java.lang.String" />
-                  </ColumnInfoDTO>
-                  <ColumnInfoDTO>
-                    <option name="comment" value="薪资" />
-                    <option name="custom" value="false" />
-                    <option name="ext" value="{}" />
-                    <option name="name" value="salary" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
@@ -952,38 +1156,80 @@
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="职位描述" />
+                    <option name="comment" value="工作经验要求" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="description" />
+                    <option name="name" value="jobExperience" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="薪资水平" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="salaryDesc" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="技术要求" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="skills" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="福利列表" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="welfareList" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="工作地点id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="cityName" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="工作地区" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="areaDistrict" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="工作地点" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="address" />
+                    <option name="name" value="businessDistrict" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="链接" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="link" />
+                    <option name="name" value="href" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="最大薪资" />
+                    <option name="comment" value="hr姓名" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="maxSa" />
+                    <option name="name" value="bossName" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="最低薪资" />
+                    <option name="comment" value="hr职位" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="minSa" />
+                    <option name="name" value="bossTitle" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="唯一id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="encryptBrandid" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
@@ -993,9 +1239,145 @@
                     <option name="name" value="viewCount" />
                     <option name="type" value="java.lang.Long" />
                   </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="删除标志位" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="delFlag" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
                 </list>
               </option>
               <option name="name" value="Work" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="fuchuang_a15.work_classify">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="max分类" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="bigClassify" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="middle分类" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="midClassify" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="子分类" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="smallClassify" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="薪资分类" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="salaryClassify" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="薪资地址" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="smallClassifyHtml" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="WorkClassify" />
+              <option name="preName" value="work_" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="fuchuang_a15.work_resume">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="职位id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="workId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="简历id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="resumeId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="WorkResume" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="fuchuang_a15.work_user">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="职位id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="workId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="用户id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="userId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="WorkUser" />
               <option name="preName" value="" />
               <option name="saveModelName" value="framework" />
               <option name="savePackageName" value="" />

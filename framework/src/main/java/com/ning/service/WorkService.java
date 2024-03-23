@@ -60,5 +60,11 @@ public interface WorkService extends IService<Work> {
      * @return
      */
     Result<List<WorkVo>> getList(Long id);
+    /**
+     * 用户投递简历接口
+     * @param workId
+     * @return
+     */
+    Result<String> commitResume(Integer workId);
 }
 

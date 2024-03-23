@@ -1,4 +1,4 @@
-package entity;
+package com.ning.domain.entity;
 
 
 import java.io.Serializable;
@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
+
 /**
  * (UserResume)表实体类
  *
@@ -18,6 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("user_resume")
+@Accessors(chain = true)
 public class UserResume  {
     @TableId
     private Integer id;

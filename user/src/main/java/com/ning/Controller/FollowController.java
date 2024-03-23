@@ -5,13 +5,11 @@ import com.ning.domain.dto.FollowDto;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.result.Result;
-import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.observer.Observer;
 import com.ning.observer.Subject;
 import com.ning.service.CompanyService;
 import com.ning.service.FollowService;
 import com.ning.utils.RedisCache;
-import com.ning.utils.SingleUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +106,7 @@ public class FollowController {
 //        Observer observer = createObserver(userDto.getUser().getUsername());
         // 2. 根据关注的公司id查询公司信息
 //        Company company = companyService.getById(followDto.getCompanyId());
-        String companyName = company.getCompanyName();
+        String companyName = company.getBrandName();
 //        //如果不存在公司观察对象(有文件，没对象)，则创建
 //        if(!SingleUtil.map.containsKey(companyName)){
 //            //3.根据关注的公司名称反射创建对象
@@ -144,7 +142,7 @@ public class FollowController {
 //            SingleUtil.map.get(company.getCompanyName()).removeObservers();
 //        }
         Company company = companyService.getById(followDto.getCompanyId());
-        redisTemplate.opsForHash().delete(company.getCompanyName(),followDto.getUserId().toString());
+        redisTemplate.opsForHash().delete(company.getBrandName(),followDto.getUserId().toString());
 
         return followService.cancelFollow(followDto);
     }

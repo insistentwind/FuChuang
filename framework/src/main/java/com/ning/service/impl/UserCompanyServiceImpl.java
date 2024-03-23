@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.domain.entity.UserCompany;
 import com.ning.mapper.UserCompanyMapper;
 import com.ning.service.UserCompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +15,17 @@ import org.springframework.stereotype.Service;
  */
 @Service("userCompanyService")
 public class UserCompanyServiceImpl extends ServiceImpl<UserCompanyMapper, UserCompany> implements UserCompanyService {
+    @Autowired
+    private UserCompanyMapper userCompanyMapper;
+    /**
+     * 判断当前用户是否是该公司的职位发布者
+     * @param userId,workId
+     * @return
+     */
+    @Override
+    public boolean judgePriByUserId(Integer userId,Integer workId) {
 
+        return userCompanyMapper.judgePriByUserId(userId,workId) > 0;
+    }
 }
 

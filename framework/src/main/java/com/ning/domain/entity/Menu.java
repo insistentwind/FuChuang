@@ -27,12 +27,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Menu  {
     //菜单ID@TableId
-    private Long id;
+    private Integer id;
 
     //菜单名称
     private String menuName;
     //父菜单ID
-    private Long parentId;
+    private Integer parentId;
     //显示顺序
     private Integer orderNum;
     //路由地址

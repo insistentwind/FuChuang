@@ -9,6 +9,7 @@ import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Follow;
 import com.ning.domain.result.Result;
+import com.ning.exception.BaseException;
 import com.ning.mapper.FollowMapper;
 import com.ning.service.CompanyService;
 import com.ning.service.FollowService;
@@ -83,8 +84,14 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
      */
     @Override
     public List<CompanyDto> getAllCompanyByUserId() {
-        UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId = userDto.getUser().getId();
+        Integer userId;
+        try {
+            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            userId = userDto.getUser().getId();
+        }
+        catch (Exception e){
+            throw new BaseException("用户未登录");
+        }
         LambdaQueryWrapper<Follow> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Follow::getUserId, userId);
         List<Follow> list = list(wrapper);

@@ -1,7 +1,7 @@
 package com.ning.runner;
 
 import com.ning.domain.entity.Work;
-import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.constants.SystemConstants;
 import com.ning.service.WorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

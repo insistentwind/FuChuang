@@ -1,7 +1,7 @@
 package com.ning.Controller;
 
 import com.ning.constants.MessageConstant;
-import com.ning.service.ResumeService;
+import com.ning.exception.BaseException;
 import com.ning.utils.AliOssUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +33,9 @@ public class UploadController {
     @ApiOperation("简历上传接口")
     public Result<String> upload(@RequestParam MultipartFile file){
         log.info("简历上传:{}",file);
+        if(file == null){
+            throw new BaseException("发生错误,文件上传失败,请重试");
+        }
         String originalFilename = file.getOriginalFilename();
         if(!originalFilename.endsWith(".pdf") && !originalFilename.endsWith(".word")){
             //文件类型错误

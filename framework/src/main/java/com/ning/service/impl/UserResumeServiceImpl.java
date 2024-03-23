@@ -1,10 +1,10 @@
-package service.impl;
+package com.ning.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import .dao.UserResumeDao;
-import .entity.UserResume;
-import .service.UserResumeService;
+import com.ning.mapper.UserResumeMapper;
+import com.ning.domain.entity.UserResume;
 import org.springframework.stereotype.Service;
+import com.ning.service.UserResumeService;
 
 /**
  * (UserResume)表服务实现类

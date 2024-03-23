@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Data
 public class CompanyDto {
-
+    //当前分页页数
     private int pageNum;
 
     //每页显示记录数
@@ -21,30 +21,16 @@ public class CompanyDto {
 
     private Integer id;
 
-    //账号所属的公司名
-    private String companyName;
-    //账号昵称
-    private String nickName;
-    //公司地址
-    private String address;
-    //公司介绍网址
-    private String abbrHtml;
-    //公司当前要招聘的职位网址
-    private String abbrJob;
-    //是否融资
-    private String stage;
+    //加密id
+    private String encryptBrandid;
+    //行业
+    private String brandIndustry;
+    //公司名称
+    private String brandName;
+    //公司图标
+    private String brandLogo;
     //公司规模
-    private String scale;
-    //所属的行业
-    private String industry;
-    //职位招聘人
-    private String hr;
-    //公司类型
-    private String type;
-    //管理类型
-    private String state;
-    //启动资金
-    private String fund;
+    private String brandScaleName;
 
 }
 

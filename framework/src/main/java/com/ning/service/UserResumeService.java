@@ -1,7 +1,7 @@
-package service;
+package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import entity.UserResume;
+import com.ning.domain.entity.UserResume;
 
 /**
  * (UserResume)表服务接口

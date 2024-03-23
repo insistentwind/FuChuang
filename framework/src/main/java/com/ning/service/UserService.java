@@ -1,10 +1,11 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.domain.dto.ResumeVo;
+import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.DeliverVo;
 import com.ning.domain.vo.UserPageVo;
 import com.ning.domain.vo.UserRoleVo;
 import com.ning.domain.vo.UserVo;
@@ -42,7 +43,7 @@ public interface UserService extends IService<User> {
      * @param user
      * @return
      */
-    Result<String> updateByUser(User user);
+    Result<String> updateByUser(UserVo user);
     /**
      * 用户注销
      * @return
@@ -66,5 +67,27 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<String> deleteById(List<Long> id);
+    /**
+     * 用户信息回显
+     * @return
+     */
+    Result<UserVo> getInfo();
+    /**
+     * 查询当前用户的投递历史
+     * @return
+     */
+    Result<List<DeliverVo>> getDliverHistory();
+    /**
+     * 插入用户简历数据
+     * @param resumeVo
+     * @return
+     */
+    Result<String> insertResume(ResumeVo resumeVo);
+    /**
+     * 简历数据修改
+     * @param resumeVo
+     * @return
+     */
+    Result<String> resumeModify(ResumeVo resumeVo);
 }
 

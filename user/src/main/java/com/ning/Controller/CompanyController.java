@@ -2,9 +2,13 @@ package com.ning.Controller;
 
 import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.dto.CompanyDto;
+import com.ning.domain.entity.Resume;
+import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
+import com.ning.domain.vo.ResumeVo;
+import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.service.CompanyService;
 import com.ning.service.impl.CompanyServiceImpl;
@@ -49,14 +53,14 @@ public class CompanyController {
     }
 
     /**
-     * 删除公司
-     * @param ids
+     * 公司注销
+     * @param id
      * @return
      */
-    @DeleteMapping("/{ids}")
-    @ApiOperation("删除公司")
-    public Result<String> deleteBatch(@PathVariable List<Integer> ids){
-        return companyService.deleteBatch(ids);
+    @DeleteMapping("/id")
+    @ApiOperation("公司注销")
+    public Result<String> deleteBatch(@PathVariable Integer id){
+        return companyService.deleteBatch(id);
     }
 
     /**
@@ -109,4 +113,36 @@ public class CompanyController {
         return companyService.getByCompanyName(companyName);
     }
 
+
+    /**
+     * 根据公司id查询此公司下所有职位投递的简历列表
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据公司id查询此公司下所有职位投递的简历列表")
+    @GetMapping("/listByCompany")
+    public Result<List<WorkVo>> getResumeListByCompany(Integer id){
+        return companyService.getResumeListByCompany(id);
+    }
+
+    /**
+     * 根据职位id查询所有投递的简历列表
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据职位id查询所有投递的简历列表")
+    @GetMapping("/listByResumeId/{id}")
+    public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
+        return companyService.getResumeListByWorkId(id);
+    }
+
+    /**
+     * 根据用户id查询此用户的简历
+     * @return
+     */
+    @ApiOperation("根据用户id查询此用户的简历")
+    @GetMapping("/getByUserId")
+    public Result<ResumeVo> getResumeVoByUserId(Integer userId){
+        return companyService.getResumeVoByUserId(userId);
+    }
 }

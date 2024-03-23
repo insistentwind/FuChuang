@@ -1,7 +1,7 @@
-package dao;
+package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import entity.UserResume;
+import com.ning.domain.entity.UserResume;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

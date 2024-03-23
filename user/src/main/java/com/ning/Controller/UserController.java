@@ -1,10 +1,8 @@
 package com.ning.Controller;
 
-import com.ning.domain.dto.ResumeVo;
-import com.ning.domain.dto.UserDto;
+import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;
-import com.ning.domain.entity.Deliver;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.DeliverVo;
@@ -30,7 +28,7 @@ import java.util.List;
 @Slf4j
 @Api(tags = "用户相关接口")
 @RequestMapping
-public class UserLoginController {
+public class UserController {
     @Autowired
     private UserService userService;
 
@@ -76,14 +74,27 @@ public class UserLoginController {
         return userService.getReusme();
     }
 
+    //TODO 差一个简历数据修改
+
     /**
-     * 插入用户简历数据
+     * 简历数据修改
      * @param resumeVo
      * @return
      */
-    @ApiOperation("插入用户简历数据")
+    @ApiOperation("简历数据修改")
+    @PostMapping("/modify")
+    public Result<String> resumeModify(@RequestBody ResumeVo resumeVo){
+        return userService.resumeModify(resumeVo);
+    }
+
+    /**
+     * 用户简历数据写入
+     * @param resumeVo
+     * @return
+     */
+    @ApiOperation("用户简历数据写入")
     @PostMapping("/insert")
-    public Result<String> insertResume(ResumeVo resumeVo){
+    public Result<String> insertResume(@RequestBody ResumeVo resumeVo){
         log.info("简历数据写入");
         return userService.insertResume(resumeVo);
     }

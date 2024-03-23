@@ -2,7 +2,7 @@ package com.ning.Controller;
 
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.result.Result;
-import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.vo.NotifyVo;
 import com.ning.service.NotifyService;
 import io.swagger.annotations.Api;

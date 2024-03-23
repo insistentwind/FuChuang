@@ -4,11 +4,16 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
+
 /**
  * (Company)表实体类
  *
@@ -19,41 +24,36 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @TableName("company")
 public class Company  {
     @TableId
     private Integer id;
 
-    //账号所属的公司名
-    private String companyName;
-    //账号昵称
-    private String nickName;
-    //公司地址
-    private String address;
-    //公司介绍网址
-    private String abbrHtml;
-    //公司当前要招聘的职位网址
-    private String abbrJob;
-    //是否融资
-    private String stage;
+    //加密id
+    private String encryptBrandid;
+    //行业
+    private String brandIndustry;
+    //公司名称
+    private String brandName;
+    //公司图标
+    private String brandLogo;
     //公司规模
-    private String scale;
-    //所属的行业
-    private String industry;
-    //职位招聘人
-    private String hr;
-    //公司注册时间
-    private LocalDateTime createTime;
-    //公司类型
-    private String type;
-    //管理类型
-    private String state;
-    //启动资金
-    private String fund;
+    private String brandScaleName;
     //逻辑删除 0为未删除，1为删除
     private Integer delFlag;
-
-
+    //更新人
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Integer updateBy;
+    //创建者
+    @TableField(fill = FieldFill.INSERT)
+    private Integer createBy;
+    //更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+    //创建时间
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
 }
 

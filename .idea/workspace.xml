@@ -10,69 +10,113 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="UserClient ver1.1">
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/OssConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/WebMvcConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/LoginController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/MenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/RoleController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/filter/JwtAuthenticationTokenFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/service/LoginService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/service/serviceImpl/LoginServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application-dev.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application-start.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Menu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/UserRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/AdminUserInfoVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/MenuVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/RoutersVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/TreeSelectVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserInfoVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPageVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserRoleVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/AuthMessageHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/MessageHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/SendToAllHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/WebsocketHandler/SendToOneHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/MenuMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RoleMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/UserRoleMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/MenuService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/RoleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserRoleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/MenuServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/RoleServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserRoleServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/SecurityUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/WebSocketUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/AuthRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/SendToAllRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/SendToOneRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/SendToUserRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/request/UserJoinNoticeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/response/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/message/impl/response/SendResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/MenuMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/RoleMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/chat/WSConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/WSConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/chat/WebSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/websocket/WebSocketServerEndpoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/CompanyController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/UploadController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/test/java/com/ning/EnCodeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/test/java/com/ning/SplitSalary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/src/test/java/com/ning/TestApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Classify.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Deliver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/RoleMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/UserResume.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkResume.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/AdminVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ClassifyShowListVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ClassifyVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/DeliverVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/MidClassifyListVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ResumeVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/RoleMenuTreeSelectVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/RoleMenuVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/RolePageVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/RoleVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserCompanyVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/mybatisplus/MyMetaObjectHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/ClassifyMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/DeliverMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RoleMenuMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/UserResumeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/WorkResumeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/WorkUserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/ClassifyService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/DeliverService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/RoleMenuService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserResumeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkResumeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ClassifyServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/DeliverServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/RoleMenuServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserResumeServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkResumeServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkUserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/DesUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/ClassifyMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/ResumeMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/UserCompanyMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ApifoxUploaderProjectSetting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ApifoxUploaderProjectSetting.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b0b099b-ec96-4cc1-ae52-7696ae1a9edf.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1b0b099b-ec96-4cc1-ae52-7696ae1a9edf.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/AdminApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/AdminApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/RoleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/RoleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/filter/JwtAuthenticationTokenFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/filter/JwtAuthenticationTokenFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/service/serviceImpl/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/LoginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/MessageConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/MessageConstant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/CompanyDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/CompanyDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/ResumeVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/ResumeVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/WorkDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/WorkDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Chat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Notify.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Notify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Company.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Relation.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Relation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Resume.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Resume.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Role.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/UserCompany.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/UserCompany.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Work.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Work.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/systemConstants/SystemConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/CompanyVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/CompanyVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/HistoryVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/HistoryVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/TreeSelectVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/TreeSelectVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPageVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPageVo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/WorkVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/WorkVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/ResumeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/ResumeMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/UserCompanyMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/UserCompanyMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/CompanyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/CompanyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/RoleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/RoleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserCompanyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserCompanyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ChatServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ChatServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/FollowServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/FollowServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/NotifyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/NotifyServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/RoleServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/RoleServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserCompanyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserCompanyServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserLoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserLoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/FollowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/FollowController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/NotifyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/NotifyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserLoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/config/WebMvcConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/config/WebMvcConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/runner/CompanyFollowerRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/runner/CompanyFollowerRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/runner/ViewCountRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/runner/ViewCountRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/testjob/UpdateViewCountJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/testjob/UpdateViewCountJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/test/java/com/ning/SplitSalary.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/test/java/com/ning/SplitSalary.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +154,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2agAo6e6xHWQJ0w7ty9SP5P3uGN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -130,7 +177,7 @@
     &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
     &quot;database.data.extractors.current.id&quot;: &quot;SQL Inserts&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/若依源码&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/FuChuang/FuChuang/admin/src/test/java&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -157,50 +204,87 @@
       <recent name="com.ning.service.impl" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\FuChuang\FuChuang\admin\src\test\java" />
+      <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\handler" />
       <recent name="E:\FuChuang\FuChuang\admin\src\main\java\com\ning" />
       <recent name="E:\FuChuang\FuChuang\admin\src\main\resources" />
       <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\utils\observerUtils" />
-      <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\utils" />
-      <recent name="E:\FuChuang\FuChuang\user\src\main\resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.ning" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ning.domain.entity" />
+      <recent name="com.ning.controller" />
       <recent name="com.ning.domain.vo" />
       <recent name="com.ning.utils" />
-      <recent name="com.ning.domain.entity" />
       <recent name="com.ning.domain.dto" />
-      <recent name="com.ning.domain" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.AdminApplication">
-    <configuration name="JwtUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.ning.utils.JwtUtil" />
-      <module name="framework" />
+  <component name="RunManager" selected="Spring Boot.UserApplication">
+    <configuration name="EnCodeTest.MyUtilsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="admin" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.ning.utils.*" />
+          <option name="PATTERN" value="com.ning.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SplitSalary.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="user" />
       <option name="PACKAGE_NAME" value="com.ning" />
-      <option name="MAIN_CLASS_NAME" value="com.ning.SplitSalary" />
-      <option name="METHOD_NAME" value="test" />
+      <option name="MAIN_CLASS_NAME" value="com.ning.EnCodeTest" />
+      <option name="METHOD_NAME" value="MyUtilsTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="user-1.0-SNAPSHOT.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/user/target/user-1.0-SNAPSHOT.jar" />
-      <method v="2" />
+    <configuration name="SplitSalary.test2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="admin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ning.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ning" />
+      <option name="MAIN_CLASS_NAME" value="com.ning.SplitSalary" />
+      <option name="METHOD_NAME" value="test2" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SplitSalary.test3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="admin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ning.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ning" />
+      <option name="MAIN_CLASS_NAME" value="com.ning.SplitSalary" />
+      <option name="METHOD_NAME" value="test3" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SplitSalary.workDistinct" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="admin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ning.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ning" />
+      <option name="MAIN_CLASS_NAME" value="com.ning.SplitSalary" />
+      <option name="METHOD_NAME" value="workDistinct" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="ACTIVE_PROFILES" />
@@ -234,10 +318,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.UserApplication" />
-        <item itemvalue="JUnit.SplitSalary.test" />
-        <item itemvalue="Application.JwtUtil" />
-        <item itemvalue="JAR Application.user-1.0-SNAPSHOT.jar" />
-        <item itemvalue="Spring Boot.UserApplication" />
+        <item itemvalue="JUnit.SplitSalary.test2" />
+        <item itemvalue="JUnit.SplitSalary.workDistinct" />
+        <item itemvalue="JUnit.SplitSalary.test3" />
+        <item itemvalue="JUnit.EnCodeTest.MyUtilsTest" />
       </list>
     </recent_temporary>
   </component>
@@ -302,7 +386,22 @@
       <workItem from="1709987687298" duration="46000" />
       <workItem from="1709990432178" duration="4850000" />
       <workItem from="1710074504074" duration="1539000" />
-      <workItem from="1710160125348" duration="6096000" />
+      <workItem from="1710160125348" duration="7463000" />
+      <workItem from="1710218051102" duration="144000" />
+      <workItem from="1710227484171" duration="10916000" />
+      <workItem from="1710335519473" duration="2689000" />
+      <workItem from="1710422326348" duration="6255000" />
+      <workItem from="1710510016711" duration="5550000" />
+      <workItem from="1710516193234" duration="24000" />
+      <workItem from="1710516257770" duration="267000" />
+      <workItem from="1710564541841" duration="442000" />
+      <workItem from="1710572105743" duration="13991000" />
+      <workItem from="1710764751292" duration="1255000" />
+      <workItem from="1710849188177" duration="12465000" />
+      <workItem from="1710938220642" duration="1829000" />
+      <workItem from="1711001028032" duration="22414000" />
+      <workItem from="1711117415036" duration="5611000" />
+      <workItem from="1711159945749" duration="4860000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1705320423753</created>
@@ -397,20 +496,12 @@
     <option name="LAST_COMMIT_MESSAGE" value="UserClient ver1.1" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java</url>
-          <line>118</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.ning.domain.dto.UserDto" memberName="username" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
         <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
+        <PinnedItemInfo parentTag="com.ning.domain.entity.Deliver" memberName="workId" />
         <PinnedItemInfo parentTag="com.ning.domain.dto.UserDto" memberName="password" />
       </pinned-members>
     </pin-to-top-manager>

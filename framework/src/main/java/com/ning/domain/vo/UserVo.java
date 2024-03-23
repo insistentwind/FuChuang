@@ -22,6 +22,10 @@ public class UserVo {
 
     //姓名
     private String name;
+    //密码
+    private String password;
+    // 修改时用（旧密码）
+    private String oldPassword;
     //头像
     private String avatar;
     //求职状态（是否立刻到岗，1是，0否）
@@ -36,12 +40,4 @@ public class UserVo {
     private String tele;
     //邮箱
     private String mail;
-    //感兴趣的职位ids
-    private String interests;
-    //简历投递历史记录
-    private String uploadCollect;
-    //简历查看历史记录
-    private String seeCollect;
-    //简历id
-    private Integer resumeId;
 }

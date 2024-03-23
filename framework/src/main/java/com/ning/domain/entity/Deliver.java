@@ -1,12 +1,12 @@
-package entity;
+package com.ning.domain.entity;
 
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * (Deliver)表实体类
  *
@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("deliver")
-public class Deliver  {
+public class Deliver {
     @TableId
     private Integer id;
 

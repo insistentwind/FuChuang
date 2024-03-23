@@ -37,7 +37,7 @@ public class CompanyFollowerRunner implements CommandLineRunner {
             Integer companyId = item.getCompanyId();
             Integer userId = item.getUserId();
             Company company = companyService.getById(companyId);
-            String companyName = company.getCompanyName();
+            String companyName = company.getBrandName();
             redisTemplate.opsForHash().put(companyName,userId.toString(),userId);
         });
     }

@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.entity.Notify;
 import com.ning.domain.result.Result;
-import com.ning.domain.systemConstants.SystemConstants;
 import com.ning.domain.vo.NotifyVo;
 import com.ning.mapper.NotifyMapper;
 import com.ning.service.NotifyService;

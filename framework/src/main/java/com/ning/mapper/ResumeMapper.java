@@ -2,6 +2,7 @@ package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Resume;
+import com.ning.domain.vo.ResumeVo;
 import org.mapstruct.Mapper;
 
 
@@ -13,6 +14,12 @@ import org.mapstruct.Mapper;
  */
 @Mapper
 public interface ResumeMapper extends BaseMapper<Resume> {
+    /**
+     * 根据简历id拿到简历内容以及简历所属的用户id
+     * @param userId
+     * @return
+     */
+    ResumeVo getInfoByUserId(Integer userId);
 
 }
 

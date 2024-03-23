@@ -17,4 +17,5 @@ public class MessageConstant {
     public static final String LOGIN_FAILED = "登录失败";
     public static final String UPLOAD_FAILED = "文件上传失败";
 
+    public static final String HAS_NO_PERMS = "当前用户没有权限";
 }

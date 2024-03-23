@@ -21,6 +21,8 @@ public class UserPageVo {
 
     //手机号
     private String tele;
+    //0用户，1公司，2管理端
+    private Integer isCompany;
 
     private Integer pageNum;
 

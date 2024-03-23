@@ -2,7 +2,7 @@ package com.ning.testjob;
 
 import com.mysql.cj.result.IntegerValueFactory;
 import com.ning.domain.entity.Work;
-import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.constants.SystemConstants;
 import com.ning.service.WorkService;
 import com.ning.utils.RedisCache;
 import lombok.extern.slf4j.Slf4j;

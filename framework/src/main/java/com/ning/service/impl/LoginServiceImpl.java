@@ -1,4 +1,4 @@
-package com.ning.service.serviceImpl;
+package com.ning.service.impl;
 
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.UserDto;
@@ -45,6 +45,9 @@ public class LoginServiceImpl implements LoginService {
         }
         //下面就认证成功，把用户信息放到token中
         UserDto userDto = (UserDto) authenticate.getPrincipal();
+        if(!Objects.equals(userDto.getUser().getIsCompany(), SystemConstants.IS_ADMIN)){
+            throw new RuntimeException("认证失败，非管理员用户");
+        }
         Integer userId = userDto.getUser().getId();
         String jwt = JwtUtil.createJWT(userId.toString());
 

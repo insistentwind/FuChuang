@@ -1,25 +1,22 @@
 package com.ning.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.WorkDto;
-import com.ning.domain.entity.Company;
-import com.ning.domain.entity.Notify;
-import com.ning.domain.entity.Relation;
-import com.ning.domain.entity.Work;
+import com.ning.domain.entity.*;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
-import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
-import com.ning.service.CompanyService;
-import com.ning.service.NotifyService;
-import com.ning.service.RelationService;
-import com.ning.service.WorkService;
+import com.ning.service.*;
 import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +48,8 @@ public class WorkController {
     private RedisTemplate redisTemplate;
     @Autowired
     private RelationService relationService;
+    @Autowired
+    private UserCompanyService userCompanyService;
 
     /**
      * 分页条件查询对应职位
@@ -76,10 +75,11 @@ public class WorkController {
         return workService.getList(id);
     }
 
-    private void check(){
+    private User check(){
         Integer isCompany;
+        UserDto userDto;
         try {
-            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             isCompany = userDto.getUser().getIsCompany();
         }
         catch (Exception e){
@@ -88,6 +88,7 @@ public class WorkController {
         if(!isCompany.equals(SystemConstants.IS_COMPANY)){
             throw new BaseException("没有该权限");
         }
+        return userDto.getUser();
     }
 
     /**
@@ -103,18 +104,31 @@ public class WorkController {
         log.info("需要新增的职位信息：{}", work);
         //职位发布后，通知对应的观察者（用户）
 //        String companyName = work.getCompany();
+        //检查当前用户是否是公司
         check();
 
-        Integer companyId = work.getCompanyId();
-        Company company = companyService.getById(companyId);
-        String companyName = company.getCompanyName();
+        String companyName;
+        Integer companyId;
+
+        try {
+            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserCompany::getUserId,userDto.getUser().getId());
+            UserCompany userCompany = userCompanyService.getOne(wrapper);
+            Company company = companyService.getById(userCompany.getCompanyId());
+
+            companyName = company.getBrandName();
+            companyId = company.getId();
+        } catch (Exception e){
+            throw new BaseException("当前用户未绑定公司");
+        }
 
 
-        // 判断全局map中是否存在对应的被观察者类
-//        if (!redisTemplate.hasKey(companyName)) {
-//            // 不存在此键
-//            throw new RuntimeException("不存在此公司");
-//        }
+//        Integer companyId = work.getCompanyId();
+//        Company company = companyService.getById(companyId);
+//        String companyName = company.getCompanyName();
+
+
 
         String message = companyName + "发布了新职位——" + work.getTitle() + ",快去看看吧";
         //TODO 还需要做的是启动的时候把所有的观察者和被观察者放入redis中
@@ -136,12 +150,13 @@ public class WorkController {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-        work.setCompany(companyName);
+
+
         workService.save(work);
         Relation relation = new Relation();
         relation.setWorkId(work.getId()).setCompanyId(companyId);
         relationService.save(relation);
-        return Result.success();
+        return Result.success("职位新增成功");
     }
 
     /**
@@ -167,8 +182,12 @@ public class WorkController {
     @PutMapping
     public Result<String> update(@RequestBody WorkDto workDto) {
         log.info("更新职位信息:{}", workDto);
-        check();
-        //todo 公司名称不能更改，这里要自动更新
+        User user = check();
+
+        if(!userCompanyService.judgePriByUserId(user.getId(),workDto.getId())){
+            //判断当前用户是否是该公司的职位发布者
+            throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
+        }
         return workService.updateByWork(workDto);
     }
 
@@ -183,22 +202,39 @@ public class WorkController {
     @Transactional
     public Result<String> delete(@RequestParam List<Integer> ids) {
         log.info("需要删除的职位信息:{}", ids);
-        check();
+
+        User user1 = check();
         for (Integer id : ids) {
+
+            if(!userCompanyService.judgePriByUserId(user1.getId(),id)){
+                //判断当前用户是否是该公司的职位发布者
+                throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
+            }
+
             Work work = workService.getById(id);
 //            LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
 //            wrapper.eq(Company::getCompanyName,work.getCompany());
 //            Company company = companyService.getOne(wrapper);
-            String companyName = work.getCompany();
+            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserCompany::getUserId,user1.getId());
+            UserCompany userCompany = userCompanyService.getOne(wrapper);
+
+            LambdaQueryWrapper<Company> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.eq(Company::getId,userCompany.getCompanyId());
+            Company company = companyService.getOne(wrapper1);
+
+            String companyName = company.getBrandName();
+            //这里是删除对应的公司-职位关系表
             try {
                 Relation relation = new Relation();
                 relation.setCompanyId(work.getCompanyId())
                         .setWorkId(work.getId());
 
+                workService.removeById(work.getId());
                 relationService.removeById(relation);
             }
             catch (Exception e){
-
+                e.printStackTrace();
             }
 
 
@@ -207,6 +243,7 @@ public class WorkController {
 //            if (redisTemplate.hasKey(companyName) == null) {
 //                throw new RuntimeException("不存在此公司");
 //            }
+            //这里是删除redis中存储的公司键
             try {
                 Set<String> set = redisTemplate.opsForHash().keys(companyName);
                 Iterator<String> iterator = set.iterator();
@@ -221,11 +258,22 @@ public class WorkController {
                 }
             }
             catch (Exception e){
-
+                e.printStackTrace();
             }
 
         }
         return workService.deleteByIds(ids);
+    }
+
+    /**
+     * 用户投递简历接口
+     * @param workId
+     * @return
+     */
+    @GetMapping("/commitResume")
+    @ApiOperation("用户投递简历接口或者是允许对面查看自己的简历")
+    public Result<String> commitResume(Integer workId){
+        return workService.commitResume(workId);
     }
 
     /**

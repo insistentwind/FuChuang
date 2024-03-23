@@ -1,16 +1,20 @@
 package com.ning;
 
-import com.ning.UserApplication;
-import com.ning.domain.entity.Work;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ning.domain.entity.*;
+import com.ning.mapper.CompanyMapper;
 import com.ning.mapper.WorkMapper;
-import com.ning.service.WorkService;
+import com.ning.mapper.WorkUserMapper;
+import com.ning.service.*;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: qjn
@@ -22,28 +26,131 @@ public class SplitSalary {
     @Autowired
     private WorkService workService;
 
-    @Test
-    public void test(){
-        List<Work> workList = workService.list();
-        workList.forEach(item -> {
-            String salary = item.getSalary();
-            String[] split = salary.split("-");
-            try {
-                String start = split[0] + "K";
-//            String end = (split[1].replace("[^\\d.]", ""));
-                String end = (split[1].replaceAll("K.*", "")) + "K";
-                System.out.println(start + "-" + end);
-                item.setMaxSa(end);
-                item.setMinSa(start);
-                Work work = new Work();
-                work.setMinSa(end)
-                        .setMinSa(start)
-                        .setId(work.getId());
-                workService.updateById(item);
-            }
-            catch (Exception e){
+    @Autowired
+    private RelationService relationService;
 
+
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CompanyService companyService;
+    @Autowired
+    private UserCompanyService userCompanyService;
+
+//    @Test
+//    public void test(){
+//        List<Company> companyList = companyService.list();
+//
+//        companyList.stream().forEach(item ->{
+//            String companyEncryptBrandid = item.getEncryptBrandid();
+//            hrName = null == hrName?"fuChuangTest":hrName ;
+//            String companyName = item.getCompanyName();
+//            Integer companyId = item.getId();
+//            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+//            wrapper.eq(UserCompany::getCompanyId,companyId);
+//
+//            if(userCompanyService.list(wrapper).size() == 0){
+//                User user = new User();
+//                user.setUsername("fuChuang" + item.getId())
+//                                .setPassword("fuChuang" + item.getId())
+//                                        .setMail("fuChuang" + item.getId())
+//                        .setName(hrName);
+//                userService.register(user);
+//                UserCompany userCompany = new UserCompany();
+//                userCompany.setCompanyId(companyId)
+//                        .setUserId(user.getId());
+//                userCompanyService.save(userCompany);
+//            }
+//        });
+//    }
+
+    /**
+     * 公司和职位id关联
+     */
+    @Test
+    public void test2() {
+        List<Company> companyList = companyService.list();
+
+        companyList.stream().forEach(item -> {
+            //公司唯一id
+            String companyEncryptBrandid = item.getEncryptBrandid();
+//            hrName = null == hrName ? "fuChuangTest" : hrName;
+            Integer companyId = item.getId();
+
+            LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Work::getEncryptBrandid,companyEncryptBrandid);
+            List<Work> workList = workService.list(wrapper);
+            if(workList != null){
+                for (Work work : workList) {
+                    Integer workId = work.getId();
+                    Relation relation = Relation.builder()
+                            .workId(workId)
+                            .companyId(companyId)
+                            .build();
+                    LambdaQueryWrapper<Relation> wrapper1 = new LambdaQueryWrapper<>();
+                    wrapper1.eq(Relation::getWorkId,workId)
+                                    .eq(Relation::getCompanyId,companyId);
+                    Relation one = relationService.getOne(wrapper1);
+                    if(one == null){
+                        relationService.save(relation);
+                    }
+
+                }
             }
         });
+
     }
+
+    /**
+     * 公司表去重
+     */
+    @Test
+    public void test3(){
+        List<Company> companyList = companyService.list();
+        for (Company company : companyList) {
+            String encryptBrandid = company.getEncryptBrandid();
+
+            LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Company::getEncryptBrandid,encryptBrandid)
+                    .select(Company::getId);
+            List<Company> list = companyService.list(wrapper);
+            if (list.size() > 1){
+                List<Integer> companyIdList = list.stream().map(Company::getId).collect(Collectors.toList());
+                companyIdList.remove(0);
+                companyService.deleteByIds(companyIdList);
+            }
+        }
+    }
+
+
+    /**
+     * 职位表去重
+     */
+    @Test
+    public void workDistinct(){
+        List<Work> workList = workService.list();
+        for (Work work : workList) {
+            String encryptBrandid = work.getEncryptBrandid();
+
+            String skills = work.getSkills();
+            Integer cityName = work.getCityName();
+            String businessDistrict = work.getBusinessDistrict();
+
+            LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Work::getEncryptBrandid,encryptBrandid)
+                    .eq(Work::getSkills,skills)
+                    .eq(Work::getCityName,cityName)
+                    .eq(Work::getBusinessDistrict,businessDistrict)
+                    .select(Work::getId);
+            List<Work> list = workService.list(wrapper);
+            if(list.size() > 1){
+                List<Integer> WorkIdList = list.stream().map(Work::getId).collect(Collectors.toList());
+                WorkIdList.remove(0);
+                workService.deleteByIds(WorkIdList);
+            }
+        }
+    }
+
+
 }

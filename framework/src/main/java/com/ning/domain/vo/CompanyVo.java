@@ -13,26 +13,18 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class CompanyVo {
-    //账号所属的公司名
-    private String companyName;
-    //账号昵称
-    private String nickName;
-    //公司地址
-    private String address;
-    //公司介绍网址
-    private String abbrHtml;
-    //公司当前要招聘的职位网址
-    private String abbrJob;
-    //是否融资
-    private String stage;
+
+    private Integer id;
+    //加密id
+    private String encryptBrandid;
+    //行业
+    private String brandIndustry;
+    //公司名称
+    private String brandName;
+    //公司图标
+    private String brandLogo;
     //公司规模
-    private String scale;
-    //所属的行业
-    private String industry;
-    //职位招聘人
-    private String hr;
-    //公司类型
-    private String type;
+    private String brandScaleName;
 
 
 }

@@ -1,8 +1,12 @@
 package com.ning.domain.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,14 +35,18 @@ public class Role  {
     private Integer roleSort;
     //是否启用(0是)
     private Integer status;
-    //创建人id
+    //创建者
+    @TableField(fill = FieldFill.INSERT)
     private Integer createBy;
     //创建时间
-    private Date createTime;
-    //更新人id
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+    //更新者
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer updateBy;
     //更新时间
-    private Date updateTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
     //标记
     private String remark;
     //是否启用(0是，1否)

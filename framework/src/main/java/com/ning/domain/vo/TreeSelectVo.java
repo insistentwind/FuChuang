@@ -18,12 +18,12 @@ import java.util.List;
 @Builder
 @Accessors(chain = true)
 public class TreeSelectVo {
-    private Long id;
+    private Integer id;
 
     //菜单（权限）名称
     private String label;
     //父id
-    private Long parentId;
+    private Integer parentId;
     //子目录
     private List<TreeSelectVo> children;
 }

@@ -8,7 +8,8 @@ import lombok.Data;
  **/
 @Data
 public class HistoryVo {
-
+    //职位id
+    private Integer workId;
     //职位名称
     private String title;
     //薪资
@@ -17,4 +18,6 @@ public class HistoryVo {
     private String company;
     //工作地点
     private String address;
+    //浏览量
+    private Long viewCount;
 }

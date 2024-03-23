@@ -3,7 +3,7 @@ package com.ning.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.domain.entity.Chat;
-import com.ning.domain.systemConstants.SystemConstants;
+import com.ning.constants.SystemConstants;
 import com.ning.mapper.ChatMapper;
 import com.ning.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,6 +3,7 @@ package com.ning.domain.entity;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,6 +22,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @TableName("relation")
 @Accessors(chain = true)
+@Builder
 public class Relation  {
     @TableId
     private Integer id;

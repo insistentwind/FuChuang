@@ -3,7 +3,10 @@ package com.ning.domain.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,21 +50,22 @@ public class User  {
     private String tele;
     //邮箱
     private String mail;
-    //感兴趣的职位ids
-    private String interests;
-    //简历投递历史记录
-    private String uploadCollect;
-    //简历查看历史记录
-    private String seeCollect;
-    //简历id
-    private Integer resumeId;
-    //注册时间
+    //更新人
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Integer updateBy;
+    //更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+    //创建人
+    @TableField(fill = FieldFill.INSERT)
+    private Integer createBy;
+    //创建时间
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
     //是否为公司hr(0否，1是)
     private Integer isCompany;
 
     private Integer delFlag;
-
 
 }
 

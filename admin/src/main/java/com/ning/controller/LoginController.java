@@ -5,6 +5,7 @@ import com.ning.domain.entity.Menu;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
+import com.ning.exception.BaseException;
 import com.ning.service.LoginService;
 import com.ning.service.MenuService;
 import com.ning.service.RoleService;
@@ -80,12 +81,17 @@ public class LoginController {
     @GetMapping("/getRouters")
     @ApiOperation("返回路由子目录的接口")
     public Result<RoutersVo> getRoutersInfo(){
-        //查询当前角色的id
-        Integer userId = SecurityUtils.getUserId();
-        //查询menu结果是tree的形式，也就是子父菜单
-        List<Menu> menuList = menuService.selectRouterMenuTreeByUserId(userId);
-        //封装数据
-        return Result.success(new RoutersVo(menuList));
+        try {
+            //查询当前角色的id
+            Integer userId = SecurityUtils.getUserId();
+            //查询menu结果是tree的形式，也就是子父菜单
+            List<Menu> menuList = menuService.selectRouterMenuTreeByUserId(userId);
+            //封装数据
+            return Result.success(new RoutersVo(menuList));
+        }
+        catch (Exception e){
+            throw new BaseException("用户未登录");
+        }
 //        return ResponseResult.okResult(menuList);
     }
 

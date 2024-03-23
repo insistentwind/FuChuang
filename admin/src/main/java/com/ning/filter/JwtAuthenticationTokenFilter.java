@@ -73,6 +73,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             WebUtils.renderString(response, JSON.toJSONString(result));
             return;
         }
+        if (userDto.getUser().getIsCompany() != 2){
+            log.info("没有权限");
+
+            Result<String> result = Result.error(MessageConstant.HAS_NO_PERMS);
+            WebUtils.renderString(response,JSON.toJSONString(result));
+            return;
+        }
 
         //存入SecurityContextHolder
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDto,null,null);

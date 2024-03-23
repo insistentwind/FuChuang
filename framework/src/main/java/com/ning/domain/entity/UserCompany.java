@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
+
 /**
  * (UserCompany)表实体类
  *
@@ -18,6 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("user_company")
+@Accessors(chain = true)
 public class UserCompany  {
     @TableId
     private Integer id;

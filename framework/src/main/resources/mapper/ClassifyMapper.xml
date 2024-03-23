@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ning.mapper.ClassifyMapper">
+    <select id="listByBigClassify" resultType="com.ning.domain.vo.ClassifyShowListVo">
+        SELECT DISTINCT mid_classify as classify
+        FROM `work_classify`
+        WHERE big_classify = #{bigClassify}
+    </select>
+    <select id="getBigClassifyList" resultType="java.lang.String">
+        SELECT DISTINCT big_classify
+        FROM `work_classify`
+    </select>
+    <select id="listByMiddleClassify" resultType="com.ning.domain.vo.ClassifyShowListVo">
+        SELECT DISTINCT small_classify as classify
+        FROM `work_classify`
+        <where>
+            mid_classify = #{midClassify}
+            and big_classify = #{bigClassify}
+        </where>
+    </select>
+</mapper>
