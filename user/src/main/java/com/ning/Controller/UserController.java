@@ -1,10 +1,13 @@
 package com.ning.Controller;
 
 import com.ning.domain.dto.ResumeVo;
+import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;
+import com.ning.domain.entity.Deliver;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.DeliverVo;
 import com.ning.domain.vo.UserVo;
 import com.ning.enums.AppHttpCodeEnum;
 import com.ning.exception.SystemException;
@@ -17,13 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author: qjn
  * @Date: 2024/1/16 12:08
  */
 @RestController
 @Slf4j
-@Api(tags = "登录相关接口")
+@Api(tags = "用户相关接口")
 @RequestMapping
 public class UserLoginController {
     @Autowired
@@ -72,15 +77,46 @@ public class UserLoginController {
     }
 
     /**
+     * 插入用户简历数据
+     * @param resumeVo
+     * @return
+     */
+    @ApiOperation("插入用户简历数据")
+    @PostMapping("/insert")
+    public Result<String> insertResume(ResumeVo resumeVo){
+        log.info("简历数据写入");
+        return userService.insertResume(resumeVo);
+    }
+    /**
      * 修改当前用户的信息
      * @param user
      * @return
      */
     @PostMapping("/update")
     @ApiOperation("修改当前用户的信息")
-    public Result<String> update(@RequestBody User user){
+    public Result<String> update(@RequestBody UserVo user){
         log.info("修改的用户信息是：{}",user);
         return userService.updateByUser(user);
+    }
+
+    /**
+     * 用户信息回显
+     * @return
+     */
+    @GetMapping("/info")
+    @ApiOperation("用户信息回显")
+    public Result<UserVo> getUserInfo(){
+        return userService.getInfo();
+    }
+
+    /**
+     * 查询当前用户的投递记录
+     * @return
+     */
+    @GetMapping("/get")
+    @ApiOperation("查询当前用户的投递记录")
+    public Result<List<DeliverVo>> getDeliverHistory(){
+        return userService.getDliverHistory();
     }
 
     /**
