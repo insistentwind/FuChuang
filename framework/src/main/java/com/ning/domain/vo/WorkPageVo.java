@@ -1,0 +1,7 @@
+/**
+* @author: qjn
+* @create: 2024/03/24 10:35
+**/
+public class WorkPageVo {
+
+}
