@@ -35,6 +35,8 @@ public class Work  {
 
     @TableField(exist = false)
     private String companyName;
+    @TableField(exist = false)
+    private String workId;
 
     //分类id
     private Integer classifyId;

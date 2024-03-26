@@ -15,4 +15,28 @@
         WHERE wu.user_id = #{userId}
           AND re.company_id = #{companyId};
     </select>
+    <select id="getWorkByCompanyId" resultType="com.ning.domain.entity.Work">
+        SELECT w.*,r.company_id
+        FROM relation r
+                 LEFT JOIN `work` w ON r.work_id = w.id
+        WHERE r.company_id = #{companyId};
+    </select>
+    <select id="getWorkByCategory" resultType="com.ning.domain.entity.Work">
+        SELECT *
+        FROM relation r
+                 LEFT JOIN `work` w ON r.work_id = w.id
+        <where>
+         <if test="companyId != null">
+             AND r.company_id = #{companyId}
+         </if>
+        <if test="companyId != null">
+            AND w.classify_id = #{categoryId}
+        </if>
+        <if test="companyId != null">
+            AND w.city_name = #{cityClassifyId}
+        </if>
+        </where>
+
+    </select>
+
 </mapper>

@@ -29,6 +29,8 @@ public class UserResume  {
     private Integer userId;
     //简历id
     private Integer resumeId;
+    //默认简历(0否，1是)
+    private Integer isDefault;
 
 
 

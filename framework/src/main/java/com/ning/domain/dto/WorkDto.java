@@ -33,34 +33,14 @@ public class WorkDto {
     //薪资分类
     private String salaryClassify;
 
-
-
-    //职位介绍
-    private String description;
     //职位名称
     private String title;
     //学历要求
     private String education;
     //工作经验要求
     private String jobExperience;
-    //薪资水平
-    private String salaryDesc;
-    //技术要求
-    private String skills;
-    //福利列表
-    private String welfareList;
     //工作地点id
     private Integer cityName;
-    //工作地区
-    private String areaDistrict;
-    //工作地点
-    private String businessDistrict;
-    //链接
-    private String href;
-    //hr姓名
-    private String bossName;
-    //hr职位
-    private String bossTitle;
 
 
 

@@ -21,5 +21,6 @@ public interface ResumeMapper extends BaseMapper<Resume> {
      */
     ResumeVo getInfoByUserId(Integer userId);
 
+    ResumeVo getInfoByResumeId(Integer resumeId);
 }
 

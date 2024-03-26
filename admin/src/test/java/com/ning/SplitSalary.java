@@ -30,7 +30,6 @@ public class SplitSalary {
     private RelationService relationService;
 
 
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -38,32 +37,45 @@ public class SplitSalary {
     @Autowired
     private UserCompanyService userCompanyService;
 
-//    @Test
-//    public void test(){
-//        List<Company> companyList = companyService.list();
-//
-//        companyList.stream().forEach(item ->{
-//            String companyEncryptBrandid = item.getEncryptBrandid();
+
+
+    /**
+     * 批量创建公司账号
+     */
+    @Test
+    public void test() {
+        List<Company> companyList = companyService.list();
+
+        companyList.stream().forEach(item -> {
+            String companyEncryptBrandid = item.getEncryptBrandid();
+
 //            hrName = null == hrName?"fuChuangTest":hrName ;
-//            String companyName = item.getCompanyName();
-//            Integer companyId = item.getId();
-//            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
-//            wrapper.eq(UserCompany::getCompanyId,companyId);
-//
-//            if(userCompanyService.list(wrapper).size() == 0){
-//                User user = new User();
-//                user.setUsername("fuChuang" + item.getId())
-//                                .setPassword("fuChuang" + item.getId())
-//                                        .setMail("fuChuang" + item.getId())
-//                        .setName(hrName);
-//                userService.register(user);
-//                UserCompany userCompany = new UserCompany();
-//                userCompany.setCompanyId(companyId)
-//                        .setUserId(user.getId());
-//                userCompanyService.save(userCompany);
-//            }
-//        });
-//    }
+            String companyName = item.getBrandName();
+            Integer companyId = item.getId();
+            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserCompany::getCompanyId, companyId);
+
+            if (userCompanyService.list(wrapper).size() == 0) {
+                User user = new User();
+                user.setUsername(companyName)
+                        .setPassword("123456")
+                        .setMail("fuChuang" + item.getId())
+                        .setName(companyName)
+                        .setIsCompany(1);
+                try {
+                    userService.register(user);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                UserCompany userCompany = new UserCompany();
+
+                userCompany.setCompanyId(companyId)
+                        .setUserId(user.getId());
+                userCompanyService.save(userCompany);
+            }
+        });
+    }
 
     /**
      * 公司和职位id关联
@@ -79,9 +91,9 @@ public class SplitSalary {
             Integer companyId = item.getId();
 
             LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Work::getEncryptBrandid,companyEncryptBrandid);
+            wrapper.eq(Work::getEncryptBrandid, companyEncryptBrandid);
             List<Work> workList = workService.list(wrapper);
-            if(workList != null){
+            if (workList != null) {
                 for (Work work : workList) {
                     Integer workId = work.getId();
                     Relation relation = Relation.builder()
@@ -89,10 +101,10 @@ public class SplitSalary {
                             .companyId(companyId)
                             .build();
                     LambdaQueryWrapper<Relation> wrapper1 = new LambdaQueryWrapper<>();
-                    wrapper1.eq(Relation::getWorkId,workId)
-                                    .eq(Relation::getCompanyId,companyId);
+                    wrapper1.eq(Relation::getWorkId, workId)
+                            .eq(Relation::getCompanyId, companyId);
                     Relation one = relationService.getOne(wrapper1);
-                    if(one == null){
+                    if (one == null) {
                         relationService.save(relation);
                     }
 
@@ -102,20 +114,30 @@ public class SplitSalary {
 
     }
 
+
+
+    //TODO 目前问题是，当一个公司有不同的行业时，会有两个不同的encrypt_brandId存在，而这两个不同的encrypt_bran
+    //TODO 会绑定了两个不同的职位,导致另一个职位在插入时被忽略
+
+    /**
+     * 解决方案：插入时，list遍历时先按照每一个item的公司名查找是否有重名的。如果有重名的先处理重名公司
+     * 把这个重名的公司对应的职位id找出来，绑定到
+     */
+
     /**
      * 公司表去重
      */
     @Test
-    public void test3(){
+    public void test3() {
         List<Company> companyList = companyService.list();
         for (Company company : companyList) {
             String encryptBrandid = company.getEncryptBrandid();
 
             LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Company::getEncryptBrandid,encryptBrandid)
+            wrapper.eq(Company::getEncryptBrandid, encryptBrandid)
                     .select(Company::getId);
             List<Company> list = companyService.list(wrapper);
-            if (list.size() > 1){
+            if (list.size() > 1) {
                 List<Integer> companyIdList = list.stream().map(Company::getId).collect(Collectors.toList());
                 companyIdList.remove(0);
                 companyService.deleteByIds(companyIdList);
@@ -128,7 +150,7 @@ public class SplitSalary {
      * 职位表去重
      */
     @Test
-    public void workDistinct(){
+    public void workDistinct() {
         List<Work> workList = workService.list();
         for (Work work : workList) {
             String encryptBrandid = work.getEncryptBrandid();
@@ -138,13 +160,13 @@ public class SplitSalary {
             String businessDistrict = work.getBusinessDistrict();
 
             LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Work::getEncryptBrandid,encryptBrandid)
-                    .eq(Work::getSkills,skills)
-                    .eq(Work::getCityName,cityName)
-                    .eq(Work::getBusinessDistrict,businessDistrict)
+            wrapper.eq(Work::getEncryptBrandid, encryptBrandid)
+                    .eq(Work::getSkills, skills)
+                    .eq(Work::getCityName, cityName)
+                    .eq(Work::getBusinessDistrict, businessDistrict)
                     .select(Work::getId);
             List<Work> list = workService.list(wrapper);
-            if(list.size() > 1){
+            if (list.size() > 1) {
                 List<Integer> WorkIdList = list.stream().map(Work::getId).collect(Collectors.toList());
                 WorkIdList.remove(0);
                 workService.deleteByIds(WorkIdList);

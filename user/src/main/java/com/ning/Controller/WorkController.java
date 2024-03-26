@@ -2,6 +2,7 @@ package com.ning.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.domain.dto.NotifyDto;
+import com.ning.domain.dto.ResumeCommitDto;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.WorkDto;
 import com.ning.domain.entity.*;
@@ -64,16 +65,6 @@ public class WorkController {
         return workService.getListByTag(workDto);
     }
 
-    /**
-     * 根据分类id查询信息
-     * @param id
-     * @return
-     */
-    @GetMapping("/category/{id}")
-    @ApiOperation("根据分类id查询信息，由于没有分类信息，暂定")
-    public Result<List<WorkVo>> getList(@PathVariable Long id){
-        return workService.getList(id);
-    }
 
     private User check(){
         Integer isCompany;
@@ -267,13 +258,14 @@ public class WorkController {
 
     /**
      * 用户投递简历接口
-     * @param workId
+     * @param resumeCommitDto
      * @return
      */
+    //用户投递简历就是添加到历史记录中去
     @GetMapping("/commitResume")
     @ApiOperation("用户投递简历接口或者是允许对面查看自己的简历")
-    public Result<String> commitResume(Integer workId){
-        return workService.commitResume(workId);
+    public Result<String> commitResume(ResumeCommitDto resumeCommitDto){
+        return workService.commitResume(resumeCommitDto);
     }
 
     /**
@@ -288,4 +280,12 @@ public class WorkController {
         log.info("需要更新浏览的职位id是：{}", id);
         return workService.updateViewCount(id);
     }
+
+    /**
+     * todo 考虑赛事方（一个用户）如何批量向投入多份简历到职位中
+     *
+     * TODO 缺少新增职位时，要同步更新redis中的数据
+     */
+
+
 }

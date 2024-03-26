@@ -1,8 +1,11 @@
 package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ning.domain.entity.Resume;
 import com.ning.domain.entity.UserResume;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * (UserResume)表数据库访问层
@@ -12,6 +15,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserResumeMapper extends BaseMapper<UserResume> {
-
+    /**
+     * 当前用户所创建的简历列表
+     * @return
+     */
+    List<Resume> getListByUserId(Integer userId);
 }
 

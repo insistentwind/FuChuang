@@ -2,6 +2,7 @@ package com.ning.domain.entity;
 
 
 import java.io.Serializable;
+import java.nio.channels.Channel;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
+
 /**
  * (Resume)表实体类
  *
@@ -21,6 +24,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("resume")
+@Accessors(chain = true)
 public class Resume  {
     @TableId
     private Integer id;

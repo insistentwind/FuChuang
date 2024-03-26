@@ -7,11 +7,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.dto.CompanyDto;
+import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.*;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
 import com.ning.domain.vo.ResumeVo;
+import com.ning.domain.vo.WorkPageVo;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.mapper.*;
@@ -19,6 +21,7 @@ import com.ning.service.*;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.SecurityUtils;
 import kotlin.jvm.internal.Lambda;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -118,8 +121,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     public Result<CompanyVo> getByCompanyName(String companyName) {
         LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Company::getBrandName, companyName);
-        Company company = getOne(wrapper);
-        if (company != null) {
+        List<Company> companyList = list(wrapper);
+        if (companyList != null && companyList.size() > 0) {
+            /**
+             * 拿到了第一条数据
+             */
+            Company company = companyList.get(0);
             CompanyVo companyVo = BeanCopyUtils.copyBean(company, CompanyVo.class);
             return Result.success(companyVo);
         }
@@ -150,10 +157,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         Company company = BeanCopyUtils.copyBean(companyDo, Company.class);
         company.setCreateTime(LocalDateTime.now());
         save(company);
+
         User user = new User();
+
         user.setIsCompany(SystemConstants.IS_COMPANY)
                 .setCreateTime(LocalDateTime.now())
-                .setName(companyDo.getNickName())
+                .setName(companyDo.getName())
                 .setMail(companyDo.getMail())
                 .setSex(companyDo.getSex())
                 .setTele(companyDo.getTele())
@@ -204,30 +213,42 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     /**
-     * 根据公司id查询此公司下所有职位投递的简历列表
-     * @param id
+     * 查询此公司下所有职位投递的简历列表
+     * @param
      * @return
      */
     @Override
-    public Result<List<WorkVo>> getResumeListByCompany(Integer id) {
-        Company company = companyMapper.selectById(id);
+    public Result<List<WorkVo>> getResumeListByCompany() {
+        Integer userId = null;
+        try {
+            UserDto loginUser = SecurityUtils.getLoginUser();
+            User user = loginUser.getUser();
+            userId = user.getId();
+        }
+        catch (Exception e){
+            throw new BaseException("用户当前未登录");
+        }
 
-        if (company == null){
+        Integer companyId = userCompanyMapper.getCompanyIdByUserId(userId);
+
+        if (companyId == null){
             throw new BaseException("没有此公司");
         }
-        else {
-            try {
-                UserCompany userCompany = judgeUserMatchedCompany(id);
-                if(userCompany == null){
-                    throw new BaseException(SystemConstants.HAS_NO_MATCHED_USER_COMPANY);
-                }
-            }
-            catch (Exception e){
-                throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
-            }
-        }
+//        else {
+//            try {
+//                //判断当前用户是否是与此公司关联
+//                UserCompany userCompany = judgeUserMatchedCompany(company.getId());
+//                if(userCompany == null){
+//                    throw new BaseException(SystemConstants.HAS_NO_MATCHED_USER_COMPANY);
+//                }
+//            }
+//            catch (Exception e){
+//                throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+//            }
+//        }
+
         LambdaQueryWrapper<Relation> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Relation::getCompanyId,id);
+        wrapper.eq(Relation::getCompanyId,companyId);
         List<Relation> companyWorks = relationMapper.selectList(wrapper);
         // 第一次 职位id的list
         List<WorkVo> workVoList = companyWorks.stream().map(
@@ -244,8 +265,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         List<WorkUser> workUsers = workUserMapper.selectList(wrapper1);
         // 第三次 要拿根据简历id拿到所有简历的内容
         List<ResumeVo> ResumeList = workUsers.stream().map(o -> {
-            Integer userId = o.getUserId();
-            return resumeMapper.getInfoByUserId(userId);
+            Integer resumeId = o.getResumeId();
+            Resume resume = resumeMapper.selectById(resumeId);
+            return BeanCopyUtils.copyBean(resume,ResumeVo.class);
         }).collect(Collectors.toList());
 
         Work work = workMapper.selectById(workId);
@@ -254,11 +276,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         return workVo;
     }
     //参数是公司id
-    private UserCompany judgeUserMatchedCompany(Integer id){
+    private UserCompany judgeUserMatchedCompany(Integer companyId){
         Integer userId = SecurityUtils.getUserId();
         LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserCompany::getUserId,userId).eq(UserCompany::getCompanyId,id);
-        return userCompanyMapper.selectOne(wrapper);
+        wrapper.eq(UserCompany::getUserId,userId)
+                .eq(UserCompany::getCompanyId,companyId);
+        UserCompany userCompany = userCompanyMapper.selectOne(wrapper);
+        return userCompany;
     }
     /**
      * 根据职位id查询所有投递的简历列表
@@ -322,6 +346,68 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         } catch (Exception e) {
             throw new BaseException(e.toString());
         }
+    }
+    /**
+     * 条件查询此公司下发布的职位
+     * @param workPageVo
+     * @return
+     */
+    @Override
+    public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo) {
+        User user = null;
+        try {
+            UserDto loginUser = SecurityUtils.getLoginUser();
+            user = loginUser.getUser();
+            if (user.getIsCompany() == SystemConstants.IS_NOT_COMPANY){
+                return Result.error("当前用户没有权限查询发布职位");
+            }
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        Integer companyId = null;
+        try {
+            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserCompany::getUserId,user.getId());
+            UserCompany userCompany = userCompanyMapper.selectOne(wrapper);
+            companyId = userCompany.getCompanyId();
+            if (companyId == null){
+                return Result.error(SystemConstants.HAS_NO_MATCHED_USER_COMPANY);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BaseException("出现未知错误");
+        }
+        workPageVo.setCompanyId(companyId);
+        List<Work> workList = relationMapper.getWorkByCompanyId(companyId);
+//        List<Work> workList = relationMapper.getWorkByCompanyId(companyId);
+        if (workList.size() > 0 && workList != null){
+            List<WorkVo> workVos = BeanCopyUtils.copyBeanList(workList, WorkVo.class);
+            return Result.success(workVos);
+        }
+        else {
+            return Result.error(SystemConstants.COMPANY_HAS_NO_POSITION);
+        }
+//        Integer pageSize = workPageVo.getPageSize();
+//        Integer pageNum = workPageVo.getPageNum();
+//        Page<Work> page = new Page<>(pageNum,pageSize);
+//        LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(workPageVo.getCategoryId() != null,Work::getClassifyId,workPageVo.getCategoryId());
+//        Page<Work> workPage = workMapper.selectPage(page, wrapper);
+//        List<Work> records = workPage.getRecords();
+//        return Result.success(new PageResult(records.size(),records));
+    }
+    /**
+     *  公司端投递简历
+     * @param resumeVoList
+     * @return
+     */
+    @Override
+    public Result<String> commitResumeList(List<ResumeVo> resumeVoList) {
+//        UserDto loginUser = SecurityUtils.getLoginUser();
+//        User user = loginUser.getUser();
+//        user.getIsCompany()
+        return null;
     }
 
     private Integer check(Integer CompanyId) {

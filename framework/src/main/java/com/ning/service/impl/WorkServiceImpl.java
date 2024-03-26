@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.ning.domain.dto.ResumeCommitDto;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.WorkDto;
 import com.ning.domain.entity.*;
@@ -32,6 +33,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * (Resume)表服务实现类
@@ -61,7 +64,6 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     private ResumeMapper resumeMapper;
 
 
-    private static String KEY = "work_category";
 
     /**
      * 分页条件查询对应简历内容
@@ -88,7 +90,15 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             records = page.getRecords();
         }
 
-        return Result.success(new PageResult(records.size(), records));
+        List<WorkVo> workVos = BeanCopyUtils.copyBeanList(records, WorkVo.class);
+        workVos.forEach(item -> {
+            Integer WorkId = item.getId();
+            Company company = relationMapper.getCompanyByWorkId(WorkId);
+            item.setCompanyId(company.getId());
+            item.setCompany(company.getBrandName());
+        });
+
+        return Result.success(new PageResult(workVos.size(), workVos));
 
     }
 
@@ -150,6 +160,9 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Override
     public Result<WorkVo> getByWorkId(Integer id) {
         Work work = workMapper.selectById(id);
+        if (work == null){
+            throw new BaseException("没有该职位，请检查输入");
+        }
         WorkVo workVo = new WorkVo();
         BeanUtils.copyProperties(work, workVo);
         try {
@@ -175,6 +188,8 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         Company company = relationMapper.getCompanyByWorkId(id);
 
         workVo.setCompany(company.getBrandName());
+
+        workVo.setCompanyId(company.getId());
 
         Integer viewCount = (Integer) redisTemplate.opsForHash().get(SystemConstants.WORK_VIEW_COUNT, id.toString());
         workVo.setViewCount(Long.valueOf(viewCount));
@@ -260,13 +275,31 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
      * @return
      */
     @Override
-    public Result<List<WorkVo>> getList(Long id) {
-        List<WorkVo> workList = (List<WorkVo>) redisTemplate.opsForHash().get(KEY, id);
+    public Result<List<WorkVo>> getList(Integer id) {
+        List<WorkVo> workList = null;
+        try {
+            workList = (List<WorkVo>) redisTemplate.opsForHash().get(SystemConstants.WORK_CATIGORY, id.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (workList != null && workList.size() > 0) {
             return Result.success(workList);
         } else {
             // TODO 根据分类查询对应的职位信息
-            redisTemplate.opsForHash().put(KEY, id, null);
+//            List<Work> works = workMapper.getWorkListByCategoryId(id);
+            LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Work::getClassifyId,id);
+            List<Work> works = workMapper.selectList(wrapper);
+            List<WorkVo> workVoList = works.stream().map(item -> {
+                Integer workId = item.getId();
+                Company company = relationMapper.getCompanyByWorkId(workId);
+                WorkVo workVo = BeanCopyUtils.copyBean(item, WorkVo.class);
+                workVo.setCompany(company.getBrandName());
+                workVo.setCompanyId(company.getId());
+                return workVo;
+            }).collect(Collectors.toList());
+
+            redisTemplate.opsForHash().put(SystemConstants.WORK_CATIGORY, id.toString(), workVoList);
             return Result.success();
         }
     }
@@ -274,19 +307,23 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     /**
      * 用户投递简历接口
      *
-     * @param workId
+     * @param resumeCommitDto
      * @return
      */
     @Override
-    public Result<String> commitResume(Integer workId) {
+    @Transactional
+    public Result<String> commitResume(ResumeCommitDto resumeCommitDto) {
         User user;
         try {
             UserDto loginUser = SecurityUtils.getLoginUser();
             user = loginUser.getUser();
+            if (!Objects.equals(user.getId(), resumeCommitDto.getUserId())){
+                return Result.error(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+            }
         } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
-        Work work = this.getById(workId);
+        Work work = this.getById(resumeCommitDto.getWorkId());
         if (work == null) {
             throw new BaseException(SystemConstants.WORK_NOT_EXIST);
         }
@@ -294,7 +331,8 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             //拿到了简历id
             WorkUser workUser = new WorkUser();
             workUser.setUserId(user.getId())
-                    .setWorkId(workId);
+                    .setWorkId(resumeCommitDto.getWorkId())
+                    .setResumeId(resumeCommitDto.getResumeId());
             workUserMapper.insert(workUser);
             return Result.success("投递成功");
         } catch (Exception e) {

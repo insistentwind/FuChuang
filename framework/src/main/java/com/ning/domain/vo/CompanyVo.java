@@ -15,8 +15,6 @@ import java.util.Date;
 public class CompanyVo {
 
     private Integer id;
-    //加密id
-    private String encryptBrandid;
     //行业
     private String brandIndustry;
     //公司名称

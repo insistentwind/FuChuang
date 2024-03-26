@@ -29,6 +29,8 @@ public class WorkUser  {
     private Integer workId;
     //用户id
     private Integer userId;
+    //用户简历id
+    private Integer resumeId;
 
 
 

@@ -34,7 +34,7 @@ public interface UserService extends IService<User> {
     Result<String> register(User user);
 
     /**
-     * 获取当前用户的简历信息
+     * 获取当前用户默认的简历信息
      * @return
      */
     Result<ResumeVo> getReusme();
@@ -89,5 +89,16 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<String> resumeModify(ResumeVo resumeVo);
+    /**
+     * 设置为默认简历
+     * @param resumeId
+     * @return
+     */
+    Result<String> setDefaultResume(Integer resumeId);
+    /**
+     * 当前用户所创建的简历列表
+     * @return
+     */
+    Result<List<ResumeVo>> getResumeList();
 }
 

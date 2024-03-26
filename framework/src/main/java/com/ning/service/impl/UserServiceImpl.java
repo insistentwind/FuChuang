@@ -57,8 +57,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private ResumeService resumeService;
     @Autowired
     private UserRoleService userRoleService;
+//    @Autowired
+//   private DeliverService deliverService;
     @Autowired
-    private DeliverService deliverService;
+    private WorkUserService workUserService;
     @Autowired
     private ResumeMapper resumeMapper;
     @Autowired
@@ -116,6 +118,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BaseException(MessageConstant.PERSONAL_MSG_NOT_COMPLETE);
         }
         if (usernameExist(user.getUsername())) {
+            System.out.println(user.getUsername());
             //账号已存在
             throw new BaseException(MessageConstant.ACCOUNT_ALREADY_EXISTS);
         }
@@ -131,6 +134,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 //        user.setCreateTime(LocalDateTime.now());
+        if(user.getIsCompany() == null){
+            user.setIsCompany(0);
+        }
         save(user);
         // 用户注册成功，创建一个该用户对应的观察者类
 //        ObserverGenerate.generate(user.getUsername());
@@ -138,17 +144,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 获取当前用户的简历信息
-     *
+     * 获取当前用户默认的简历信息
      * @return
      */
     @Override
     public Result<ResumeVo> getReusme() {
-        UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userDto.getUser();
+        User user = null;
+        try {
+            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            user = userDto.getUser();
+        }catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
 
         LambdaQueryWrapper<UserResume> wrapper1 = new LambdaQueryWrapper<>();
-        wrapper1.eq(UserResume::getUserId, user.getId());
+        wrapper1.eq(UserResume::getUserId, user.getId())
+                .eq(UserResume::getIsDefault,SystemConstants.IS_DEFAULT_RESUME);
+
         UserResume userResume = userResumeService.getOne(wrapper1);
 
         Resume resume = resumeService.getById(userResume.getResumeId());
@@ -310,13 +322,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result<List<DeliverVo>> getDliverHistory() {
         try {
             Integer userId = SecurityUtils.getUserId();
-            LambdaQueryWrapper<Deliver> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Deliver::getUserId, userId);
-            List<Deliver> list = deliverService.list(wrapper);
+//            LambdaQueryWrapper<Deliver> wrapper = new LambdaQueryWrapper<>();
+//            wrapper.eq(Deliver::getUserId, userId);
+//            List<Deliver> list = deliverService.list(wrapper);
+
+            LambdaQueryWrapper<WorkUser> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(WorkUser::getUserId,userId);
+            List<WorkUser> list = workUserService.list(wrapper);
+
             List<DeliverVo> collect = list.stream().map(
                             item -> BeanCopyUtils.copyBean(
                                     workService.getById(item.getWorkId()), DeliverVo.class))
                     .collect(Collectors.toList());
+
             return Result.success(collect);
         } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
@@ -339,11 +357,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         catch (Exception e){
             throw new BaseException("用户未登录");
         }
-        LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserResume::getUserId,userId);
-        if(userResumeService.getOne(wrapper) != null){
-            throw new BaseException(SystemConstants.USER_HAS_DILIVER_RESUME);
-        }
+        //这里是检验用户是否已投递过简历
+//        LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(UserResume::getUserId,userId);
+//        if(userResumeService.getOne(wrapper) != null){
+//            throw new BaseException(SystemConstants.USER_HAS_DILIVER_RESUME);
+//        }
 
         Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
         resumeService.save(resume);
@@ -351,7 +370,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserResume userResume = new UserResume();
         userResume.setResumeId(resume.getId())
                 .setUserId(userId);
-        System.out.println(userResume);
+
         userResumeService.save(userResume);
 
         return Result.success("操作成功");
@@ -381,6 +400,69 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         resume.setId(userResume.getResumeId());
         resumeMapper.updateById(resume);
         return Result.success("修改成功");
+    }
+
+    /**
+     * 设置为默认简历
+     * @param resumeId
+     * @return
+     */
+    @Override
+    @Transactional
+    public Result<String> setDefaultResume(Integer resumeId) {
+        Integer userId;
+        LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
+        UserResume userResume = null;
+        try {
+            userId = SecurityUtils.getUserId();
+
+            wrapper.eq(UserResume::getUserId,userId)
+                    .eq(UserResume::getResumeId,resumeId);
+            userResume = userResumeService.getOne(wrapper);
+
+            if (userResume == null){
+                return Result.error(SystemConstants.USER_HAS_NO_RESUME);
+            }
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        wrapper.clear();
+        wrapper.eq(UserResume::getUserId,userId)
+                .eq(UserResume::getIsDefault,SystemConstants.IS_DEFAULT_RESUME);
+        UserResume oldDefault = userResumeService.getOne(wrapper);
+        oldDefault.setIsDefault(SystemConstants.IS_NOT_DEFAULT_RESUME);
+
+        userResumeService.updateById(oldDefault);
+
+        userResume.setIsDefault(SystemConstants.IS_DEFAULT_RESUME);
+
+        userResumeService.updateById(userResume);
+
+        return Result.success("修改成功");
+    }
+
+    /**
+     * 当前用户所创建的简历列表
+     * @return
+     */
+    @Override
+    public Result<List<ResumeVo>> getResumeList() {
+        User user = null;
+        try {
+            UserDto userDto = SecurityUtils.getLoginUser();
+            user = userDto.getUser();
+        }catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+
+        List<Resume> resumeList = userResumeService.getListByUserId(user.getId());
+
+        if (resumeList.size() > 0){
+            List<ResumeVo> resumeVos = BeanCopyUtils.copyBeanList(resumeList, ResumeVo.class);
+            return Result.success(resumeVos);
+        }
+        return Result.error(SystemConstants.USER_HAS_NO_RESUME);
     }
 
 

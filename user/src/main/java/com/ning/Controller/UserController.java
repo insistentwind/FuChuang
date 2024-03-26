@@ -1,5 +1,6 @@
 package com.ning.Controller;
 
+import com.ning.domain.entity.Resume;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;
@@ -64,10 +65,10 @@ public class UserController {
     }
 
     /**
-     * 获取当前用户的简历信息
+     * 获取当前用户默认的简历信息
      * @return
      */
-    @ApiOperation("获取当前用户的简历信息")
+    @ApiOperation("获取当前用户默认的简历信息")
     @GetMapping("/resume")
     public Result<ResumeVo> getUserResume(){
         log.info("获取当前用户的简历信息");
@@ -88,14 +89,14 @@ public class UserController {
     }
 
     /**
-     * 用户简历数据写入
+     * 用户创建简历
      * @param resumeVo
      * @return
      */
-    @ApiOperation("用户简历数据写入")
+    @ApiOperation("用户创建简历")
     @PostMapping("/insert")
     public Result<String> insertResume(@RequestBody ResumeVo resumeVo){
-        log.info("简历数据写入");
+        log.info("用户创建简历");
         return userService.insertResume(resumeVo);
     }
     /**
@@ -139,4 +140,35 @@ public class UserController {
     public Result<String> logout(){
         return userService.logout();
     }
+
+    /**
+     * 设置为默认简历
+     * @param resumeId
+     * @return
+     */
+    @PutMapping("/default")
+    @ApiOperation("设置为默认简历")
+    public Result<String> setDefaultResume(Integer resumeId){
+        return userService.setDefaultResume(resumeId);
+    }
+
+
+    /**
+     * 当前用户所创建的简历列表
+     * @return
+     */
+    @GetMapping("/resumeList")
+    @ApiOperation("当前用户所创建的简历列表")
+    public Result<List<ResumeVo>> getResumeList(){
+        return userService.getResumeList();
+    }
+
+
+    /**
+     * 获取当前用户的简历 --》获取当前用户的默认简历
+     * 增加：1.设置为默认简历,2.查询当前用户的简历列表
+     * todo 简历投递表要设置用户投递的简历id
+     * 还有一个自己简历列表的回显
+     * 公司查询某个人的简历时要显示list
+     */
 }

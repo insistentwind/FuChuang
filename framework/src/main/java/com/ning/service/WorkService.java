@@ -1,6 +1,7 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ning.domain.dto.ResumeCommitDto;
 import com.ning.domain.dto.WorkDto;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
@@ -59,12 +60,12 @@ public interface WorkService extends IService<Work> {
      * @param id
      * @return
      */
-    Result<List<WorkVo>> getList(Long id);
+    Result<List<WorkVo>> getList(Integer id);
     /**
      * 用户投递简历接口
-     * @param workId
+     * @param resumeCommitDto
      * @return
      */
-    Result<String> commitResume(Integer workId);
+    Result<String> commitResume(ResumeCommitDto resumeCommitDto);
 }
 

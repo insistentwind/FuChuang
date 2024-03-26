@@ -67,6 +67,36 @@
             </TableInfoDTO>
           </value>
         </entry>
+        <entry key="fuchuang_a15.city_classify">
+          <value>
+            <TableInfoDTO>
+              <option name="comment" value="城市分类" />
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="城市" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="cityName" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="CityClassify" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
         <entry key="fuchuang_a15.company">
           <value>
             <TableInfoDTO>
@@ -397,6 +427,7 @@
         <entry key="fuchuang_a15.resume">
           <value>
             <TableInfoDTO>
+              <option name="comment" value="简历表" />
               <option name="fullColumn">
                 <list>
                   <ColumnInfoDTO>
@@ -1047,6 +1078,7 @@
         <entry key="fuchuang_a15.user_resume">
           <value>
             <TableInfoDTO>
+              <option name="comment" value="用户-简历表" />
               <option name="fullColumn">
                 <list>
                   <ColumnInfoDTO>
@@ -1067,6 +1099,13 @@
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="resumeId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="默认简历(0否，1是)" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="isDefault" />
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                 </list>
@@ -1353,6 +1392,7 @@
         <entry key="fuchuang_a15.work_user">
           <value>
             <TableInfoDTO>
+              <option name="comment" value="职位-用户简历投递表" />
               <option name="fullColumn">
                 <list>
                   <ColumnInfoDTO>
@@ -1373,6 +1413,13 @@
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
                     <option name="name" value="userId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="用户简历id" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="resumeId" />
                     <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                 </list>

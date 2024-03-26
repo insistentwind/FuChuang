@@ -20,5 +20,12 @@ public interface UserCompanyMapper extends BaseMapper<UserCompany> {
      * @return
      */
     Integer judgePriByUserId(@Param("userId") Integer userId, @Param("workId") Integer workId);
+
+    /**
+     * 根据用户id查找公司id
+     * @param userId
+     * @return
+     */
+    Integer getCompanyIdByUserId(Integer userId);
 }
 

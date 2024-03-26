@@ -3,7 +3,11 @@ package com.ning.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Relation;
+import com.ning.domain.entity.Work;
+import com.ning.domain.vo.WorkPageVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * (Relation)表数据库访问层
@@ -26,5 +30,19 @@ public interface RelationMapper extends BaseMapper<Relation> {
      * @return
      */
     Integer getUserByCompany(Integer companyId, Integer userId);
+
+
+    /**
+     * 根据公司id查询发布的职位
+     * @return
+     */
+    List<Work> getWorkByCompanyId(Integer companyId);
+
+    /**
+     * 根据分类查询发布的职位
+     * @param workPageVo
+     * @return
+     */
+    List<Work> getWorkByCategory(WorkPageVo workPageVo);
 }
 

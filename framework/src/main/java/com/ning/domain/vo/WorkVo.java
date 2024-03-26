@@ -20,6 +20,10 @@ public class WorkVo {
     //公司名
     private String company;
 
+    //公司id
+    private Integer companyId;
+
+
     //分类id
     private Integer classifyId;
     //职位介绍

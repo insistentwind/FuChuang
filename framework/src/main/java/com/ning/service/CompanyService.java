@@ -8,6 +8,7 @@ import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
 import com.ning.domain.vo.ResumeVo;
+import com.ning.domain.vo.WorkPageVo;
 import com.ning.domain.vo.WorkVo;
 
 import java.util.List;
@@ -65,10 +66,10 @@ public interface CompanyService extends IService<Company> {
 
     /**
      * 根据公司id查询此公司下所有职位投递的简历列表
-     * @param id
+     * @param
      * @return
      */
-    Result<List<WorkVo>> getResumeListByCompany(Integer id);
+    Result<List<WorkVo>> getResumeListByCompany();
 
     /**
      * 根据职位id查询所有投递的简历列表
@@ -81,5 +82,18 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<ResumeVo> getResumeVoByUserId(Integer userId);
+    /**
+     * 分页查询此公司下发布的职位
+     * @param workPageVo
+     * @return
+     */
+    Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo);
+
+    /**
+     *  公司端投递简历
+     * @param resumeVoList
+     * @return
+     */
+    Result<String> commitResumeList(List<ResumeVo> resumeVoList);
 }
 

@@ -81,12 +81,29 @@ public class SystemConstants {
     //当前用户没有权限修改此公司
     public static final String HAS_NO_PERMISSION = "当前用户没有权限修改此公司";
     public static final String WORK_NOT_EXIST = "当前职位不存在";
-    public static final String USER_HAS_NO_RESUME = "当前用户暂未创建简历";
+    public static final String USER_HAS_NO_RESUME = "当前用户没有此简历";
     public static final String USER_HAS_DILIVER_RESUME = "当前用户已上传简历，请修改唯一简历";
     public static final String HAS_NO_CATIGORY = "没有此分类";
     public static final String USER_NO_PERMITED = "该用户没有同意您查询简历";
     /**
      * 职位分类
      */
-    public static final Object WORK_CATIGORY = "work_category";
+    public static final Object WORK_CATIGORY = "work_category_";
+    /**
+     * 职位的所有分类
+     */
+    public static final Object WORK_ALL_LIST = "work_all_list_";
+    public static final String COMPANY_HAS_NO_POSITION = "当前公司没有发布职位";
+    /**
+     * 默认简历
+     */
+    public static final Integer IS_DEFAULT_RESUME = 1;
+    /**
+     * 不是默认的简历
+     */
+    public static final Integer IS_NOT_DEFAULT_RESUME = 0;
+    /**
+     * 城市分类
+     */
+    public static final Object CITY_CATEGORY = "city_category_";
 }
