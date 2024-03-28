@@ -18,6 +18,8 @@ public class ResumeVo {
     private Integer id;
     //简历所属的用户id
     private Integer userId;
+    //要投递的职位id，公司端投递要用
+    private Integer workId;
     //姓名
     private String name;
     //出生日期

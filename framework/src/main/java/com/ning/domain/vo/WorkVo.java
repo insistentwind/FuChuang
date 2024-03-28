@@ -31,9 +31,11 @@ public class WorkVo {
     //职位名称
     private String title;
     //学历要求
-    private String education;
+    private Integer education;
     //工作经验要求
-    private String jobExperience;
+    private Integer jobExperience;
+    //薪资分类
+    private Integer salary;
     //薪资水平
     private String salaryDesc;
     //技术要求

@@ -5,7 +5,8 @@
         SELECT COUNT(*) from user_company uc
                                  LEFT JOIN company c ON uc.company_id = c.id
                                  LEFT JOIN relation r on c.id = r.company_id
-        WHERE uc.user_id = #{userId} and r.work_id = #{workId};
+        WHERE uc.user_id = #{userId} and r.work_id = #{workId}
+        and r.del_flag != 1;
     </select>
     <select id="getCompanyIdByUserId" resultType="java.lang.Integer">
         select uc.company_id from user_company uc

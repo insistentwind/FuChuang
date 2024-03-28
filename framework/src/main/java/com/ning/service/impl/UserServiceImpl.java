@@ -22,10 +22,12 @@ import com.ning.utils.RedisCache;
 import com.ning.utils.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.metadata.ItemMetadata;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -463,6 +465,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return Result.success(resumeVos);
         }
         return Result.error(SystemConstants.USER_HAS_NO_RESUME);
+    }
+    /**
+     * 批量创建简历
+     * @param resumeVos
+     * @return
+     */
+    @Override
+    @Transactional
+    public Result<String> deliverBatchResumes(List<ResumeVo> resumeVos) {
+        User user = null;
+        try {
+            user = SecurityUtils.getLoginUser().getUser();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+
+        Integer userId = user.getId();
+
+        resumeVos.forEach(item -> {
+            Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
+            resumeMapper.insert(resume);
+            Integer resumeId = resume.getId();
+            UserResume userResume = UserResume.builder()
+                    .userId(userId)
+                    .resumeId(resumeId)
+                    .build();
+            userResumeService.save(userResume);
+        });
+
+        return Result.success(SystemConstants.SUCCESS);
     }
 
 

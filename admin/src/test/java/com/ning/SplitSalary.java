@@ -57,7 +57,8 @@ public class SplitSalary {
 
             if (userCompanyService.list(wrapper).size() == 0) {
                 User user = new User();
-                user.setUsername(companyName)
+                // 这里设置用户名不唯一
+                user.setUsername("fuChuang" + item.getId())
                         .setPassword("123456")
                         .setMail("fuChuang" + item.getId())
                         .setName(companyName)

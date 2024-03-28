@@ -66,8 +66,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 
 
     /**
-     * 分页条件查询对应简历内容
-     *
+     * 分页条件查询对应职位
      * @param workDto
      * @return
      */
@@ -83,7 +82,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             wrapper.like(StringUtils.hasText(work.getTitle()), Work::getTitle, work.getTitle())
                     .eq(work.getClassifyId() != null, Work::getClassifyId, work.getClassifyId())
                     .eq(work.getCityName() != null, Work::getCityName, work.getCityName())
-                    .eq(StringUtils.hasText(work.getEducation()), Work::getEducation, work.getEducation());
+                    .eq(work.getEducation() != null, Work::getEducation, work.getEducation());
             page(page, wrapper);
             records = page.getRecords();
         } else {
@@ -143,13 +142,6 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 //        return Result.success();
 //    }
 
-//    private Work setMaxMinSa(Work work){
-//        String salary = work.getSalary();
-//        String[] split = salary.split("-");
-//        work.setMinSa(split[0] + "k");
-//        work.setMaxSa(split[1].replace("[^\\d.]", ""));
-//        return work;
-//    }
 
     /**
      * 根据id查询职位信息,回显
@@ -184,9 +176,12 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         } catch (Exception e) {
             //不处理
         }
-
+        //TODO 这里可能因为职位绑定的id是空所以返回公司为空，出现code400异常
+        // viewCount可能也有问题，没有更新
         Company company = relationMapper.getCompanyByWorkId(id);
-
+        if(company.getId() == null){
+            return Result.error("职位没有绑定的公司");
+        }
         workVo.setCompany(company.getBrandName());
 
         workVo.setCompanyId(company.getId());
@@ -200,25 +195,28 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     /**
      * 更新职位信息
      *
-     * @param workDto
+     * @param workVo
      * @return
      */
     @Override
     @Transactional
-    public Result<String> updateByWork(WorkDto workDto) {
-        Work work = BeanCopyUtils.copyBean(workDto, Work.class);
+    public Result<String> updateByWork(WorkVo workVo) {
+        Work work = BeanCopyUtils.copyBean(workVo, Work.class);
 
-        LambdaQueryWrapper<Classify> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(workDto.getBigClassify() != null, Classify::getBigClassify, workDto.getBigClassify())
-                .eq(workDto.getMidClassify() != null, Classify::getMidClassify, workDto.getMidClassify())
-                .eq(workDto.getSmallClassify() != null, Classify::getSmallClassify, workDto.getSmallClassify())
-                .eq(workDto.getSalaryClassify() != null, Classify::getSalaryClassify, workDto.getSalaryClassify());
-        Classify classify = classifyService.getOne(wrapper);
 
-        if (classify == null) {
-            throw new BaseException(SystemConstants.HAS_NO_CATIGORY);
-        }
-        Integer classifyId = classify.getId();
+        //TODO 分类相关的要重写
+//        LambdaQueryWrapper<Classify> wrapper = new LambdaQueryWrapper<>();
+//        // 这里搜索所有的分类 后面设置分类的id
+//        wrapper.eq(workDto.getBigClassify() != null, Classify::getBigClassify, workDto.getBigClassify())
+//                .eq(workDto.getMidClassify() != null, Classify::getMidClassify, workDto.getMidClassify())
+//                .eq(workDto.getSmallClassify() != null, Classify::getSmallClassify, workDto.getSmallClassify())
+//                .eq(workDto.getSalaryClassify() != null, Classify::getSalaryClassify, workDto.getSalaryClassify());
+//        Classify classify = classifyService.getOne(wrapper);
+//
+//        if (classify == null) {
+//            throw new BaseException(SystemConstants.HAS_NO_CATIGORY);
+//        }
+//        Integer classifyId = classify.getId();
 
 //        //这个是设置了最大和最小的薪资
 //        if (workDto.getMinSa() != null && workDto.getMaxSa() != null) {
@@ -234,7 +232,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
 //        //由于职位-分类是多对1的，所以要先删除这个职位对应的分类，再添加分类
 //
 
-        work.setClassifyId(classifyId);
+//        work.setClassifyId(classifyId);
 
         updateById(work);
         return Result.success();
@@ -247,6 +245,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
      * @return
      */
     @Override
+    @Transactional
     public Result<String> deleteByIds(List<Integer> ids) {
         removeBatchByIds(ids);
         return Result.success();

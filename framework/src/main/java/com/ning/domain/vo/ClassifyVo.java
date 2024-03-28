@@ -21,8 +21,6 @@ public class ClassifyVo {
     private String midClassify;
     //子分类
     private String smallClassify;
-    //薪资分类
-    private String salaryClassify;
     //薪资地址
     private String smallClassifyHtml;
 

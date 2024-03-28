@@ -12,7 +12,7 @@
     </select>
     <select id="listByMiddleClassify" resultType="com.ning.domain.vo.ClassifyShowListVo">
         SELECT DISTINCT small_classify as classify,
-        salary_classify,id
+        id
         FROM `work_classify`
         <where>
             mid_classify = #{midClassify}

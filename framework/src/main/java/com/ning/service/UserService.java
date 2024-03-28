@@ -100,5 +100,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<List<ResumeVo>> getResumeList();
+    /**
+     * 批量创建简历
+     * @param resumeVos
+     * @return
+     */
+    Result<String> deliverBatchResumes(List<ResumeVo> resumeVos);
 }
 

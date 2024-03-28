@@ -4,16 +4,17 @@
 
 
     <select id="getByFavor" resultType="com.ning.domain.entity.Favor">
-        SELECT * FROM `favor`
-                 where
-                     user_id = #{userId}
-                   and
-                     work_id = #{workId}
+        SELECT *
+        FROM `favor`
+        where user_id = #{userId}
+          and work_id = #{workId}
     </select>
     <select id="getAllFavorByUserId" resultType="com.ning.domain.entity.Work">
-        SELECT w.* FROM `favor` AS f
-            LEFT JOIN `work` AS w
-                ON f.work_id = w.id
-                 WHERE f.user_id = #{id}
+        SELECT w.*
+        FROM `favor` AS f
+                 LEFT JOIN `work` AS w
+                           ON f.work_id = w.id
+        WHERE f.user_id = #{id}
+        and w.del_flag != 1
     </select>
 </mapper>

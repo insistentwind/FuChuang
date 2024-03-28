@@ -182,19 +182,23 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     /**
      * 删除公司
      *
-     * @param id
+     * @param ids
      * @return
      */
     @Override
     @Transactional
-    public Result<String> deleteBatch(Integer id) {
+    public Result<String> deleteBatch(List<Integer> ids) {
         try {
-            check(id);
-            LambdaQueryWrapper<Follow> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Follow::getCompanyId, id);
-            followMapper.delete(wrapper);
+            ids.forEach(id ->{
+                //删除跟随者
+                LambdaQueryWrapper<Follow> wrapper = new LambdaQueryWrapper<>();
+                wrapper.eq(Follow::getCompanyId, id);
+                followMapper.delete(wrapper);
 
-            removeById(id);
+                Company company = getById(id);
+                removeById(id);
+                redisTemplate.opsForHash().delete(company.getBrandName());
+            });
 
         } catch (Exception e) {
             throw new RuntimeException("删除公司时出现错误");
@@ -403,11 +407,37 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return
      */
     @Override
+    @Transactional
     public Result<String> commitResumeList(List<ResumeVo> resumeVoList) {
-//        UserDto loginUser = SecurityUtils.getLoginUser();
-//        User user = loginUser.getUser();
-//        user.getIsCompany()
-        return null;
+        User user = null;
+        try {
+            UserDto loginUser = SecurityUtils.getLoginUser();
+            user = loginUser.getUser();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        if (user.getIsCompany() != 1){
+            return Result.error("当前用户没有权限");
+        }
+        Integer userId = user.getId();
+        resumeVoList.forEach(item -> {
+            Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
+            resumeMapper.insert(resume);
+            Integer resumeId = resume.getId();
+            UserResume userResume = UserResume.builder().resumeId(resumeId)
+                    .userId(userId)
+                    .build();
+            userResumeMapper.insert(userResume);
+            //简历创建好后，把简历投递到自己公司
+            WorkUser workUser = WorkUser.builder().workId(item.getWorkId())
+                    .resumeId(resumeId)
+                    .userId(userId)
+                    .build();
+            workUserMapper.insert(workUser);
+        });
+
+        return Result.success(SystemConstants.SUCCESS);
     }
 
     private Integer check(Integer CompanyId) {

@@ -9,6 +9,7 @@ import com.ning.domain.entity.*;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.constants.SystemConstants;
+import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.service.*;
@@ -54,11 +55,10 @@ public class WorkController {
 
     /**
      * 分页条件查询对应职位
-     *
      * @param workDto
      * @return
      */
-    @ApiOperation("分页条件查询对应职位")
+    @ApiOperation("分页条件查询职位")
     @GetMapping("/page")
     public Result<PageResult> page(WorkDto workDto) {
         log.info("分页条件查询对应职位:{}", workDto);
@@ -88,7 +88,8 @@ public class WorkController {
      * @param work
      * @return
      */
-    @ApiOperation("发布职位,需要权限，但暂未设置权限")
+    // todo 权限设置了么？
+    @ApiOperation("发布职位")
     @PostMapping("/save")
     @Transactional
     public Result<String> save(@RequestBody Work work) {
@@ -122,7 +123,7 @@ public class WorkController {
 
 
         String message = companyName + "发布了新职位——" + work.getTitle() + ",快去看看吧";
-        //TODO 还需要做的是启动的时候把所有的观察者和被观察者放入redis中
+        //还需要做的是启动的时候把所有的观察者和被观察者放入redis中
         try {
             Set<String> set = redisTemplate.opsForHash().keys(companyName);
             //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
@@ -156,7 +157,7 @@ public class WorkController {
      * @param id
      * @return
      */
-    @ApiOperation("根据id查询职位详细信息")
+    @ApiOperation("id查询职位详细信息")
     @GetMapping("/{id}")
     public Result<WorkVo> getById(@PathVariable Integer id) {
         log.info("查询的职位id：{}", id);
@@ -166,20 +167,20 @@ public class WorkController {
     /**
      * 更新职位信息
      *
-     * @param workDto
+     * @param workVo
      * @return
      */
     @ApiOperation("更新职位信息")
     @PutMapping
-    public Result<String> update(@RequestBody WorkDto workDto) {
-        log.info("更新职位信息:{}", workDto);
+    public Result<String> update(@RequestBody WorkVo workVo) {
+        log.info("更新职位信息:{}", workVo);
         User user = check();
 
-        if(!userCompanyService.judgePriByUserId(user.getId(),workDto.getId())){
+        if(!userCompanyService.judgePriByUserId(user.getId(),workVo.getId())){
             //判断当前用户是否是该公司的职位发布者
             throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
         }
-        return workService.updateByWork(workDto);
+        return workService.updateByWork(workVo);
     }
 
     /**
@@ -235,11 +236,10 @@ public class WorkController {
 //                throw new RuntimeException("不存在此公司");
 //            }
             //这里是删除redis中存储的公司键
+            // 如果某一个用户不再关注这个公司了，那么也要删除redis中保存的键
             try {
                 Set<String> set = redisTemplate.opsForHash().keys(companyName);
-                Iterator<String> iterator = set.iterator();
-                while (iterator.hasNext()) {
-                    String user = iterator.next();
+                for (String user : set) {
                     NotifyDto notifyDto = new NotifyDto();
                     notifyDto.setUserId(Integer.valueOf(user));
                     notifyDto.setContent(message);
@@ -263,7 +263,7 @@ public class WorkController {
      */
     //用户投递简历就是添加到历史记录中去
     @GetMapping("/commitResume")
-    @ApiOperation("用户投递简历接口或者是允许对面查看自己的简历")
+    @ApiOperation("用户投递简历or允许某公司查看自己的简历")
     public Result<String> commitResume(ResumeCommitDto resumeCommitDto){
         return workService.commitResume(resumeCommitDto);
     }
@@ -284,7 +284,6 @@ public class WorkController {
     /**
      * todo 考虑赛事方（一个用户）如何批量向投入多份简历到职位中
      *
-     * TODO 缺少新增职位时，要同步更新redis中的数据
      */
 
 

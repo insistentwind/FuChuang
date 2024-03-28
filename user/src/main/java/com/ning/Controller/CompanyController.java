@@ -55,14 +55,14 @@ public class CompanyController {
     }
 
     /**
-     * 公司注销
-     * @param id
+     * 删除公司
+     * @param ids
      * @return
      */
-    @DeleteMapping("/id")
-    @ApiOperation("公司注销")
-    public Result<String> deleteBatch(@PathVariable Integer id){
-        return companyService.deleteBatch(id);
+    @DeleteMapping("/{ids}")
+    @ApiOperation("删除公司(应在管理端)")
+    public Result<String> deleteBatch(@PathVariable List<Integer> ids){
+        return companyService.deleteBatch(ids);
     }
 
     /**
@@ -70,7 +70,7 @@ public class CompanyController {
      * @param companyDto
      * @return
      */
-    @ApiOperation("分页查询所有公司")
+    @ApiOperation("分页查询公司")
     @GetMapping("/page")
     public Result<PageResult> page(CompanyDto companyDto){
         log.info("分页查询条件:{}",companyDto);
@@ -94,7 +94,7 @@ public class CompanyController {
      * @param id
      * @return
      */
-    @ApiOperation("根据id查询公司")
+    @ApiOperation("id查询公司")
     @GetMapping("/{id}")
     public Result<CompanyVo> getCompanyById(@PathVariable Integer id){
         log.info("查询的公司id是：{}",id);
@@ -106,7 +106,7 @@ public class CompanyController {
      * @param companyName
      * @return
      */
-    @ApiOperation("根据公司名称查询公司信息")
+    @ApiOperation("据公司名称查询公司信息")
     @GetMapping("/search")
     public Result<CompanyVo> getByName(@RequestParam String companyName) {
         if (!StringUtils.hasText(companyName)){
@@ -121,7 +121,7 @@ public class CompanyController {
      * @param
      * @return
      */
-    @ApiOperation("查询此公司下所有职位投递的简历列表")
+    @ApiOperation("此公司所有职位收到的简历列表")
     @GetMapping("/listByCompany")
 //    public Result<List<WorkVo>> getResumeListByCompany(Integer id){
 //        return companyService.getResumeListByCompany(id);
@@ -135,7 +135,7 @@ public class CompanyController {
      * @param workPageVo
      * @return
      */
-    @ApiOperation("条件查询此公司下发布的职位")
+    @ApiOperation("条件查询此公司下的职位")
     @GetMapping("/PositionList")
     public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo){
         return companyService.pageByCategoryId(workPageVo);
@@ -146,7 +146,7 @@ public class CompanyController {
      * @param id
      * @return
      */
-    @ApiOperation("根据职位id查询所有投递的简历列表")
+    @ApiOperation("职位id查询投递的简历列表")
     @GetMapping("/listByResumeId/{id}")
     public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
         //这里的简历列表被放入到了WorkVo中的ResumeList中
@@ -157,7 +157,7 @@ public class CompanyController {
      * 根据用户id查询此用户的简历
      * @return
      */
-    @ApiOperation("根据用户id查询此用户的简历")
+    @ApiOperation("据用户id查询此用户的简历")
     @GetMapping("/getByUserId")
     public Result<ResumeVo> getResumeVoByUserId(Integer userId){
         return companyService.getResumeVoByUserId(userId);
@@ -170,7 +170,7 @@ public class CompanyController {
      * @param resumeVoList
      * @return
      */
-    @ApiOperation("还没写好，暂时搁置。公司端投递简历(公司把面试者的信息录入)")
+    @ApiOperation("公司端投递简历(公司把面试者的信息录入)")
     @GetMapping("/resume")
     public Result<String> commitResumeList(List<ResumeVo> resumeVoList){
         return companyService.commitResumeList(resumeVoList);

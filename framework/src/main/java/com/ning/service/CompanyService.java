@@ -53,10 +53,10 @@ public interface CompanyService extends IService<Company> {
     Result<String> createCompany(CompanyDo companyDo);
     /**
      * 删除公司
-     * @param id
+     * @param ids
      * @return
      */
-    Result<String> deleteBatch(Integer id);
+    Result<String> deleteBatch(List<Integer> ids);
     /**
      * 批量删除公司hr
      * @param ids

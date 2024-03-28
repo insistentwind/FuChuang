@@ -21,27 +21,26 @@ public class WorkDto {
     private Integer id;
 
 
-//    //分类id
-//    private String classifyId;
+    //分类id
+    private String classifyId;
 
-    //max分类
-    private String bigClassify;
-    //middle分类
-    private String midClassify;
-    //子分类
-    private String smallClassify;
+    //    //max分类
+//    private String bigClassify;
+//    //middle分类
+//    private String midClassify;
+//    //子分类
+//    private String smallClassify;
     //薪资分类
-    private String salaryClassify;
+    private Integer salary;
 
     //职位名称
     private String title;
-    //学历要求
-    private String education;
+    //学历分类
+    private Integer education;
     //工作经验要求
-    private String jobExperience;
+    private Integer jobExperience;
     //工作地点id
     private Integer cityName;
-
 
 
 

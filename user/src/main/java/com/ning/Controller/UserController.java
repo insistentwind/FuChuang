@@ -75,7 +75,6 @@ public class UserController {
         return userService.getReusme();
     }
 
-    //TODO 差一个简历数据修改
 
     /**
      * 简历数据修改
@@ -93,7 +92,7 @@ public class UserController {
      * @param resumeVo
      * @return
      */
-    @ApiOperation("用户创建简历")
+    @ApiOperation("创建简历")
     @PostMapping("/insert")
     public Result<String> insertResume(@RequestBody ResumeVo resumeVo){
         log.info("用户创建简历");
@@ -158,11 +157,10 @@ public class UserController {
      * @return
      */
     @GetMapping("/resumeList")
-    @ApiOperation("当前用户所创建的简历列表")
+    @ApiOperation("当前用户创建的简历列表")
     public Result<List<ResumeVo>> getResumeList(){
         return userService.getResumeList();
     }
-
 
     /**
      * 获取当前用户的简历 --》获取当前用户的默认简历
@@ -171,4 +169,19 @@ public class UserController {
      * 还有一个自己简历列表的回显
      * 公司查询某个人的简历时要显示list
      */
+
+    /**
+     * 批量创建简历
+     * @param resumeVos
+     * @return
+     */
+    @PostMapping("/cmtBatch")
+    @ApiOperation("批量创建简历(maybe used)")
+    public Result<String> deliverBatchResumes(@RequestBody List<ResumeVo> resumeVos){
+        return userService.deliverBatchResumes(resumeVos);
+    }
+
+
+
+
 }

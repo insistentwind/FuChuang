@@ -86,6 +86,8 @@ public class Resume  {
     //其它情况
     private String other;
 
+    private Integer delFlag;
+
 
 }
 

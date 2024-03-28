@@ -8,5 +8,6 @@
         FROM history
         LEFT JOIN work ON work.id=history.work_id
         where history.user_id = #{id}
+        and work.del_flag != 1
     </select>
 </mapper>

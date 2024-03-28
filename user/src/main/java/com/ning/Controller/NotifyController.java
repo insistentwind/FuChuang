@@ -42,7 +42,7 @@ public class NotifyController {
      * @return
      */
     @PutMapping("/{id}")
-    @ApiOperation("根据用户名修改消息状态为已读")
+    @ApiOperation("据id修改消息为已读")
     public Result<String> update(@PathVariable Integer id) {
         return notifyService.updateByUsername(id);
     }
@@ -54,7 +54,7 @@ public class NotifyController {
      * @return
      */
     @GetMapping()
-    @ApiOperation("根据用户名和状态码查询该用户收到的所有通知")
+    @ApiOperation("根据id和已读状态查询该用户收到的通知")
     public Result<List<NotifyVo>> getList(@RequestParam Integer userId, @RequestParam Integer isRead) {
         return notifyService.getList(userId,isRead);
     }
@@ -65,7 +65,7 @@ public class NotifyController {
      * @return
      */
     @GetMapping("/all")
-    @ApiOperation("根据用户名查询该用户收到的所有通知")
+    @ApiOperation("根据id查询该用户收到的通知")
     public Result<List<NotifyVo>> getAll(@RequestParam Integer userId) {
         return notifyService.getList(userId, SystemConstants.NOTIFY_STATUS);
     }

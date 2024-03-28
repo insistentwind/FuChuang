@@ -106,4 +106,12 @@ public class SystemConstants {
      * 城市分类
      */
     public static final Object CITY_CATEGORY = "city_category_";
+    /**
+     * 职位分类
+     */
+    public static final Object WORK_DEGREE = "work_degree_";
+    public static final Object CATEGORY_LIST = "list_";
+    public static final Object SCALE = "company_scale_";
+    public static final Object WORK_EXP = "work_exp_";
+    public static final String SUCCESS = "操作成功";
 }

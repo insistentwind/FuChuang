@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface WorkService extends IService<Work> {
     /**
-     * 分页条件查询对应简历内容
+     * 分页条件查询对应职位
      * @param workDto
      * @return
      */
@@ -39,10 +39,10 @@ public interface WorkService extends IService<Work> {
     Result<WorkVo> getByWorkId(Integer id);
     /**
      * 更新职位信息
-     * @param workDto
+     * @param workVo
      * @return
      */
-    Result<String> updateByWork(WorkDto workDto);
+    Result<String> updateByWork(WorkVo workVo);
     /**
      * 批量删除职位
      * @param ids

@@ -33,7 +33,7 @@ public class HistoryController {
      * 查询当前用户的浏览历史
      * @return
      */
-    @ApiOperation("查询当前用户的浏览历史")
+    @ApiOperation("当前用户浏览职位历史记录")
     @GetMapping
     public Result<List<HistoryVo>> getHistoryByUserId(){
         log.info("查询当前用户历史记录");
@@ -45,7 +45,7 @@ public class HistoryController {
      * @param id
      * @return
      */
-    @ApiOperation("根据历史记录id查询职位详细信息")
+    @ApiOperation("据记录id查询职位详细")
     @GetMapping("/{id}")
     public Result<WorkVo> getHistoryById(@PathVariable Integer id){
         return historyService.getHistoryById(id);

@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -134,15 +135,19 @@ public class FollowController {
     @DeleteMapping("/cancel")
     @ApiOperation("取消关注")
     public Result<String> cancelFollow(@RequestBody FollowDto followDto) {
-        //TODO
 //        //先看观察者队列中有没有这个公司
 //        try {
 //            Company company = companyService.getById(followDto.getCompanyId());
 //            //好像删不了？？
 //            SingleUtil.map.get(company.getCompanyName()).removeObservers();
 //        }
-        Company company = companyService.getById(followDto.getCompanyId());
-        redisTemplate.opsForHash().delete(company.getBrandName(),followDto.getUserId().toString());
+        try {
+            Company company = companyService.getById(followDto.getCompanyId());
+            redisTemplate.opsForHash().delete(company.getBrandName(),followDto.getUserId().toString());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         return followService.cancelFollow(followDto);
     }
