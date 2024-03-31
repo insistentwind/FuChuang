@@ -66,7 +66,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
         List<TreeSelectVo> collect = highestMenuList.stream()
                 .map(item -> {
-
                     TreeSelectVo treeSelectVo = new TreeSelectVo();
                     treeSelectVo.setLabel(item.getMenuName())
                             .setId(item.getId())

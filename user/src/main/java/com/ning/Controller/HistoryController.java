@@ -1,6 +1,5 @@
 package com.ning.Controller;
 
-import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.HistoryVo;
 import com.ning.domain.vo.WorkVo;

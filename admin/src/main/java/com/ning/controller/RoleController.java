@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/system/role")
-@Api(tags = "管理端角色相关接口")
+@Api(tags = "角色接口")
 public class RoleController {
 
     @Autowired
@@ -35,6 +36,7 @@ public class RoleController {
      * @param rolePageVo
      * @return
      */
+    @PreAuthorize("@ps.hasPermission('')")
     @ApiOperation("角色列表分页查询接口")
     @GetMapping("/role/list")
     public Result<PageResult> list(RolePageVo rolePageVo){

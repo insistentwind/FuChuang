@@ -74,5 +74,7 @@ public class ResumeVo {
     private String selfIntroduction;
     //其它情况
     private String other;
+    //1为默认，0否
+    private Integer isDefault;
 
 }

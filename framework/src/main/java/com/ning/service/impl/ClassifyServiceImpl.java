@@ -6,6 +6,7 @@ import com.ning.constants.SystemConstants;
 import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
+import com.ning.exception.BaseException;
 import com.ning.mapper.ClassifyMapper;
 import com.ning.mapper.WorkMapper;
 import com.ning.service.*;
@@ -15,6 +16,7 @@ import org.apache.http.util.Args;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -125,8 +127,7 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     public Result<List<CityClassifyVo>> getAllCities() {
 
         List<CityClassifyVo> list = (List<CityClassifyVo>) redisTemplate.opsForHash().get(SystemConstants.CITY_CATEGORY,SystemConstants.CATEGORY_LIST);
-        assert list != null;
-        if (list.size() > 0){
+        if (list != null){
             return Result.success(list);
         }
 
@@ -184,6 +185,8 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
         putHashValue(SystemConstants.WORK_EXP,SystemConstants.CATEGORY_LIST,workExperienceVos);
         return Result.success(workExperienceVos);
     }
+
+
     /**
      * id查询职位分类
      * @param workClazzId
@@ -192,6 +195,9 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     @Override
     public Result<ClassifyVo> getWorkClassifyById(Integer workClazzId) {
         Classify classify = getById(workClazzId);
+        if (classify == null){
+            throw new BaseException(SystemConstants.HAS_NO_CATIGORY);
+        }
         return Result.success(BeanCopyUtils.copyBean(classify,ClassifyVo.class));
     }
     /**
@@ -202,6 +208,9 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     @Override
     public Result<CityClassifyVo> getCityById(Integer cityId) {
         CityClassify cityClassify = cityClassifyService.getById(cityId);
+        if (cityClassify == null){
+            throw new BaseException(SystemConstants.HAS_NO_CATIGORY);
+        }
         return Result.success(BeanCopyUtils.copyBean(cityClassify,CityClassifyVo.class));
     }
     /**
@@ -212,6 +221,9 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     @Override
     public Result<WorkDegreeVo> getDegreeById(Integer degreeId) {
         WorkDegree workDegree = workDegreeService.getById(degreeId);
+        if (workDegree == null){
+            throw new BaseException(SystemConstants.HAS_NO_DEGREE);
+        }
         return Result.success(BeanCopyUtils.copyBean(workDegree,WorkDegreeVo.class));
     }
     /**
@@ -222,6 +234,9 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     @Override
     public Result<BrandScaleNameVo> getScaleById(Integer scaleId) {
         BrandScaleName scaleName = brandScaleNameService.getById(scaleId);
+        if (scaleName == null){
+            throw new BaseException(SystemConstants.HAS_NO_SCALE);
+        }
         return Result.success(BeanCopyUtils.copyBean(scaleName,BrandScaleNameVo.class));
     }
 
@@ -233,7 +248,40 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     @Override
     public Result<WorkExperienceVo> getExpById(Integer expId) {
         WorkExperience exp = workExperienceService.getById(expId);
+        if (exp == null){
+            throw new BaseException(SystemConstants.HAS_NO_WORK_EXPERIENCE);
+        }
         return Result.success(BeanCopyUtils.copyBean(exp,WorkExperienceVo.class));
+    }
+    /**
+     * 薪资分类
+     * @return
+     */
+    @Override
+    public Result<List<WorkSalaryVo>> getSalaryList() {
+        List<WorkSalaryVo> workSalaryVos = getHashValue(SystemConstants.WORK_SALARY,SystemConstants.SALARY_LIST);
+        if (workSalaryVos != null){
+            return Result.success(workSalaryVos);
+        }
+        List<WorkSalary> workSalaryList = workSalaryService.list();
+        workSalaryVos = BeanCopyUtils.copyBeanList(workSalaryList, WorkSalaryVo.class);
+        putHashValue(SystemConstants.WORK_SALARY,SystemConstants.SALARY_LIST,workSalaryVos);
+        return Result.success(workSalaryVos);
+    }
+
+    /**
+     * id查询薪资分类
+     * @param id
+     * @return
+     */
+    @Override
+    public Result<WorkSalaryVo> getSalaryById(Integer id) {
+        WorkSalary workSalary = workSalaryService.getById(id);
+        if (workSalary == null){
+            throw new BaseException(SystemConstants.HAS_NO_WORK_SALARY);
+        }
+        BeanCopyUtils.copyBean(workSalary, WorkSalaryVo.class);
+        return Result.success();
     }
 
     /**

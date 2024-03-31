@@ -139,4 +139,26 @@ public class CategoryController {
     public Result<WorkExperienceVo> getExpById(@PathVariable Integer id){
         return classifyService.getExpById(id);
     }
+
+    /**
+     * 薪资分类
+     * @return
+     */
+    @GetMapping("/salaryList")
+    @ApiOperation("工作经验分类")
+    //workExperience
+    public Result<List<WorkSalaryVo>> salaryList(){
+        return classifyService.getSalaryList();
+    }
+
+    /**
+     * id查询薪资分类
+     * @param id
+     * @return
+     */
+    @GetMapping("/salary/{id}")
+    @ApiOperation("id查询exp分类")
+    public Result<WorkSalaryVo> getSalaryById(@PathVariable Integer id){
+        return classifyService.getSalaryById(id);
+    }
 }

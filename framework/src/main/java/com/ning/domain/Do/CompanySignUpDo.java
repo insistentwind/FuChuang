@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class CompanyDo{
+public class CompanySignUpDo {
 
     //账户
     private String username;

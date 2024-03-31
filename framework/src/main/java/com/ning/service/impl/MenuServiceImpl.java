@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
     @Autowired
     private MenuMapper menuMapper;
+
     /**
      * 根据用户id查询权限信息
      * @param id

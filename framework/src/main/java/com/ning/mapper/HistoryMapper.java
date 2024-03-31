@@ -1,7 +1,6 @@
 package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.entity.History;
 import com.ning.domain.vo.WorkVo;
 import org.mapstruct.Mapper;

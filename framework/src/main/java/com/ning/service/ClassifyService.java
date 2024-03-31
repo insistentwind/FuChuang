@@ -1,10 +1,7 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.domain.entity.Classify;
-import com.ning.domain.entity.Work;
-import com.ning.domain.entity.WorkDegree;
-import com.ning.domain.entity.WorkExperience;
+import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
 
@@ -79,5 +76,16 @@ public interface ClassifyService extends IService<Classify> {
      * @return
      */
     Result<WorkExperienceVo> getExpById(Integer expId);
+    /**
+     * 薪资分类
+     * @return
+     */
+    Result<List<WorkSalaryVo>> getSalaryList();
+    /**
+     * id查询薪资分类
+     * @param id
+     * @return
+     */
+    Result<WorkSalaryVo> getSalaryById(Integer id);
 }
 

@@ -76,6 +76,7 @@ public class SystemConstants {
     public static final Integer IS_COMPANY = 1;
     //注册的用户是公司hr
     public static final Integer IS_NOT_COMPANY = 0;
+    public static final String NOW_USER_IS_NOT_COMPANY = "当前用户不是公司用户";
     //当前用户与公司不匹配
     public static final String HAS_NO_MATCHED_USER_COMPANY = "当前用户与公司不匹配";
     //当前用户没有权限修改此公司
@@ -114,4 +115,67 @@ public class SystemConstants {
     public static final Object SCALE = "company_scale_";
     public static final Object WORK_EXP = "work_exp_";
     public static final String SUCCESS = "操作成功";
+
+    public static final String USER_HAS_NO_DEFAULT_RESUME = "当前用户没有设置默认简历";
+    public static final String HAS_NO_WORK_SALARY = "没有此薪资分类";
+    public static final String HAS_NO_WORK_EXPERIENCE = "没有此经验分类";
+    public static final String HAS_NO_SCALE = "没有此规模分类";
+    public static final String HAS_NO_DEGREE = "没有此学历分类";
+    public static final Object WORK_SALARY = "work_salary_";
+    public static final Object SALARY_LIST = "list";
+    public static final String IS_NOT_ADMIN = "当前用户非管理员用户";
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * TODO 这里为权限标识符
+     */
+
+    /**
+     * 系统用户管理
+     */
+    public static final String SYSTEM_USER_LIST = "system:user:list";
+    public static final String SYSTEM_USER_QUERY = "system:user:query";
+    public static final String SYSTEM_USER_ADD = "system:user:add";
+    public static final String SYSTEM_USER_EDIT = "system:user:edit";
+    public static final String SYSTEM_USER_REMOVE = "system:user:remove";
+    public static final String SYSTEM_USER_EXPORT = "system:user:export";
+    public static final String SYSTEM_USER_IMPORT = "system:user:import";
+    public static final String SYSTEM_USER_RESETPWD = "system:user:resetPwd";
+
+
+    /**
+     * 公司管理
+     */
+    /**
+     * 员工管理
+     */
+    public static final String CONTENT_EMP_INDEX = "content:emp:index";
+
+
+    /**
+     * 公司通知公告
+     */
+    public static final String CONTENT_NOTIFY_INDEX = "content:notify:index";
+
+    /**
+     * 公司系统管理
+     */
+    public static final String CONTENT_SYSTEM_INDEX = "content:system:index";
+    /**
+     * 公司招聘管理
+     */
+    public static final String CONTENT_RECRUIT_INDEX = "content:recruit:index";
+
+
+
 }

@@ -85,6 +85,8 @@ public class Resume  {
     private String selfIntroduction;
     //其它情况
     private String other;
+    // 0默认可见，1默认不可见
+    private Integer obscure;
 
     private Integer delFlag;
 

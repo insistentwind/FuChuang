@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/system/menu")
-@Api(tags = "后台菜单相关接口")
+@Api(tags = "后台菜单接口")
 public class MenuController {
 
     @Autowired

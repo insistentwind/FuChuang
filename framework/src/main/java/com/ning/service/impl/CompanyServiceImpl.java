@@ -1,27 +1,21 @@
 package com.ning.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.SystemConstants;
-import com.ning.domain.Do.CompanyDo;
+import com.ning.domain.Do.CompanySignUpDo;
 import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.*;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
-import com.ning.domain.vo.CompanyVo;
-import com.ning.domain.vo.ResumeVo;
-import com.ning.domain.vo.WorkPageVo;
-import com.ning.domain.vo.WorkVo;
+import com.ning.domain.vo.*;
 import com.ning.exception.BaseException;
 import com.ning.mapper.*;
 import com.ning.service.*;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.SecurityUtils;
-import kotlin.jvm.internal.Lambda;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +25,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -67,6 +62,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private UserResumeMapper userResumeMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CompanyEmployeeMapper companyEmployeeMapper;
 
     /**
      * 分页查询公司
@@ -141,7 +138,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     @Override
     @Transactional
-    public Result<String> createCompany(CompanyDo companyDo) {
+    public Result<String> createCompany(CompanySignUpDo companyDo) {
         if(companyDo.getUsername() == null || companyDo.getPassword() == null){
             throw new BaseException("创建失败,用户名或密码不能为空");
         }
@@ -189,6 +186,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Transactional
     public Result<String> deleteBatch(List<Integer> ids) {
         try {
+            User user = SecurityUtils.getLoginUser().getUser();
+            if (!Objects.equals(user.getIsCompany(), SystemConstants.IS_ADMIN)){
+                throw new BaseException(SystemConstants.IS_NOT_ADMIN);
+            }
+
             ids.forEach(id ->{
                 //删除跟随者
                 LambdaQueryWrapper<Follow> wrapper = new LambdaQueryWrapper<>();
@@ -409,17 +411,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     @Transactional
     public Result<String> commitResumeList(List<ResumeVo> resumeVoList) {
-        User user = null;
-        try {
-            UserDto loginUser = SecurityUtils.getLoginUser();
-            user = loginUser.getUser();
-        }
-        catch (Exception e){
-            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
-        }
-        if (user.getIsCompany() != 1){
-            return Result.error("当前用户没有权限");
-        }
+        User user = getUser();
         Integer userId = user.getId();
         resumeVoList.forEach(item -> {
             Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
@@ -439,6 +431,37 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
         return Result.success(SystemConstants.SUCCESS);
     }
+    /**
+     * 根据公司名查询所有行业
+     * @return
+     */
+    @Override
+    public Result<List<String>> getIndustry(String companyBrand) {
+        LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Company::getBrandName,companyBrand)
+                        .select(Company::getBrandIndustry);
+        List<Company> companies = companyMapper.selectList(wrapper);
+        List<String> collect = companies.stream().map(Company::getBrandIndustry).collect(Collectors.toList());
+        return Result.success(collect);
+    }
+//    /**
+//     * 新增公司员工
+//     * @param userRoleVo
+//     * @return
+//     */
+//    @Override
+//    public Result<String> addEmployee(UserRoleVo userRoleVo) {
+//        User user = getUser();
+//        if (!Objects.equals(user.getIsCompany(), SystemConstants.IS_COMPANY)){
+//            return Result.error(SystemConstants.NOW_USER_IS_NOT_COMPANY);
+//        }
+//        Integer companyId = userCompanyMapper.getCompanyIdByUserId(user.getId());
+//        Company company = getById(companyId);
+//        createCompany()
+//        CompanyEmployee companyEmployee = new CompanyEmployee();
+//        companyEmployeeMapper.insert()
+//        return null;
+//    }
 
     private Integer check(Integer CompanyId) {
         Integer userId = SecurityUtils.getUserId();
@@ -448,6 +471,25 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         } else {
             throw new BaseException(SystemConstants.HAS_NO_PERMISSION);
         }
+    }
+
+    /**
+     * 校验当前登录的用户
+     * @return
+     */
+    private User getUser(){
+        User user = null;
+        try {
+            UserDto loginUser = SecurityUtils.getLoginUser();
+            user = loginUser.getUser();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        if (user.getIsCompany() != 1){
+            throw new BaseException(SystemConstants.HAS_NO_PERMISSION);
+        }
+        return user;
     }
 
     /**

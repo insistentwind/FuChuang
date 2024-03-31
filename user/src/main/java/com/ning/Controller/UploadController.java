@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +33,7 @@ public class UploadController {
 
     @PostMapping
     @ApiOperation("简历上传接口")
+    //开启异步后，由于multipartfile文件是临时文件，在接口return时会被销毁，因此开启异步有可能会找不到文件
     public Result<String> upload(@RequestParam MultipartFile file){
         log.info("简历上传:{}",file);
         if(file == null){

@@ -67,6 +67,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private ResumeMapper resumeMapper;
     @Autowired
     private WorkService workService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 用户登录接口
@@ -162,10 +164,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<UserResume> wrapper1 = new LambdaQueryWrapper<>();
         wrapper1.eq(UserResume::getUserId, user.getId())
                 .eq(UserResume::getIsDefault,SystemConstants.IS_DEFAULT_RESUME);
+        Resume resume = null;
+        try {
+            UserResume userResume = userResumeService.getOne(wrapper1);
 
-        UserResume userResume = userResumeService.getOne(wrapper1);
-
-        Resume resume = resumeService.getById(userResume.getResumeId());
+            resume = resumeService.getById(userResume.getResumeId());
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_HAS_NO_DEFAULT_RESUME);
+        }
         ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
         return Result.success(resumeVo);
     }
@@ -235,6 +242,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.like(StringUtils.hasText(userPageVo.getTele()), User::getTele, userPageVo.getTele())
                 .like(StringUtils.hasText(userPageVo.getUsername()), User::getUsername, userPageVo.getUsername())
                 .eq(StringUtils.hasText(userPageVo.getStatus()), User::getStatus, userPageVo.getStatus());
+        wrapper.orderByDesc(User::getIsCompany);
         Page<User> page = new Page<>(userPageVo.getPageNum(), userPageVo.getPageSize());
         page(page, wrapper);
 //        List<User> records = page.getRecords();
@@ -255,12 +263,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //​	注意：新增用户时注意密码加密存储。
         String password = passwordEncoder.encode(userRoleVo.getPassword());
         //​	用户名不能为空，否则提示：必需填写用户名
-        if (userRoleVo.getUserName().isEmpty()) {
+        if (userRoleVo.getUsername().isEmpty()) {
             throw new BaseException("错误，必须填写用户名");
         }
         //​	用户名必须之前未存在，否则提示：用户名已存在
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUsername, userRoleVo.getUserName());
+        wrapper.eq(User::getUsername, userRoleVo.getUsername());
         User one = getOne(wrapper);
         if (one != null) {
             throw new BaseException("新增失败，用户名已存在");
@@ -277,10 +285,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .setIsCompany(SystemConstants.IS_ADMIN);
         save(user);
         Integer userId = user.getId();
-        List<String> roleIds = userRoleVo.getRoleIds();
+        List<Integer> roleIds = userRoleVo.getRoleIds();
         roleIds.forEach(item -> {
             UserRole userRole = new UserRole();
-            userRole.setRoleId(userId).setRoleId(Integer.valueOf(item));
+            userRole.setRoleId(userId).setRoleId(item);
             userRoleService.save(userRole);
         });
         return Result.success();
@@ -412,7 +420,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional
     public Result<String> setDefaultResume(Integer resumeId) {
-        Integer userId;
+        Integer userId = null;
         LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
         UserResume userResume = null;
         try {
@@ -433,9 +441,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.eq(UserResume::getUserId,userId)
                 .eq(UserResume::getIsDefault,SystemConstants.IS_DEFAULT_RESUME);
         UserResume oldDefault = userResumeService.getOne(wrapper);
-        oldDefault.setIsDefault(SystemConstants.IS_NOT_DEFAULT_RESUME);
+        if (oldDefault != null){
+            oldDefault.setIsDefault(SystemConstants.IS_NOT_DEFAULT_RESUME);
 
-        userResumeService.updateById(oldDefault);
+            userResumeService.updateById(oldDefault);
+        }
 
         userResume.setIsDefault(SystemConstants.IS_DEFAULT_RESUME);
 
@@ -458,7 +468,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
 
-        List<Resume> resumeList = userResumeService.getListByUserId(user.getId());
+        List<ResumeVo> resumeList = userResumeService.getListByUserId(user.getId());
 
         if (resumeList.size() > 0){
             List<ResumeVo> resumeVos = BeanCopyUtils.copyBeanList(resumeList, ResumeVo.class);
@@ -496,6 +506,75 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         });
 
         return Result.success(SystemConstants.SUCCESS);
+    }
+
+    /**
+     * 根据id获取用户的简历
+     * @param resumeId
+     * @return
+     */
+    @Override
+    public Result<ResumeVo> getResumeById(Integer resumeId) {
+        try {
+            Integer userId = SecurityUtils.getUserId();
+            LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserResume::getUserId,userId)
+                            .select(UserResume::getResumeId);
+            List<UserResume> list = userResumeService.list(wrapper);
+            List<Integer> resumeIds = list.stream().map(UserResume::getResumeId).collect(Collectors.toList());
+
+            if (!resumeIds.contains(resumeId)){
+                return Result.error(SystemConstants.USER_HAS_NO_RESUME);
+            }
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
+        }
+
+        ResumeVo resumeVo = resumeMapper.getInfoByResumeId(resumeId);
+        return Result.success(resumeVo);
+    }
+    /**
+     * 根据id查询用户信息回显接口
+     * @return
+     */
+    @Override
+    public Result<UserRoleInfoVo> getUserInfoById(Integer id) {
+        LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserRole::getUserId,id);
+        List<UserRole> userRoleList = userRoleService.list(wrapper);
+        List<String> roleIds = userRoleList.stream().map(item -> item.getRoleId().toString()).collect(Collectors.toList());
+
+        User user = getById(id);
+
+        List<Role> roles = roleService.list();
+
+        UserRoleInfoVo userRoleInfoVo = new UserRoleInfoVo();
+
+        return Result.success(userRoleInfoVo.setUser(user).setRoles(roles).setRoleIds(roleIds));
+    }
+    /**
+     * 更新用户信息接口
+     * @param userRoleVo
+     * @return
+     */
+    @Override
+    public Result<String> updateUserRoleVo(UserRoleVo userRoleVo) {
+        User user = BeanCopyUtils.copyBean(userRoleVo, User.class);
+        updateById(user);
+        //先删除userRole表的id映射关系
+        LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserRole::getUserId,user.getId());
+        userRoleService.remove(wrapper);
+
+        List<Integer> roleIds = userRoleVo.getRoleIds();
+        roleIds.forEach(item -> {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(user.getId())
+                            .setRoleId(item);
+            userRoleService.save(userRole);
+        });
+        return Result.success();
     }
 
 

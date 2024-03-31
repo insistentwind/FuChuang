@@ -2,7 +2,6 @@ package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.CompanyEmployee;
-import com.ning.domain.entity.CompanyUser;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

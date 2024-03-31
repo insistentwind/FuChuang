@@ -2,6 +2,7 @@ package com.ning.service.impl;
 
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.UserDto;
+import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserVo;
@@ -34,9 +35,9 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private RedisCache redisCache;
     @Override
-    public Result<UserVo> login(User user) {
+    public Result<UserVo> login(UserLoginDto userLoginDto) {
         //这个适用于封装对应的信息参数
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(), userLoginDto.getPassword());
         //调用这个方法开始认证
         Authentication authenticate = authenticationManager.authenticate(token);
         System.out.println(authenticate);
@@ -45,17 +46,17 @@ public class LoginServiceImpl implements LoginService {
         }
         //下面就认证成功，把用户信息放到token中
         UserDto userDto = (UserDto) authenticate.getPrincipal();
-        if(!Objects.equals(userDto.getUser().getIsCompany(), SystemConstants.IS_ADMIN)){
+        if(Objects.equals(userDto.getUser().getIsCompany(), SystemConstants.IS_NOT_COMPANY)){
             throw new RuntimeException("认证失败，非管理员用户");
         }
         Integer userId = userDto.getUser().getId();
-        String jwt = JwtUtil.createJWT(userId.toString());
+        String jwt = JwtUtil.createJWTBackground(userId.toString());
 
         redisCache.setCacheObject(SystemConstants.ADMIN_LOGIN + userId,userDto);
 //        UserInfoVo userInfoVo = new UserInfoVo();
 //        BeanUtils.copyProperties(loginUser.getUser(), userInfoVo);
 //        BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(jwt,userInfoVo);
-        user = userDto.getUser();
+        User user = userDto.getUser();
         UserVo userVo = BeanCopyUtils.copyBean(user, UserVo.class);
         userVo.setJwt(jwt);
         return Result.success(userVo);

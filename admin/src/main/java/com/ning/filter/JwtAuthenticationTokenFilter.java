@@ -47,7 +47,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         Claims claims = null;
 
         try {
-            claims = JwtUtil.parseJWT(token);
+            claims = JwtUtil.parseJWTBackground(token);
         } catch (Exception e) {
             e.printStackTrace();
             //token超时 或者 token非法
@@ -62,7 +62,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String userId = claims.getSubject();
         //从redis中获取用户信息
-        UserDto userDto = redisCache.getCacheObject(SystemConstants.USER_LOGIN + userId);
+        UserDto userDto = redisCache.getCacheObject(SystemConstants.ADMIN_LOGIN + userId);
 
         //如果获取不到redis中的值
         if(Objects.isNull(userDto)){
@@ -73,7 +73,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             WebUtils.renderString(response, JSON.toJSONString(result));
             return;
         }
-        if (userDto.getUser().getIsCompany() != 2){
+        if (userDto.getUser().getIsCompany() == 0 ){
             log.info("没有权限");
 
             Result<String> result = Result.error(MessageConstant.HAS_NO_PERMS);

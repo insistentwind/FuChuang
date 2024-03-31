@@ -1,7 +1,6 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.domain.dto.ResumeVo;
 import com.ning.domain.entity.History;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.HistoryVo;

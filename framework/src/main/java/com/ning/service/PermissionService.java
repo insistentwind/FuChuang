@@ -1,2 +1,6 @@
-package com.ning.service;public interface PermissionService {
+package com.ning.service;
+
+public interface PermissionService {
+
+    public boolean hasPermission(String permission);
 }

@@ -18,6 +18,8 @@ import lombok.experimental.Accessors;
 @Builder
 @Accessors(chain = true)
 public class UserVo {
+    private Integer id;
+
     private String jwt;
 
     //姓名

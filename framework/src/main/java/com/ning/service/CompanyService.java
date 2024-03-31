@@ -1,15 +1,12 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.domain.Do.CompanyDo;
+import com.ning.domain.Do.CompanySignUpDo;
 import com.ning.domain.dto.CompanyDto;
 import com.ning.domain.entity.Company;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
-import com.ning.domain.vo.CompanyVo;
-import com.ning.domain.vo.ResumeVo;
-import com.ning.domain.vo.WorkPageVo;
-import com.ning.domain.vo.WorkVo;
+import com.ning.domain.vo.*;
 
 import java.util.List;
 
@@ -50,7 +47,7 @@ public interface CompanyService extends IService<Company> {
      * @param companyDo
      * @return
      */
-    Result<String> createCompany(CompanyDo companyDo);
+    Result<String> createCompany(CompanySignUpDo companyDo);
     /**
      * 删除公司
      * @param ids
@@ -95,5 +92,16 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<String> commitResumeList(List<ResumeVo> resumeVoList);
+    /**
+     * 当前账号公司所有行业
+     * @return
+     */
+    Result<List<String>> getIndustry(String companyBrand);
+//    /**
+//     * 新增公司员工
+//     * @param userRoleVo
+//     * @return
+//     */
+//    Result<String> addEmployee(UserRoleVo userRoleVo);
 }
 

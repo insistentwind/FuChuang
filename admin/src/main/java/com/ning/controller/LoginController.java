@@ -1,6 +1,7 @@
 package com.ning.controller;
 
 import com.ning.domain.dto.UserDto;
+import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.entity.Menu;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.Result;
@@ -25,7 +26,7 @@ import java.util.List;
  **/
 @RestController
 @Slf4j
-@Api(tags = "后台登录相关接口")
+@Api(tags = "登录接口")
 @RequestMapping("system/login")
 public class LoginController {
     @Autowired
@@ -40,13 +41,13 @@ public class LoginController {
      * @return
      */
     @PostMapping("/user/login")
-    @ApiOperation("用户后台登录相关接口")
-    public Result<UserVo> login(@RequestBody User user){
-        log.info("后台用户登录:{}",user);
-        if(user.getUsername() == null || user.getPassword() == null){
+    @ApiOperation("登录接口")
+    public Result<UserVo> login(@RequestBody UserLoginDto userLoginDto){
+        log.info("后台用户登录:{}",userLoginDto);
+        if(userLoginDto.getUsername() == null || userLoginDto.getPassword() == null){
             throw new RuntimeException("用户名或密码不能为空");
         }
-        return loginService.login(user);
+        return loginService.login(userLoginDto);
     }
 
     /**
@@ -64,6 +65,7 @@ public class LoginController {
         MenuVo perms = menuService.selectPermsByUserId(userDto.getUser().getId());
 //        List<String> perms =  menuService.selectPermsByUserId(userDto.getUser().getId());
         //根据用户id查询角色信息
+        // 一个用户可能有多个角色
         List<String> roleKeyList = roleService.selectRoleKeyById(user.getId());
 //        List<String> roleKeyList = null;
 
@@ -71,6 +73,7 @@ public class LoginController {
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user, UserInfoVo.class);
 
         AdminUserInfoVo adminUserInfoVo = new AdminUserInfoVo(perms,roleKeyList,userInfoVo);
+
         return Result.success(adminUserInfoVo);
     }
 

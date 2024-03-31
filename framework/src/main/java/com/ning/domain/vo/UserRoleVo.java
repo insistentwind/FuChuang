@@ -15,22 +15,22 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRoleVo {
-    private Long id;
+    private Integer id;
 
-    private String userName;
+    private String username;
     //昵称
-    private String nickName;
+    private String name;
     //密码
     private String password;
     //用户性别（0男，1女，2未知）
     private String sex;
     //账号状态（0正常 1停用）
-    private String status;
+    private String states;
     //邮箱
     private String mail;
     //手机号
-    private String phonenumber;
+    private String tele;
 
-    private List<String> roleIds;
+    private List<Integer> roleIds;
 
 }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class SplitSalary {
 
     @Autowired
     private RelationService relationService;
+    @Autowired
+    private UserRoleService userRoleService;
 
 
     @Autowired
@@ -175,5 +178,31 @@ public class SplitSalary {
         }
     }
 
+
+    /**
+     * 公司和角色绑定
+     */
+    @Test
+    public void cpyAssociatedWithRole(){
+        List<User> userList = userService.list();
+        userList.forEach(item -> {
+            if(item.getIsCompany() == 1){
+                Integer userId = item.getId();
+                UserRole userRole = new UserRole();
+                userRole.setUserId(userId)
+                        //公司管理员
+                        .setRoleId(2);
+                userRoleService.save(userRole);
+            }
+            else if(item.getIsCompany() == 2){
+                Integer userId = item.getId();
+                UserRole userRole = new UserRole();
+                userRole.setUserId(userId)
+                        //系统管理员
+                        .setRoleId(12);
+                userRoleService.save(userRole);
+            }
+        });
+    }
 
 }

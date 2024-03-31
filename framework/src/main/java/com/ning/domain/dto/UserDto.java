@@ -3,6 +3,7 @@ package com.ning.domain.dto;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import com.ning.domain.entity.User;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserDto implements UserDetails {
 
     private User user;
+
+    private List<String> permissions;
 
 
     @Override

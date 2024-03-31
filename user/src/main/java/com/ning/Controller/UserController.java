@@ -33,6 +33,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    // TODO 用户需要设置简历的隐私，加密
     /**
      * 登录接口
      * @param userLoginDto
@@ -64,6 +66,17 @@ public class UserController {
         return userService.register(user);
     }
 
+    /**
+     * 根据id获取用户的简历
+     * @param resumeId
+     * @return
+     */
+    @ApiOperation("根据id获取用户的简历")
+    @GetMapping("/resumeById")
+    public Result<ResumeVo> getResumeById(Integer resumeId){
+        log.info("根据id获取用户的简历:{}",resumeId);
+        return userService.getResumeById(resumeId);
+    }
     /**
      * 获取当前用户默认的简历信息
      * @return

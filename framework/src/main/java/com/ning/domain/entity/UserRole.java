@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("user_role")
+@TableName("sys_user_role")
 @Accessors(chain = true)
 public class UserRole  {
     @TableId

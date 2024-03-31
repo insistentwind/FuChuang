@@ -1,14 +1,10 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.domain.vo.ResumeVo;
+import com.ning.domain.vo.*;
 import com.ning.domain.entity.User;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
-import com.ning.domain.vo.DeliverVo;
-import com.ning.domain.vo.UserPageVo;
-import com.ning.domain.vo.UserRoleVo;
-import com.ning.domain.vo.UserVo;
 
 import java.util.List;
 
@@ -106,5 +102,22 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<String> deliverBatchResumes(List<ResumeVo> resumeVos);
+    /**
+     * 根据id获取用户的简历
+     * @param resumeId
+     * @return
+     */
+    Result<ResumeVo> getResumeById(Integer resumeId);
+    /**
+     * 根据id查询用户信息回显接口
+     * @return
+     */
+    Result<UserRoleInfoVo> getUserInfoById(Integer id);
+    /**
+     * 更新用户信息接口
+     * @param userRoleVo
+     * @return
+     */
+    Result<String> updateUserRoleVo(UserRoleVo userRoleVo);
 }
 

@@ -1,9 +1,8 @@
 package com.ning.Controller;
 
 import com.ning.domain.Do.CompanyDo;
+import com.ning.domain.Do.CompanySignUpDo;
 import com.ning.domain.dto.CompanyDto;
-import com.ning.domain.entity.Resume;
-import com.ning.domain.entity.Work;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
@@ -12,7 +11,7 @@ import com.ning.domain.vo.WorkPageVo;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.service.CompanyService;
-import com.ning.service.impl.CompanyServiceImpl;
+import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +45,28 @@ public class CompanyController {
      * @param companyDo
      * @return
      */
+    /**
+     * 公司端投递简历
+     * 情景为：公司线下面试后，需要把面试者的信息投递到公司自己的职位里面去
+     * 可能是一个List，导入
+     * @param resumeVoList
+     * @return
+     */
+
+    @ApiOperation("公司端投递简历(公司把面试者的信息录入)")
+    @GetMapping("/resume")
+    public Result<String> commitResumeList(List<ResumeVo> resumeVoList){
+        return companyService.commitResumeList(resumeVoList);
+    }
+
+    /**
+     * 公司注册
+     * @param companyDo
+     * @return
+     */
     @PostMapping("/register")
     @ApiOperation("公司注册")
-    public Result<String> create(@RequestBody CompanyDo companyDo){
+    public Result<String> create(@RequestBody CompanySignUpDo companyDo){
         log.info("新增公司:{}",companyDo);
         return companyService.createCompany(companyDo);
 
@@ -66,6 +84,78 @@ public class CompanyController {
     }
 
     /**
+     * 更新公司的信息
+     * @param companyDo
+     * @return
+     */
+    @ApiOperation("更新公司信息")
+    @PutMapping("/update")
+    public Result<String> update(@RequestBody CompanyDo companyDo){
+        log.info("更改公司信息");
+        CompanyDto companyDto = BeanCopyUtils.copyBean(companyDo, CompanyDto.class);
+        return companyService.updateByCompany(companyDto);
+    }
+    /**
+     * 查询此公司下所有职位投递的简历列表
+     * @param
+     * @return
+     */
+    @ApiOperation("此公司所有职位收到的简历列表")
+    @GetMapping("/listByCompany")
+    public Result<List<WorkVo>> getResumeListByCompany(){
+        return companyService.getResumeListByCompany();
+    }
+
+
+    /**
+     * 根据职位id查询所有投递的简历列表
+     * @param id
+     * @return
+     */
+    @ApiOperation("职位id查询投递的简历列表")
+    @GetMapping("/listByResumeId/{id}")
+    public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
+        //这里的简历列表被放入到了WorkVo中的ResumeList中
+        return companyService.getResumeListByWorkId(id);
+    }
+    /**
+     * 根据用户id查询此用户的简历
+     * @return
+     */
+    @ApiOperation("据用户id查询此用户的简历")
+    @GetMapping("/getByUserId")
+    public Result<ResumeVo> getResumeVoByUserId(Integer userId){
+        return companyService.getResumeVoByUserId(userId);
+    }
+
+
+
+    /**
+     * 以上均需要放入公司端中
+     */
+    /**
+     * 条件查询此公司下发布的职位
+     * @param workPageVo
+     * @return
+     */
+    @ApiOperation("条件查询此公司下的职位")
+    @GetMapping("/PositionList")
+    public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo){
+        return companyService.pageByCategoryId(workPageVo);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * 分页查询所有公司
      * @param companyDto
      * @return
@@ -77,17 +167,7 @@ public class CompanyController {
         return companyService.getListByDto(companyDto);
     }
 
-    /**
-     * 更新公司的信息
-     * @param companyDto
-     * @return
-     */
-    @ApiOperation("更新公司信息")
-    @PutMapping("/update")
-    public Result<String> update(@RequestBody CompanyDto companyDto){
-        log.info("更改公司信息");
-        return companyService.updateByCompany(companyDto);
-    }
+
 
     /**
      * 根据id查询公司
@@ -115,64 +195,13 @@ public class CompanyController {
         return companyService.getByCompanyName(companyName);
     }
 
-
     /**
-     * 查询此公司下所有职位投递的简历列表
-     * @param
+     * 根据公司名查询其行业
      * @return
      */
-    @ApiOperation("此公司所有职位收到的简历列表")
-    @GetMapping("/listByCompany")
-//    public Result<List<WorkVo>> getResumeListByCompany(Integer id){
-//        return companyService.getResumeListByCompany(id);
-//    }
-    public Result<List<WorkVo>> getResumeListByCompany(){
-        return companyService.getResumeListByCompany();
-    }
-
-    /**
-     * 条件查询此公司下发布的职位
-     * @param workPageVo
-     * @return
-     */
-    @ApiOperation("条件查询此公司下的职位")
-    @GetMapping("/PositionList")
-    public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo){
-        return companyService.pageByCategoryId(workPageVo);
-    }
-
-    /**
-     * 根据职位id查询所有投递的简历列表
-     * @param id
-     * @return
-     */
-    @ApiOperation("职位id查询投递的简历列表")
-    @GetMapping("/listByResumeId/{id}")
-    public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
-        //这里的简历列表被放入到了WorkVo中的ResumeList中
-        return companyService.getResumeListByWorkId(id);
-    }
-
-    /**
-     * 根据用户id查询此用户的简历
-     * @return
-     */
-    @ApiOperation("据用户id查询此用户的简历")
-    @GetMapping("/getByUserId")
-    public Result<ResumeVo> getResumeVoByUserId(Integer userId){
-        return companyService.getResumeVoByUserId(userId);
-    }
-
-    /**
-     * 公司端投递简历
-     * 情景为：公司线下面试后，需要把面试者的信息投递到公司自己的职位里面去
-     * 可能是一个List，导入
-     * @param resumeVoList
-     * @return
-     */
-    @ApiOperation("公司端投递简历(公司把面试者的信息录入)")
-    @GetMapping("/resume")
-    public Result<String> commitResumeList(List<ResumeVo> resumeVoList){
-        return companyService.commitResumeList(resumeVoList);
+    @ApiOperation("根据公司名查询其行业")
+    @GetMapping("/industry")
+    public Result<List<String>> getIndustry(String companyBrand){
+        return companyService.getIndustry(companyBrand);
     }
 }

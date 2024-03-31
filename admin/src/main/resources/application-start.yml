@@ -15,4 +15,4 @@ fc:
   redis:
     host: localhost
     port: 6379
-    database: 9
+    database: 10

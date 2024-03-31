@@ -16,6 +16,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -59,6 +60,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("服创管理端接口文档")
                 .version("2.0")
+                .contact(new Contact("InsistentWind", "https://www.bilibili.com/", "578009720@qq.com"))
                 .description("服创管理端接口文档")
                 .build();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)

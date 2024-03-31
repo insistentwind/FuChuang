@@ -1,7 +1,20 @@
+package com.ning.domain.vo;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
-* @author: qjn
-* @create: 2024/03/30 19:14
-**/
+ * @author: qjn
+ * @create: 2024/03/30 19:14
+ **/
+@Data
+@Accessors(chain = true)
 public class WorkSalaryVo {
+
+    private Integer id;
+
+    //薪资分类
+    private String salary;
+
 
 }
