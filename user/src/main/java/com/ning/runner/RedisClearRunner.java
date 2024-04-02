@@ -1,13 +1,10 @@
 package com.ning.runner;
 
-import com.ning.utils.RedisCache;
-import io.lettuce.core.protocol.Command;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.convert.RedisData;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;

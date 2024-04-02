@@ -1,17 +1,17 @@
 package com.ning.domain.entity;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.experimental.Accessors;
 
 /**
@@ -25,35 +25,47 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@ApiModel(value = "公司表",description = "")
 @TableName("company")
 public class Company  {
+    /**  */
+    @ApiModelProperty(name = "",notes = "")
     @TableId
-    private Integer id;
-
-    //加密id
-    private String encryptBrandid;
-    //行业
-    private String brandIndustry;
-    //公司名称
-    private String brandName;
-    //公司图标
-    private String brandLogo;
-    //公司规模
-    private String brandScaleName;
-    //逻辑删除 0为未删除，1为删除
-    private Integer delFlag;
-    //更新人
+    private Integer id ;
+    /** 加密id */
+    @ApiModelProperty(name = "加密id",notes = "")
+    private String encryptBrandid ;
+    /** 行业 */
+    @ApiModelProperty(name = "行业",notes = "")
+    private String brandIndustry ;
+    /** 公司名称 */
+    @ApiModelProperty(name = "公司名称",notes = "")
+    private String brandName ;
+    /** 公司图标 */
+    @ApiModelProperty(name = "公司图标",notes = "")
+    private String brandLogo ;
+    /** 公司规模 */
+    @ApiModelProperty(name = "公司规模",notes = "")
+    private Integer brandScaleName ;
+    /** 更新人 */
+    @ApiModelProperty(name = "更新人",notes = "")
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Integer updateBy;
-    //创建者
-    @TableField(fill = FieldFill.INSERT)
-    private Integer createBy;
-    //更新时间
+    private Integer updateBy ;
+    /** 更新时间 */
+    @ApiModelProperty(name = "更新时间",notes = "")
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-    //创建时间
+    private LocalDateTime updateTime ;
+    /** 创建时间 */
+    @ApiModelProperty(name = "创建时间",notes = "")
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime ;
+    /** 创建人 */
+    @ApiModelProperty(name = "创建人",notes = "")
+    @TableField(fill = FieldFill.INSERT)
+    private Integer createBy ;
+    /** 删除标志位 */
+    @ApiModelProperty(name = "删除标志位",notes = "")
+    private Integer delFlag ;
 
 }
 

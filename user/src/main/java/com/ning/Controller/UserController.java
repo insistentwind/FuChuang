@@ -1,6 +1,5 @@
 package com.ning.Controller;
 
-import com.ning.domain.entity.Resume;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;

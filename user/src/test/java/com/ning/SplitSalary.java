@@ -1,16 +1,9 @@
 package com.ning;
 
-import com.ning.UserApplication;
-import com.ning.domain.entity.Work;
-import com.ning.mapper.WorkMapper;
 import com.ning.service.WorkService;
-import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author: qjn

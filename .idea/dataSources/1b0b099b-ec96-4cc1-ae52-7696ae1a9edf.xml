@@ -7,8 +7,15 @@
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <Grants>|root||root|localhost|ALTER|G
 |root||root|localhost|ALTER ROUTINE|G
+|root||root|localhost|APPLICATION_PASSWORD_ADMIN|G
+|root||root|localhost|AUDIT_ADMIN|G
+|root||mysql.session|localhost|BACKUP_ADMIN|G
 |root||root|localhost|BACKUP_ADMIN|G
 |root||root|localhost|BINLOG_ADMIN|G
+|root||root|localhost|BINLOG_ENCRYPTION_ADMIN|G
+|root||mysql.session|localhost|CLONE_ADMIN|G
+|root||root|localhost|CLONE_ADMIN|G
+|root||mysql.session|localhost|CONNECTION_ADMIN|G
 |root||root|localhost|CONNECTION_ADMIN|G
 |root||root|localhost|CREATE|G
 |root||root|localhost|CREATE ROLE|G
@@ -24,8 +31,14 @@
 |root||root|localhost|EVENT|G
 |root||root|localhost|EXECUTE|G
 |root||root|localhost|FILE|G
+|root||root|localhost|FLUSH_OPTIMIZER_COSTS|G
+|root||root|localhost|FLUSH_STATUS|G
+|root||root|localhost|FLUSH_TABLES|G
+|root||root|localhost|FLUSH_USER_RESOURCES|G
 |root||root|localhost|GROUP_REPLICATION_ADMIN|G
 |root||root|localhost|INDEX|G
+|root||root|localhost|INNODB_REDO_LOG_ARCHIVE|G
+|root||root|localhost|INNODB_REDO_LOG_ENABLE|G
 |root||root|localhost|INSERT|G
 |root||root|localhost|LOCK TABLES|G
 |root||mysql.session|localhost|PERSIST_RO_VARIABLES_ADMIN|G
@@ -35,20 +48,31 @@
 |root||root|localhost|RELOAD|G
 |root||root|localhost|REPLICATION CLIENT|G
 |root||root|localhost|REPLICATION SLAVE|G
+|root||root|localhost|REPLICATION_APPLIER|G
 |root||root|localhost|REPLICATION_SLAVE_ADMIN|G
 |root||root|localhost|RESOURCE_GROUP_ADMIN|G
 |root||root|localhost|RESOURCE_GROUP_USER|G
 |root||root|localhost|ROLE_ADMIN|G
 |root||mysql.infoschema|localhost|SELECT|G
 |root||root|localhost|SELECT|G
+|root||root|localhost|SERVICE_CONNECTION_ADMIN|G
+|root||mysql.session|localhost|SESSION_VARIABLES_ADMIN|G
+|root||root|localhost|SESSION_VARIABLES_ADMIN|G
 |root||root|localhost|SET_USER_ID|G
 |root||root|localhost|SHOW DATABASES|G
 |root||root|localhost|SHOW VIEW|G
+|root||root|localhost|SHOW_ROUTINE|G
+|root||mysql.session|localhost|SHUTDOWN|G
 |root||root|localhost|SHUTDOWN|G
 |root||mysql.session|localhost|SUPER|G
 |root||root|localhost|SUPER|G
+|root||mysql.infoschema|localhost|SYSTEM_USER|G
+|root||mysql.session|localhost|SYSTEM_USER|G
+|root||mysql.sys|localhost|SYSTEM_USER|G
+|root||root|localhost|SYSTEM_USER|G
 |root||mysql.session|localhost|SYSTEM_VARIABLES_ADMIN|G
 |root||root|localhost|SYSTEM_VARIABLES_ADMIN|G
+|root||root|localhost|TABLE_ENCRYPTION_ADMIN|G
 |root||root|localhost|TRIGGER|G
 |root||root|localhost|UPDATE|G
 |root||root|localhost|XA_RECOVER_ADMIN|G
@@ -908,1469 +932,1485 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <collation id="271" parent="1" name="utf8mb4_ru_0900_as_cs">
       <Charset>utf8mb4</Charset>
     </collation>
-    <schema id="272" parent="1" name="mysql">
+    <collation id="272" parent="1" name="utf8mb4_zh_0900_as_cs">
+      <Charset>utf8mb4</Charset>
+    </collation>
+    <collation id="273" parent="1" name="utf8mb4_0900_bin">
+      <Charset>utf8mb4</Charset>
+    </collation>
+    <schema id="274" parent="1" name="mysql">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="273" parent="1" name="information_schema">
+    <schema id="275" parent="1" name="information_schema">
       <CollationName>utf8_general_ci</CollationName>
     </schema>
-    <schema id="274" parent="1" name="performance_schema">
+    <schema id="276" parent="1" name="performance_schema">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="275" parent="1" name="sys">
+    <schema id="277" parent="1" name="sys">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="276" parent="1" name="sky">
+    <schema id="278" parent="1" name="sakila">
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </schema>
+    <schema id="279" parent="1" name="world">
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </schema>
+    <schema id="280" parent="1" name="sky_take_out">
+      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+    </schema>
+    <schema id="281" parent="1" name="sg_blog">
       <CollationName>utf8_general_ci</CollationName>
     </schema>
-    <schema id="277" parent="1" name="sky_take_out">
+    <schema id="282" parent="1" name="ruoyi-vue-pro">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="278" parent="1" name="echat">
+    <schema id="283" parent="1" name="fuchuang_a15">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="279" parent="1" name="sg_blog">
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </schema>
-    <schema id="280" parent="1" name="ruoyi-vue-pro">
-      <CollationName>utf8_general_ci</CollationName>
-    </schema>
-    <schema id="281" parent="1" name="fuchuang_a15">
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </schema>
-    <user id="282" parent="1" name="mysql.infoschema">
+    <user id="284" parent="1" name="mysql.infoschema">
       <CanLogin>0</CanLogin>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
-    <user id="283" parent="1" name="mysql.session">
+    <user id="285" parent="1" name="mysql.session">
       <CanLogin>0</CanLogin>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
-    <user id="284" parent="1" name="mysql.sys">
+    <user id="286" parent="1" name="mysql.sys">
       <CanLogin>0</CanLogin>
       <Host>localhost</Host>
       <Plugin>caching_sha2_password</Plugin>
     </user>
-    <user id="285" parent="1" name="root">
+    <user id="287" parent="1" name="root">
       <Host>localhost</Host>
+      <Plugin>caching_sha2_password</Plugin>
     </user>
-    <table id="286" parent="281" name="announce">
-      <Comment>文章表</Comment>
+    <table id="288" parent="283" name="announce">
+      <Comment>系统公告表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="287" parent="281" name="brand_scale_name">
+    <table id="289" parent="283" name="brand_scale_name">
+      <Comment>公司规模分类</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="288" parent="281" name="chat">
+    <table id="290" parent="283" name="chat">
       <Comment>websocket聊天</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="289" parent="281" name="city_classify">
+    <table id="291" parent="283" name="city_classify">
       <Comment>城市分类</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="290" parent="281" name="company">
+    <table id="292" parent="283" name="company">
       <Comment>公司表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="291" parent="281" name="company_employee">
+    <table id="293" parent="283" name="company_employee">
+      <Comment>公司-员工关系表</Comment>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="292" parent="281" name="favor">
+    <table id="294" parent="283" name="favor">
       <Comment>用户收藏职位</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="293" parent="281" name="follow">
+    <table id="295" parent="283" name="follow">
       <Comment>用户关注公司</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="294" parent="281" name="history">
+    <table id="296" parent="283" name="history">
       <Comment>用户查看职位历史</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="295" parent="281" name="notify">
+    <table id="297" parent="283" name="notify">
       <Comment>消息表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="296" parent="281" name="relation">
+    <table id="298" parent="283" name="relation">
       <Comment>公司-职位表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="297" parent="281" name="resume">
+    <table id="299" parent="283" name="resume">
       <Comment>简历表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="298" parent="281" name="sys_menu">
+    <table id="300" parent="283" name="sys_menu">
       <Comment>菜单权限表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="299" parent="281" name="sys_role">
+    <table id="301" parent="283" name="sys_role">
       <Comment>系统角色表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="300" parent="281" name="sys_role_menu">
+    <table id="302" parent="283" name="sys_role_menu">
       <Comment>角色和菜单关联表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="301" parent="281" name="sys_user_role">
+    <table id="303" parent="283" name="sys_user_role">
       <Comment>用户-角色表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="302" parent="281" name="user">
+    <table id="304" parent="283" name="user">
       <Comment>用户表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="303" parent="281" name="user_company">
+    <table id="305" parent="283" name="user_company">
       <Comment>用户-公司表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="304" parent="281" name="user_resume">
+    <table id="306" parent="283" name="user_resume">
       <Comment>用户-简历表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="305" parent="281" name="work">
+    <table id="307" parent="283" name="work">
       <Comment>职位表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_bin</CollationName>
     </table>
-    <table id="306" parent="281" name="work_classify">
+    <table id="308" parent="283" name="work_classify">
       <Comment>职位分类表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="307" parent="281" name="work_degree">
+    <table id="309" parent="283" name="work_degree">
+      <Comment>学历分类表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="308" parent="281" name="work_experience">
+    <table id="310" parent="283" name="work_experience">
+      <Comment>工作经历表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="309" parent="281" name="work_salary">
+    <table id="311" parent="283" name="work_salary">
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8_general_ci</CollationName>
     </table>
-    <table id="310" parent="281" name="work_user">
+    <table id="312" parent="283" name="work_user">
       <Comment>职位-用户简历投递表</Comment>
       <Engine>InnoDB</Engine>
       <Options>row_format
 DYNAMIC</Options>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <column id="311" parent="286" name="id">
+    <column id="313" parent="288" name="id">
       <AutoIncrement>6</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="312" parent="286" name="title">
+    <column id="314" parent="288" name="title">
       <Comment>标题</Comment>
       <DasType>varchar(256)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="313" parent="286" name="content">
+    <column id="315" parent="288" name="content">
       <Comment>公告内容</Comment>
       <DasType>longtext|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="314" parent="286" name="summary">
+    <column id="316" parent="288" name="summary">
       <Comment>公告摘要</Comment>
       <DasType>varchar(1024)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="315" parent="286" name="thumbnail">
+    <column id="317" parent="288" name="thumbnail">
       <Comment>缩略图</Comment>
       <DasType>varchar(256)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="316" parent="286" name="is_top">
+    <column id="318" parent="288" name="is_top">
       <Comment>是否置顶（0否，1是）</Comment>
       <DasType>char(1)|0s</DasType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <Position>6</Position>
     </column>
-    <column id="317" parent="286" name="view_count">
+    <column id="319" parent="288" name="view_count">
       <Comment>访问量</Comment>
       <DasType>bigint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>7</Position>
     </column>
-    <column id="318" parent="286" name="create_by">
+    <column id="320" parent="288" name="create_by">
       <DasType>bigint|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="319" parent="286" name="create_time">
+    <column id="321" parent="288" name="create_time">
       <DasType>datetime|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="320" parent="286" name="update_by">
+    <column id="322" parent="288" name="update_by">
       <DasType>bigint|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="321" parent="286" name="update_time">
+    <column id="323" parent="288" name="update_time">
       <DasType>datetime|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="322" parent="286" name="del_flag">
+    <column id="324" parent="288" name="del_flag">
       <Comment>删除标志（0代表未删除，1代表已删除）</Comment>
       <DasType>int|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>12</Position>
     </column>
-    <index id="323" parent="286" name="PRIMARY">
+    <column id="325" parent="288" name="status">
+      <Comment>0 启用，1不启用</Comment>
+      <DasType>int|0s</DasType>
+      <Position>13</Position>
+    </column>
+    <index id="326" parent="288" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="324" parent="286" name="PRIMARY">
+    <key id="327" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="325" parent="287" name="id">
-      <AutoIncrement>8</AutoIncrement>
+    <column id="328" parent="289" name="id">
+      <AutoIncrement>7</AutoIncrement>
       <Comment>id</Comment>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="326" parent="287" name="brand_scale_name">
+    <column id="329" parent="289" name="brand_scale_name">
       <Comment>公司规模</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="327" parent="287" name="PRIMARY">
+    <index id="330" parent="289" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="328" parent="287" name="PRIMARY">
+    <key id="331" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="329" parent="288" name="id">
-      <AutoIncrement>9</AutoIncrement>
+    <column id="332" parent="290" name="id">
+      <AutoIncrement>8</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="330" parent="288" name="content">
+    <column id="333" parent="290" name="content">
       <Comment>消息内容</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="331" parent="288" name="sender_id">
+    <column id="334" parent="290" name="sender_id">
       <Comment>发送者id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="332" parent="288" name="recv_id">
+    <column id="335" parent="290" name="recv_id">
       <Comment>接受者id</Comment>
       <DasType>int|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="333" parent="288" name="self_info">
+    <column id="336" parent="290" name="self_info">
       <Comment>发送者的信息</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="334" parent="288" name="target">
+    <column id="337" parent="290" name="target">
       <Comment>接受者的信息</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="335" parent="288" name="timestamp">
+    <column id="338" parent="290" name="timestamp">
       <Comment>消息发送时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="336" parent="288" name="status">
+    <column id="339" parent="290" name="status">
       <Comment>0未读，1已读</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>8</Position>
     </column>
-    <column id="337" parent="288" name="del_flag">
+    <column id="340" parent="290" name="del_flag">
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>9</Position>
     </column>
-    <index id="338" parent="288" name="PRIMARY">
+    <index id="341" parent="290" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="339" parent="288" name="PRIMARY">
+    <key id="342" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="340" parent="289" name="id">
-      <AutoIncrement>1001</AutoIncrement>
+    <column id="343" parent="291" name="id">
+      <AutoIncrement>1000</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="341" parent="289" name="city_name">
+    <column id="344" parent="291" name="city_name">
       <Comment>城市</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="342" parent="289" name="PRIMARY">
+    <index id="345" parent="291" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="343" parent="289" name="city_classify_id_uindex">
+    <index id="346" parent="291" name="city_classify_id_uindex">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="344" parent="289" name="PRIMARY">
+    <key id="347" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="345" parent="289" name="city_classify_id_uindex">
+    <key id="348" parent="291" name="city_classify_id_uindex">
       <UnderlyingIndexName>city_classify_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="346" parent="290" name="id">
+    <column id="349" parent="292" name="id">
       <AutoIncrement>18204</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="347" parent="290" name="encrypt_brandId">
+    <column id="350" parent="292" name="encrypt_brandId">
       <Comment>加密id</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="348" parent="290" name="brand_industry">
+    <column id="351" parent="292" name="brand_industry">
       <Comment>行业</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="349" parent="290" name="brand_name">
+    <column id="352" parent="292" name="brand_name">
       <Comment>公司名称</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="350" parent="290" name="brand_logo">
+    <column id="353" parent="292" name="brand_logo">
       <Comment>公司图标</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="351" parent="290" name="brand_scale_name">
+    <column id="354" parent="292" name="brand_scale_name">
       <Comment>公司规模</Comment>
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="352" parent="290" name="update_by">
+    <column id="355" parent="292" name="update_by">
       <Comment>更新人</Comment>
       <DasType>int|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="353" parent="290" name="update_time">
+    <column id="356" parent="292" name="update_time">
       <Comment>更新时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="354" parent="290" name="create_time">
+    <column id="357" parent="292" name="create_time">
       <Comment>创建时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="355" parent="290" name="create_by">
+    <column id="358" parent="292" name="create_by">
       <Comment>创建人</Comment>
       <DasType>int|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="356" parent="290" name="del_flag">
+    <column id="359" parent="292" name="del_flag">
       <Comment>删除标志位</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>11</Position>
     </column>
-    <index id="357" parent="290" name="PRIMARY">
+    <index id="360" parent="292" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="358" parent="290" name="PRIMARY">
+    <key id="361" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="359" parent="291" name="id">
+    <column id="362" parent="293" name="id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="360" parent="291" name="company_user_id">
+    <column id="363" parent="293" name="company_user_id">
       <Comment>公司管理员id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="361" parent="291" name="employee_id">
+    <column id="364" parent="293" name="employee_id">
       <Comment>公司用户id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <index id="362" parent="291" name="PRIMARY">
+    <index id="365" parent="293" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="363" parent="291" name="PRIMARY">
+    <key id="366" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="364" parent="292" name="id">
-      <AutoIncrement>3</AutoIncrement>
+    <column id="367" parent="294" name="id">
+      <AutoIncrement>2</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="365" parent="292" name="user_id">
+    <column id="368" parent="294" name="user_id">
       <Comment>收藏人id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="366" parent="292" name="work_id">
+    <column id="369" parent="294" name="work_id">
       <Comment>职位id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <index id="367" parent="292" name="PRIMARY">
+    <index id="370" parent="294" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="368" parent="292" name="PRIMARY">
+    <key id="371" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="369" parent="293" name="id">
+    <column id="372" parent="295" name="id">
+      <AutoIncrement>4</AutoIncrement>
+      <DasType>int|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="373" parent="295" name="user_id">
+      <Comment>用户id</Comment>
+      <DasType>int|0s</DasType>
+      <Position>2</Position>
+    </column>
+    <column id="374" parent="295" name="company_id">
+      <Comment>关注的公司的id</Comment>
+      <DasType>int|0s</DasType>
+      <Position>3</Position>
+    </column>
+    <index id="375" parent="295" name="PRIMARY">
+      <ColNames>id</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="376" parent="295" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="377" parent="296" name="id">
+      <AutoIncrement>9</AutoIncrement>
+      <DasType>int|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="378" parent="296" name="user_id">
+      <Comment>用户id</Comment>
+      <DasType>int|0s</DasType>
+      <Position>2</Position>
+    </column>
+    <column id="379" parent="296" name="work_id">
+      <Comment>职位id</Comment>
+      <DasType>int|0s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="380" parent="296" name="title">
+      <Comment>职位名称</Comment>
+      <DasType>varchar(255)|0s</DasType>
+      <Position>4</Position>
+    </column>
+    <index id="381" parent="296" name="PRIMARY">
+      <ColNames>id</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="382" parent="296" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="383" parent="297" name="id">
       <AutoIncrement>5</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="370" parent="293" name="user_id">
-      <Comment>用户id</Comment>
-      <DasType>int|0s</DasType>
-      <Position>2</Position>
-    </column>
-    <column id="371" parent="293" name="company_id">
-      <Comment>关注的公司的id</Comment>
-      <DasType>int|0s</DasType>
-      <Position>3</Position>
-    </column>
-    <index id="372" parent="293" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="373" parent="293" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="374" parent="294" name="id">
-      <AutoIncrement>10</AutoIncrement>
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-    </column>
-    <column id="375" parent="294" name="user_id">
-      <Comment>用户id</Comment>
-      <DasType>int|0s</DasType>
-      <Position>2</Position>
-    </column>
-    <column id="376" parent="294" name="work_id">
-      <Comment>职位id</Comment>
-      <DasType>int|0s</DasType>
-      <Position>3</Position>
-    </column>
-    <column id="377" parent="294" name="title">
-      <Comment>职位名称</Comment>
-      <DasType>varchar(255)|0s</DasType>
-      <Position>4</Position>
-    </column>
-    <index id="378" parent="294" name="PRIMARY">
-      <ColNames>id</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="379" parent="294" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="380" parent="295" name="id">
-      <AutoIncrement>6</AutoIncrement>
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-    </column>
-    <column id="381" parent="295" name="content">
+    <column id="384" parent="297" name="content">
       <Comment>消息内容</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="382" parent="295" name="user_id">
+    <column id="385" parent="297" name="user_id">
       <Comment>用户id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="383" parent="295" name="is_read">
+    <column id="386" parent="297" name="is_read">
       <Comment>消息是否已读(0未读，1已读)</Comment>
       <DasType>tinyint(1)|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>4</Position>
     </column>
-    <column id="384" parent="295" name="time">
+    <column id="387" parent="297" name="time">
       <Comment>通知时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="385" parent="295" name="del_flag">
+    <column id="388" parent="297" name="del_flag">
       <Comment>删除标记</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>6</Position>
     </column>
-    <index id="386" parent="295" name="PRIMARY">
+    <index id="389" parent="297" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="387" parent="295" name="PRIMARY">
+    <key id="390" parent="297" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="388" parent="296" name="id">
-      <AutoIncrement>15519</AutoIncrement>
+    <column id="391" parent="298" name="id">
+      <AutoIncrement>15518</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="389" parent="296" name="company_id">
+    <column id="392" parent="298" name="company_id">
       <Comment>公司id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="390" parent="296" name="work_id">
+    <column id="393" parent="298" name="work_id">
       <Comment>职位id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <index id="391" parent="296" name="PRIMARY">
+    <index id="394" parent="298" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="392" parent="296" name="PRIMARY">
+    <key id="395" parent="298" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="393" parent="297" name="id">
-      <AutoIncrement>13</AutoIncrement>
+    <column id="396" parent="299" name="id">
+      <AutoIncrement>12</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="394" parent="297" name="name">
+    <column id="397" parent="299" name="name">
       <Comment>姓名</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="395" parent="297" name="bir">
+    <column id="398" parent="299" name="bir">
       <Comment>出生日期</Comment>
       <DasType>datetime|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="396" parent="297" name="age">
+    <column id="399" parent="299" name="age">
       <Comment>年龄</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="397" parent="297" name="email">
+    <column id="400" parent="299" name="email">
       <Comment>邮箱</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="398" parent="297" name="gend">
+    <column id="401" parent="299" name="gend">
       <Comment>性别（0女，1男）</Comment>
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="399" parent="297" name="tel">
+    <column id="402" parent="299" name="tel">
       <Comment>电话</Comment>
       <DasType>varchar(48)|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="400" parent="297" name="acad">
+    <column id="403" parent="299" name="acad">
       <Comment>最高学历</Comment>
       <DasType>varchar(48)|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="401" parent="297" name="nati">
+    <column id="404" parent="299" name="nati">
       <Comment>籍贯</Comment>
       <DasType>varchar(48)|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="402" parent="297" name="live">
+    <column id="405" parent="299" name="live">
       <Comment>落户市县</Comment>
       <DasType>varchar(48)|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="403" parent="297" name="poli">
+    <column id="406" parent="299" name="poli">
       <Comment>政治面貌</Comment>
       <DasType>varchar(48)|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="404" parent="297" name="unv">
+    <column id="407" parent="299" name="unv">
       <Comment>毕业院校</Comment>
       <DasType>varchar(48)|0s</DasType>
       <Position>12</Position>
     </column>
-    <column id="405" parent="297" name="work_experience">
+    <column id="408" parent="299" name="work_experience">
       <Comment>工作经历</Comment>
       <DasType>varchar(1024)|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="406" parent="297" name="education">
+    <column id="409" parent="299" name="education">
       <Comment>教育经历</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>14</Position>
     </column>
-    <column id="407" parent="297" name="project_experience">
+    <column id="410" parent="299" name="project_experience">
       <Comment>项目经历</Comment>
       <DasType>varchar(1024)|0s</DasType>
       <Position>15</Position>
     </column>
-    <column id="408" parent="297" name="training_experience">
+    <column id="411" parent="299" name="training_experience">
       <Comment>教育培训经历</Comment>
       <DasType>varchar(1024)|0s</DasType>
       <Position>16</Position>
     </column>
-    <column id="409" parent="297" name="awards">
+    <column id="412" parent="299" name="awards">
       <Comment>获奖情况</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>17</Position>
     </column>
-    <column id="410" parent="297" name="self_assessment">
+    <column id="413" parent="299" name="self_assessment">
       <Comment>自我评价</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>18</Position>
     </column>
-    <column id="411" parent="297" name="career_objective">
+    <column id="414" parent="299" name="career_objective">
       <Comment>求职意向</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>19</Position>
     </column>
-    <column id="412" parent="297" name="skills">
+    <column id="415" parent="299" name="skills">
       <Comment>技能与特长</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>20</Position>
     </column>
-    <column id="413" parent="297" name="interests">
+    <column id="416" parent="299" name="interests">
       <Comment>个人爱好</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>21</Position>
     </column>
-    <column id="414" parent="297" name="certifications">
+    <column id="417" parent="299" name="certifications">
       <Comment>证书获得</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>22</Position>
     </column>
-    <column id="415" parent="297" name="language_skills">
+    <column id="418" parent="299" name="language_skills">
       <Comment>语言能力</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>23</Position>
     </column>
-    <column id="416" parent="297" name="publications">
+    <column id="419" parent="299" name="publications">
       <Comment>发表论文</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>24</Position>
     </column>
-    <column id="417" parent="297" name="philosophy">
+    <column id="420" parent="299" name="philosophy">
       <Comment>人生格言</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>25</Position>
     </column>
-    <column id="418" parent="297" name="major_courses">
+    <column id="421" parent="299" name="major_courses">
       <Comment>主修课程</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>26</Position>
     </column>
-    <column id="419" parent="297" name="self_introduction">
+    <column id="422" parent="299" name="self_introduction">
       <Comment>自我介绍</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>27</Position>
     </column>
-    <column id="420" parent="297" name="other">
+    <column id="423" parent="299" name="other">
       <Comment>其它情况</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>28</Position>
     </column>
-    <column id="421" parent="297" name="obscure">
+    <column id="424" parent="299" name="obscure">
       <Comment>是否默认可见(0 是，1 否)</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>29</Position>
     </column>
-    <column id="422" parent="297" name="del_flag">
+    <column id="425" parent="299" name="del_flag">
       <Comment>删除标志位</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>30</Position>
     </column>
-    <index id="423" parent="297" name="PRIMARY">
+    <index id="426" parent="299" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="424" parent="297" name="PRIMARY">
+    <key id="427" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="425" parent="298" name="id">
+    <column id="428" parent="300" name="id">
       <AutoIncrement>2029</AutoIncrement>
       <Comment>菜单ID</Comment>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="426" parent="298" name="menu_name">
+    <column id="429" parent="300" name="menu_name">
       <Comment>菜单名称</Comment>
       <DasType>varchar(50)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="427" parent="298" name="parent_id">
+    <column id="430" parent="300" name="parent_id">
       <Comment>父菜单ID</Comment>
       <DasType>int|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>3</Position>
     </column>
-    <column id="428" parent="298" name="order_num">
+    <column id="431" parent="300" name="order_num">
       <Comment>显示顺序</Comment>
       <DasType>int|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>4</Position>
     </column>
-    <column id="429" parent="298" name="path">
+    <column id="432" parent="300" name="path">
       <Comment>路由地址</Comment>
       <DasType>varchar(200)|0s</DasType>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <Position>5</Position>
     </column>
-    <column id="430" parent="298" name="component">
+    <column id="433" parent="300" name="component">
       <Comment>组件路径</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="431" parent="298" name="is_frame">
+    <column id="434" parent="300" name="is_frame">
       <Comment>是否为外链（0是 1否）</Comment>
       <DasType>int|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <Position>7</Position>
     </column>
-    <column id="432" parent="298" name="menu_type">
+    <column id="435" parent="300" name="menu_type">
       <Comment>菜单类型（M目录 C菜单 F按钮）</Comment>
       <DasType>char(1)|0s</DasType>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <Position>8</Position>
     </column>
-    <column id="433" parent="298" name="visible">
+    <column id="436" parent="300" name="visible">
       <Comment>菜单状态（0显示 1隐藏）</Comment>
       <DasType>char(1)|0s</DasType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <Position>9</Position>
     </column>
-    <column id="434" parent="298" name="status">
+    <column id="437" parent="300" name="status">
       <Comment>菜单状态（0正常 1停用）</Comment>
       <DasType>int|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>10</Position>
     </column>
-    <column id="435" parent="298" name="perms">
+    <column id="438" parent="300" name="perms">
       <Comment>权限标识</Comment>
       <DasType>varchar(100)|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="436" parent="298" name="icon">
+    <column id="439" parent="300" name="icon">
       <Comment>菜单图标</Comment>
       <DasType>varchar(100)|0s</DasType>
       <DefaultExpression>&apos;#&apos;</DefaultExpression>
       <Position>12</Position>
     </column>
-    <column id="437" parent="298" name="create_by">
+    <column id="440" parent="300" name="create_by">
       <Comment>创建者</Comment>
       <DasType>bigint|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="438" parent="298" name="create_time">
+    <column id="441" parent="300" name="create_time">
       <Comment>创建时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>14</Position>
     </column>
-    <column id="439" parent="298" name="update_by">
+    <column id="442" parent="300" name="update_by">
       <Comment>更新者</Comment>
       <DasType>bigint|0s</DasType>
       <Position>15</Position>
     </column>
-    <column id="440" parent="298" name="update_time">
+    <column id="443" parent="300" name="update_time">
       <Comment>更新时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>16</Position>
     </column>
-    <column id="441" parent="298" name="remark">
+    <column id="444" parent="300" name="remark">
       <Comment>备注</Comment>
       <DasType>varchar(500)|0s</DasType>
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <Position>17</Position>
     </column>
-    <column id="442" parent="298" name="del_flag">
+    <column id="445" parent="300" name="del_flag">
       <DasType>char(1)|0s</DasType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <Position>18</Position>
     </column>
-    <index id="443" parent="298" name="PRIMARY">
+    <index id="446" parent="300" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="444" parent="298" name="PRIMARY">
+    <key id="447" parent="300" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="445" parent="299" name="id">
+    <column id="448" parent="301" name="id">
       <AutoIncrement>4</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="446" parent="299" name="role_name">
+    <column id="449" parent="301" name="role_name">
       <Comment>角色名称</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="447" parent="299" name="role_key">
+    <column id="450" parent="301" name="role_key">
       <Comment>角色权限字符串</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="448" parent="299" name="role_sort">
+    <column id="451" parent="301" name="role_sort">
       <Comment>排序</Comment>
       <DasType>tinyint|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="449" parent="299" name="status">
+    <column id="452" parent="301" name="status">
       <Comment>是否启用(0是,1是)</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>5</Position>
     </column>
-    <column id="450" parent="299" name="create_by">
+    <column id="453" parent="301" name="create_by">
       <Comment>创建人id</Comment>
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="451" parent="299" name="create_time">
+    <column id="454" parent="301" name="create_time">
       <Comment>创建时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="452" parent="299" name="update_by">
+    <column id="455" parent="301" name="update_by">
       <Comment>更新人id</Comment>
       <DasType>int|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="453" parent="299" name="update_time">
+    <column id="456" parent="301" name="update_time">
       <Comment>更新时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="454" parent="299" name="remark">
+    <column id="457" parent="301" name="remark">
       <Comment>标记</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="455" parent="299" name="del_flag">
+    <column id="458" parent="301" name="del_flag">
       <Comment>是否启用(0是，1否)</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>11</Position>
     </column>
-    <index id="456" parent="299" name="PRIMARY">
+    <index id="459" parent="301" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="457" parent="299" name="PRIMARY">
+    <key id="460" parent="301" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="458" parent="300" name="role_id">
+    <column id="461" parent="302" name="role_id">
       <Comment>角色ID</Comment>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="459" parent="300" name="menu_id">
+    <column id="462" parent="302" name="menu_id">
       <Comment>菜单ID</Comment>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="460" parent="300" name="PRIMARY">
+    <index id="463" parent="302" name="PRIMARY">
       <ColNames>role_id
 menu_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="461" parent="300" name="PRIMARY">
+    <key id="464" parent="302" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="462" parent="301" name="id">
+    <column id="465" parent="303" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="463" parent="301" name="user_id">
+    <column id="466" parent="303" name="user_id">
       <Comment>管理端用户id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="464" parent="301" name="role_id">
+    <column id="467" parent="303" name="role_id">
       <Comment>角色id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <index id="465" parent="301" name="PRIMARY">
+    <index id="468" parent="303" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="466" parent="301" name="PRIMARY">
+    <key id="469" parent="303" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="467" parent="302" name="id">
+    <column id="470" parent="304" name="id">
       <AutoIncrement>22677</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="468" parent="302" name="name">
+    <column id="471" parent="304" name="name">
       <Comment>姓名</Comment>
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="469" parent="302" name="username">
+    <column id="472" parent="304" name="username">
       <Comment>用户名</Comment>
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="470" parent="302" name="password">
+    <column id="473" parent="304" name="password">
       <Comment>密码</Comment>
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="471" parent="302" name="avatar">
+    <column id="474" parent="304" name="avatar">
       <Comment>头像</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="472" parent="302" name="status">
+    <column id="475" parent="304" name="status">
       <Comment>求职状态（是否立刻到岗，1是，0否）</Comment>
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="473" parent="302" name="sex">
+    <column id="476" parent="304" name="sex">
       <Comment>性别（1男，0女）</Comment>
       <DasType>int|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="474" parent="302" name="id_card">
+    <column id="477" parent="304" name="id_card">
       <Comment>身份（学生，社会人士）</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="475" parent="302" name="birthday">
+    <column id="478" parent="304" name="birthday">
       <Comment>出生日期</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="476" parent="302" name="tele">
+    <column id="479" parent="304" name="tele">
       <Comment>电话</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="477" parent="302" name="mail">
+    <column id="480" parent="304" name="mail">
       <Comment>邮箱</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="478" parent="302" name="update_by">
+    <column id="481" parent="304" name="update_by">
       <Comment>更新人</Comment>
       <DasType>int|0s</DasType>
       <Position>12</Position>
     </column>
-    <column id="479" parent="302" name="update_time">
+    <column id="482" parent="304" name="update_time">
       <Comment>更新时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="480" parent="302" name="create_by">
+    <column id="483" parent="304" name="create_by">
       <Comment>创建人</Comment>
       <DasType>int|0s</DasType>
       <Position>14</Position>
     </column>
-    <column id="481" parent="302" name="create_time">
+    <column id="484" parent="304" name="create_time">
       <Comment>创建时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>15</Position>
     </column>
-    <column id="482" parent="302" name="is_company">
+    <column id="485" parent="304" name="is_company">
       <Comment>是否为公司hr(0否，1是)</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <Position>16</Position>
     </column>
-    <column id="483" parent="302" name="del_flag">
+    <column id="486" parent="304" name="del_flag">
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>17</Position>
     </column>
-    <index id="484" parent="302" name="PRIMARY">
+    <index id="487" parent="304" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="485" parent="302" name="idex_mail">
+    <index id="488" parent="304" name="idex_mail">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="486" parent="302" name="idx_username">
+    <index id="489" parent="304" name="idx_username">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="487" parent="302" name="PRIMARY">
+    <key id="490" parent="304" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="488" parent="302" name="idex_mail">
+    <key id="491" parent="304" name="idex_mail">
       <UnderlyingIndexName>idex_mail</UnderlyingIndexName>
     </key>
-    <key id="489" parent="302" name="idx_username">
+    <key id="492" parent="304" name="idx_username">
       <UnderlyingIndexName>idx_username</UnderlyingIndexName>
     </key>
-    <column id="490" parent="303" name="id">
+    <column id="493" parent="305" name="id">
       <AutoIncrement>22747</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="491" parent="303" name="user_id">
+    <column id="494" parent="305" name="user_id">
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="492" parent="303" name="company_id">
+    <column id="495" parent="305" name="company_id">
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <index id="493" parent="303" name="PRIMARY">
+    <index id="496" parent="305" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="494" parent="303" name="PRIMARY">
+    <key id="497" parent="305" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="495" parent="304" name="id">
+    <column id="498" parent="306" name="id">
       <AutoIncrement>7</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="496" parent="304" name="user_id">
+    <column id="499" parent="306" name="user_id">
       <Comment>用户id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="497" parent="304" name="resume_id">
+    <column id="500" parent="306" name="resume_id">
       <Comment>简历id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="498" parent="304" name="is_default">
+    <column id="501" parent="306" name="is_default">
       <Comment>默认简历(0否，1是)</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>4</Position>
     </column>
-    <index id="499" parent="304" name="PRIMARY">
+    <index id="502" parent="306" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="500" parent="304" name="PRIMARY">
+    <key id="503" parent="306" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="501" parent="305" name="id">
+    <column id="504" parent="307" name="id">
       <AutoIncrement>33345</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="502" parent="305" name="classify_id">
+    <column id="505" parent="307" name="classify_id">
       <Comment>分类id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="503" parent="305" name="description">
+    <column id="506" parent="307" name="description">
       <Comment>职位介绍</Comment>
       <DasType>varchar(4096)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="504" parent="305" name="title">
+    <column id="507" parent="307" name="title">
       <DasType>varchar(255)|0s</DasType>
       <Position>4</Position>
       <CollationName>utf8mb4_general_ci</CollationName>
     </column>
-    <column id="505" parent="305" name="education">
+    <column id="508" parent="307" name="education">
       <Comment>学历要求</Comment>
       <DasType>int|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="506" parent="305" name="job_experience">
+    <column id="509" parent="307" name="job_experience">
       <Comment>工作经验要求</Comment>
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="507" parent="305" name="salary">
+    <column id="510" parent="307" name="salary">
       <Comment>薪资分类</Comment>
       <DasType>int|0s</DasType>
       <Position>7</Position>
     </column>
-    <column id="508" parent="305" name="salary_desc">
+    <column id="511" parent="307" name="salary_desc">
       <Comment>薪资水平</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="509" parent="305" name="skills">
+    <column id="512" parent="307" name="skills">
       <Comment>技术要求</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>9</Position>
     </column>
-    <column id="510" parent="305" name="welfare_list">
+    <column id="513" parent="307" name="welfare_list">
       <Comment>福利列表</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>10</Position>
     </column>
-    <column id="511" parent="305" name="city_name">
+    <column id="514" parent="307" name="city_name">
       <Comment>工作地点id</Comment>
       <DasType>int|0s</DasType>
       <Position>11</Position>
     </column>
-    <column id="512" parent="305" name="area_district">
+    <column id="515" parent="307" name="area_district">
       <Comment>工作地区</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>12</Position>
     </column>
-    <column id="513" parent="305" name="business_district">
+    <column id="516" parent="307" name="business_district">
       <Comment>工作地点</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>13</Position>
     </column>
-    <column id="514" parent="305" name="href">
+    <column id="517" parent="307" name="href">
       <Comment>链接</Comment>
       <DasType>varchar(512)|0s</DasType>
       <Position>14</Position>
     </column>
-    <column id="515" parent="305" name="boss_name">
+    <column id="518" parent="307" name="boss_name">
       <Comment>hr姓名</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>15</Position>
     </column>
-    <column id="516" parent="305" name="boss_title">
+    <column id="519" parent="307" name="boss_title">
       <Comment>hr职位</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>16</Position>
     </column>
-    <column id="517" parent="305" name="encrypt_brandId">
+    <column id="520" parent="307" name="encrypt_brandId">
       <Comment>唯一id</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>17</Position>
     </column>
-    <column id="518" parent="305" name="create_by">
+    <column id="521" parent="307" name="create_by">
       <Comment>创建人</Comment>
       <DasType>int|0s</DasType>
       <Position>18</Position>
     </column>
-    <column id="519" parent="305" name="create_time">
+    <column id="522" parent="307" name="create_time">
       <Comment>创建时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>19</Position>
     </column>
-    <column id="520" parent="305" name="update_by">
+    <column id="523" parent="307" name="update_by">
       <Comment>更新人</Comment>
       <DasType>int|0s</DasType>
       <Position>20</Position>
     </column>
-    <column id="521" parent="305" name="update_time">
+    <column id="524" parent="307" name="update_time">
       <Comment>更新时间</Comment>
       <DasType>datetime|0s</DasType>
       <Position>21</Position>
     </column>
-    <column id="522" parent="305" name="view_count">
+    <column id="525" parent="307" name="view_count">
       <Comment>浏览量</Comment>
       <DasType>bigint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>22</Position>
     </column>
-    <column id="523" parent="305" name="del_flag">
+    <column id="526" parent="307" name="del_flag">
       <Comment>删除标志位</Comment>
       <DasType>tinyint|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>23</Position>
     </column>
-    <index id="524" parent="305" name="PRIMARY">
+    <index id="527" parent="307" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="525" parent="305" name="PRIMARY">
+    <key id="528" parent="307" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="526" parent="306" name="id">
-      <AutoIncrement>6319</AutoIncrement>
+    <column id="529" parent="308" name="id">
+      <AutoIncrement>6318</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="527" parent="306" name="big_classify">
+    <column id="530" parent="308" name="big_classify">
       <Comment>max分类</Comment>
       <DasType>text|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="528" parent="306" name="mid_classify">
+    <column id="531" parent="308" name="mid_classify">
       <Comment>middle分类</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="529" parent="306" name="small_classify">
+    <column id="532" parent="308" name="small_classify">
       <Comment>子分类</Comment>
       <DasType>varchar(30)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="530" parent="306" name="small_classify_html">
+    <column id="533" parent="308" name="small_classify_html">
       <Comment>薪资地址</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <index id="531" parent="306" name="PRIMARY">
+    <index id="534" parent="308" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="532" parent="306" name="job_classify_ID_uindex">
+    <index id="535" parent="308" name="job_classify_ID_uindex">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="533" parent="306" name="PRIMARY">
+    <key id="536" parent="308" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="534" parent="306" name="job_classify_ID_uindex">
+    <key id="537" parent="308" name="job_classify_ID_uindex">
       <UnderlyingIndexName>job_classify_ID_uindex</UnderlyingIndexName>
     </key>
-    <column id="535" parent="307" name="id">
+    <column id="538" parent="309" name="id">
       <AutoIncrement>9</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="536" parent="307" name="job_degree">
+    <column id="539" parent="309" name="job_degree">
       <Comment>学历</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="537" parent="307" name="PRIMARY">
+    <index id="540" parent="309" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="538" parent="307" name="PRIMARY">
+    <key id="541" parent="309" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="539" parent="308" name="id">
+    <column id="542" parent="310" name="id">
       <AutoIncrement>10</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="540" parent="308" name="job_experience">
+    <column id="543" parent="310" name="job_experience">
       <Comment>工作经验</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="541" parent="308" name="PRIMARY">
+    <index id="544" parent="310" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="542" parent="308" name="PRIMARY">
+    <key id="545" parent="310" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="543" parent="309" name="id">
+    <column id="546" parent="311" name="id">
       <AutoIncrement>7</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="544" parent="309" name="salary">
+    <column id="547" parent="311" name="salary">
       <Comment>薪资分类</Comment>
       <DasType>varchar(255)|0s</DasType>
       <Position>2</Position>
     </column>
-    <index id="545" parent="309" name="PRIMARY">
+    <index id="548" parent="311" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="546" parent="309" name="PRIMARY">
+    <key id="549" parent="311" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="547" parent="310" name="id">
+    <column id="550" parent="312" name="id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="548" parent="310" name="work_id">
+    <column id="551" parent="312" name="work_id">
       <Comment>职位id</Comment>
       <DasType>int|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="549" parent="310" name="user_id">
+    <column id="552" parent="312" name="user_id">
       <Comment>用户id</Comment>
       <DasType>int|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="550" parent="310" name="resume_id">
+    <column id="553" parent="312" name="resume_id">
       <Comment>用户简历id</Comment>
       <DasType>int|0s</DasType>
       <Position>4</Position>
     </column>
-    <index id="551" parent="310" name="PRIMARY">
+    <index id="554" parent="312" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="552" parent="310" name="PRIMARY">
+    <key id="555" parent="312" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

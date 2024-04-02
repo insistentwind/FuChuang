@@ -10,7 +10,6 @@ import com.ning.domain.entity.*;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.constants.SystemConstants;
-import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.service.*;
@@ -18,18 +17,14 @@ import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 

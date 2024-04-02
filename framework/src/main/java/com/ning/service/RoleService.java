@@ -1,7 +1,6 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.domain.entity.Menu;
 import com.ning.domain.entity.Role;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;

@@ -3,7 +3,6 @@ package com.ning;
 import com.ning.domain.entity.User;
 import com.ning.service.UserService;
 import com.ning.utils.DesUtils;
-import com.ning.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Base64;
 
 /**

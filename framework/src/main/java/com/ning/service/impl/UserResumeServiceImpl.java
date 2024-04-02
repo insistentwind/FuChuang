@@ -1,7 +1,6 @@
 package com.ning.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ning.domain.entity.Resume;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.mapper.UserResumeMapper;
 import com.ning.domain.entity.UserResume;

@@ -1,14 +1,11 @@
 package com.ning.controller;
 
 import com.ning.domain.dto.AnnouncePublishDto;
-import com.ning.domain.entity.Announce;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.AnnouncePageVo;
 import com.ning.domain.vo.AnnounceVo;
-import com.ning.mapper.AnnounceMapper;
 import com.ning.service.AnnounceService;
-import com.ning.service.impl.AnnounceServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

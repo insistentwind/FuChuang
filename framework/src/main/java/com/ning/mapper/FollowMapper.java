@@ -3,7 +3,6 @@ package com.ning.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Follow;
 import org.mapstruct.Mapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 
 /**

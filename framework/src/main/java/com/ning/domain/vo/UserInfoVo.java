@@ -1,5 +1,6 @@
 package com.ning.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -9,20 +10,23 @@ public class UserInfoVo {
     /**
      * 主键
      */
-    private Long id;
+    @ApiModelProperty(value = "1")
+    private Integer id;
 
     /**
      * 昵称
      */
-    private String nickName;
+    @ApiModelProperty(value = "昵称")
+    private String name;
 
     /**
      * 头像
      */
+    @ApiModelProperty(value = "头像")
     private String avatar;
-
+    @ApiModelProperty(value = "性别")
     private String sex;
-
+    @ApiModelProperty(value = "邮箱")
     private String email;
 
 

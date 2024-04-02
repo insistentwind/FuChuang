@@ -1,5 +1,6 @@
 package com.ning.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,15 @@ import lombok.experimental.Accessors;
 public class AdminVo {
 
     //姓名
+    @ApiModelProperty(value = "姓名")
     private String username;
     //头像
+    @ApiModelProperty(value = "头像")
     private String avatar;
     //性别（1男，0女）
+    @ApiModelProperty(value = "性别（1男，0女）")
     private Integer sex;
     //电话
+    @ApiModelProperty(value = "电话")
     private String tele;
 }

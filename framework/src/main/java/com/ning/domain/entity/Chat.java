@@ -1,17 +1,16 @@
 package com.ning.domain.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
 /**
  * (Chat)表实体类
  *
@@ -22,27 +21,38 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
+@ApiModel(value = "websocket聊天",description = "")
 @TableName("chat")
-public class Chat  {
+public class Chat implements Serializable,Cloneable{
+    /**  */
+    @ApiModelProperty(name = "",notes = "")
     @TableId
-    private Integer id;
-
-    //消息内容
-    private String content;
-    //发送者id
-    private Integer senderId;
-    //接受者id
-    private Integer recvId;
-    //发送者的信息
-    private String selfInfo;
-    //接受者的信息
-    private String target;
-    //消息发送时间
-    private LocalDateTime timestamp;
-    //0未读，1已读
-    private Integer status;
-
-    private Integer delFlag;
+    private Integer id ;
+    /** 消息内容 */
+    @ApiModelProperty(name = "消息内容",notes = "")
+    private String content ;
+    /** 发送者id */
+    @ApiModelProperty(name = "发送者id",notes = "")
+    private Integer senderId ;
+    /** 接受者id */
+    @ApiModelProperty(name = "接受者id",notes = "")
+    private Integer recvId ;
+    /** 发送者的信息 */
+    @ApiModelProperty(name = "发送者的信息",notes = "")
+    private String selfInfo ;
+    /** 接受者的信息 */
+    @ApiModelProperty(name = "接受者的信息",notes = "")
+    private String target ;
+    /** 消息发送时间 */
+    @ApiModelProperty(name = "消息发送时间",notes = "")
+    private LocalDateTime timestamp ;
+    /** 0未读，1已读 */
+    @ApiModelProperty(name = "0未读，1已读",notes = "")
+    private Integer status ;
+    /**  */
+    @ApiModelProperty(name = "",notes = "")
+    private Integer delFlag ;
 
 }
 

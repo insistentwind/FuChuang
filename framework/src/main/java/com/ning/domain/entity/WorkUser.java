@@ -1,6 +1,7 @@
 package com.ning.domain.entity;
 
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,18 +22,23 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@ApiModel(value = "职位-用户简历投递表",description = "")
 @TableName("work_user")
 @Builder
 public class WorkUser  {
+    /**  */
+    @ApiModelProperty(name = "1",notes = "")
     @TableId
-    private Integer id;
-
-    //职位id
-    private Integer workId;
-    //用户id
-    private Integer userId;
-    //用户简历id
-    private Integer resumeId;
+    private Integer id ;
+    /** 职位id */
+    @ApiModelProperty(name = "职位id",notes = "")
+    private Integer workId ;
+    /** 用户id */
+    @ApiModelProperty(name = "用户id",notes = "")
+    private Integer userId ;
+    /** 用户简历id */
+    @ApiModelProperty(name = "用户简历id",notes = "")
+    private Integer resumeId ;
 
 
 

@@ -2,7 +2,6 @@ package com.ning.handler.security;
 
 import com.alibaba.fastjson.JSON;
 import com.ning.domain.result.Result;
-import com.ning.enums.AppHttpCodeEnum;
 import com.ning.utils.WebUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;

@@ -1,5 +1,6 @@
 package com.ning.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,12 +19,16 @@ import java.util.List;
 @Builder
 @Accessors(chain = true)
 public class TreeSelectVo {
+    @ApiModelProperty(value = "1")
     private Integer id;
 
     //菜单（权限）名称
+    @ApiModelProperty(value = "菜单（权限）名称")
     private String label;
     //父id
+    @ApiModelProperty(value = "父id")
     private Integer parentId;
     //子目录
+    @ApiModelProperty(value = "子目录")
     private List<TreeSelectVo> children;
 }

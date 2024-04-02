@@ -1,6 +1,5 @@
 package com.ning.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -12,7 +11,6 @@ import com.ning.domain.vo.NotifyVo;
 import com.ning.mapper.NotifyMapper;
 import com.ning.service.NotifyService;
 import com.ning.utils.BeanCopyUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

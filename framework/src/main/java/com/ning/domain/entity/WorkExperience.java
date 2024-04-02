@@ -1,6 +1,7 @@
 package com.ning.domain.entity;
 
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +20,16 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@ApiModel(value = "工作经历表",description = "")
 @TableName("work_experience")
 public class WorkExperience  {
+    /**  */
+    @ApiModelProperty(name = "",notes = "")
     @TableId
-    private Integer id;
-
-    //工作经验
-    private String jobExperience;
+    private Integer id ;
+    /** 工作经验 */
+    @ApiModelProperty(name = "工作经验",notes = "")
+    private String jobExperience ;
 
 
 

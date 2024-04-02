@@ -10,7 +10,6 @@ import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
 import com.ning.mapper.RoleMapper;
 import com.ning.domain.entity.Role;
-import com.ning.mapper.RoleMenuMapper;
 import com.ning.service.MenuService;
 import com.ning.service.RoleMenuService;
 import com.ning.utils.BeanCopyUtils;
@@ -149,12 +148,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                     .collect(Collectors.toList());
 
 //            List<String> checkedKeys = new ArrayList<>();
-            LambdaQueryWrapper<RoleMenu> wrapper1 = new LambdaQueryWrapper<>();
-            wrapper1.select(RoleMenu::getMenuId);
-            List<RoleMenu> list = roleMenuService.list(wrapper1);
+//            LambdaQueryWrapper<RoleMenu> wrapper1 = new LambdaQueryWrapper<>();
+//            wrapper1.select(RoleMenu::getMenuId);
+//            List<RoleMenu> list = roleMenuService.list(wrapper1);
+            LambdaQueryWrapper<Menu> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.select(Menu::getId);
+            List<Menu> list = menuService.list(wrapper1);
             // checkedKey是这个角色所拥有的菜单id
             List<String> checkedKeys = list.stream()
-                    .map(item -> item.getMenuId().toString())
+                    .map(item -> item.getId().toString())
                     .collect(Collectors.toList());
             return Result.success(new RoleMenuTreeSelectVo(collect,checkedKeys));
         }

@@ -6,7 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 /**
  * (Notify)表实体类
  *
@@ -21,10 +26,13 @@ public class NotifyDto {
 
     Integer id;
     //消息内容
+    @ApiModelProperty(value = "消息内容")
     private String content;
     //用户id
+    @ApiModelProperty(value = "用户id")
     private Integer userId;
     //消息是否已读
+    @ApiModelProperty(value = "消息是否已读")
     private Integer isRead;
 
 }

@@ -1,6 +1,7 @@
 package com.ning.domain.entity;
 
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,17 +21,20 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("relation")
 @Accessors(chain = true)
+@ApiModel(value = "公司-职位表",description = "")
+@TableName("relation")
 @Builder
 public class Relation  {
+    /**  */
     @TableId
-    private Integer id;
-
-    
-    private Integer companyId;
-    
-    private Integer workId;
+    private Integer id ;
+    /** 公司id */
+    @ApiModelProperty(value = "公司id",notes = "")
+    private Integer companyId ;
+    /** 职位id */
+    @ApiModelProperty(value = "职位id",notes = "")
+    private Integer workId ;
 
 
 

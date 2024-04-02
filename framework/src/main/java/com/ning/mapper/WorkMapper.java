@@ -3,7 +3,6 @@ package com.ning.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Work;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

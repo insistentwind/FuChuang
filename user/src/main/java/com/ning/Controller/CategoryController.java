@@ -1,11 +1,8 @@
 package com.ning.Controller;
 
-import com.ning.domain.dto.WorkDto;
-import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
 import com.ning.service.ClassifyService;
-import com.ning.service.WorkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

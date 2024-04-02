@@ -3,7 +3,6 @@ package com.ning.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ning.domain.dto.FavorDto;
 import com.ning.domain.entity.Favor;
-import com.ning.domain.entity.Work;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.WorkVo;
 

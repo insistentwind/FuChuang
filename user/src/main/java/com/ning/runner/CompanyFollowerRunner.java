@@ -2,13 +2,10 @@ package com.ning.runner;
 
 import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Follow;
-import com.ning.mapper.CompanyMapper;
-import com.ning.mapper.FollowMapper;
 import com.ning.service.CompanyService;
 import com.ning.service.FollowService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

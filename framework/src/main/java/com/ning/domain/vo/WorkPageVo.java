@@ -1,5 +1,6 @@
 package com.ning.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -13,10 +14,14 @@ public class WorkPageVo {
 //    private Integer pageNum;
 //    //分页大小
 //    private Integer pageSize;
+
     // id前端可传可不传
+    @ApiModelProperty(value = "公司id")
     private Integer companyId;
     //分类id
+    @ApiModelProperty(value = "分类id")
     private Integer categoryId;
     //城市分类id
+    @ApiModelProperty(value = "城市分类id")
     private Integer cityClassifyId;
 }

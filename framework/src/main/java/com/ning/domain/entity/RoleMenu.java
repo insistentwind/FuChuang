@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.experimental.Accessors;
 
 /**
  * 角色和菜单关联表(RoleMenu)表实体类
@@ -19,13 +22,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
+@ApiModel(value = "角色和菜单关联表",description = "")
 @TableName("sys_role_menu")
 public class RoleMenu {
 
-    //角色ID@TableId
-    private Integer roleId;
-    //菜单ID@TableId
-    private Integer menuId;
+    /** 角色ID */
+    @ApiModelProperty(name = "角色ID",notes = "")
+    private Integer roleId ;
+    /** 菜单ID */
+    @ApiModelProperty(name = "菜单ID",notes = "")
+    private Integer menuId ;
 
 
 }

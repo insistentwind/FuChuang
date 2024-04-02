@@ -1,7 +1,6 @@
 package com.ning.controller;
 
 import com.ning.domain.entity.Role;
-import com.ning.domain.entity.RoleMenu;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.RoleMenuTreeSelectVo;

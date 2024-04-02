@@ -3,22 +3,14 @@ package com.ning.controller;
 import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.Do.CompanySignUpDo;
 import com.ning.domain.dto.CompanyDto;
-import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
-import com.ning.domain.vo.ResumeVo;
-import com.ning.domain.vo.UserRoleVo;
-import com.ning.domain.vo.WorkPageVo;
-import com.ning.domain.vo.WorkVo;
 import com.ning.service.CompanyService;
 import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author: qjn

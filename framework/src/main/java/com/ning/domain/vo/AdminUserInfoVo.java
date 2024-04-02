@@ -1,6 +1,6 @@
 package com.ning.domain.vo;
 
-import com.ning.domain.vo.UserInfoVo;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +22,10 @@ import java.util.List;
 public class AdminUserInfoVo {
 
 //    private List<String> permissions;
-
+    @ApiModelProperty(value = "权限")
     private MenuVo permissions;
-
+    @ApiModelProperty(value = "角色")
     private List<String> roles;
-
+    @ApiModelProperty(value = "用户信息")
     private UserInfoVo userInfoVo;
 }

@@ -1,6 +1,7 @@
 package com.ning.domain.entity;
 
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -18,18 +19,23 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("history")
 @Accessors(chain = true)
+@ApiModel(value = "用户查看职位历史",description = "")
+@TableName("history")
 public class History {
+    /**  */
+    @ApiModelProperty(name = "",notes = "")
     @TableId
-    private Integer id;
-
-    //用户id
-    private Integer userId;
-    //职位id
-    private Integer workId;
-    //职位名称
-    private String title;
+    private Integer id ;
+    /** 用户id */
+    @ApiModelProperty(name = "用户id",notes = "")
+    private Integer userId ;
+    /** 职位id */
+    @ApiModelProperty(name = "职位id",notes = "")
+    private Integer workId ;
+    /** 职位名称 */
+    @ApiModelProperty(name = "职位名称",notes = "")
+    private String title ;
 
 
 

@@ -1,7 +1,6 @@
 package com.ning.domain.dto;
 
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,18 +8,22 @@ import com.ning.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto implements UserDetails {
-
+    @ApiModelProperty(value = "用户信息")
     private User user;
 
+    @ApiModelProperty(value = "权限信息")
     private List<String> permissions;
 
 

@@ -1,5 +1,6 @@
 package com.ning.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -10,10 +11,10 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class WorkSalaryVo {
-
     private Integer id;
 
     //薪资分类
+    @ApiModelProperty(value = "薪资分类")
     private String salary;
 
 

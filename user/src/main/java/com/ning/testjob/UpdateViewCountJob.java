@@ -1,6 +1,5 @@
 package com.ning.testjob;
 
-import com.mysql.cj.result.IntegerValueFactory;
 import com.ning.domain.entity.Work;
 import com.ning.constants.SystemConstants;
 import com.ning.service.WorkService;

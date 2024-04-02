@@ -12,14 +12,11 @@ import com.ning.mapper.WorkMapper;
 import com.ning.service.*;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.RedisCache;
-import org.apache.http.util.Args;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

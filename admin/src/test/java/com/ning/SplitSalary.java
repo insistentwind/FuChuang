@@ -2,17 +2,11 @@ package com.ning;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.domain.entity.*;
-import com.ning.mapper.CompanyMapper;
-import com.ning.mapper.WorkMapper;
-import com.ning.mapper.WorkUserMapper;
 import com.ning.service.*;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;

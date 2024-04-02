@@ -2,6 +2,9 @@ package com.ning.domain.entity;
 
 
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,19 +22,25 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@ApiModel(value = "职位分类表",description = "")
 @TableName("work_classify")
 public class Classify  {
+    /**  */
+    @ApiModelProperty(name = "",notes = "")
     @TableId
-    private Integer id;
-
-    //max分类
-    private String bigClassify;
-    //middle分类
-    private String midClassify;
-    //子分类
-    private String smallClassify;
-    //薪资地址
-    private String smallClassifyHtml;
+    private Integer id ;
+    /** max分类 */
+    @ApiModelProperty(name = "max分类",notes = "")
+    private String bigClassify ;
+    /** middle分类 */
+    @ApiModelProperty(name = "middle分类",notes = "")
+    private String midClassify ;
+    /** 子分类 */
+    @ApiModelProperty(name = "子分类",notes = "")
+    private String smallClassify ;
+    /** 薪资地址 */
+    @ApiModelProperty(name = "薪资地址",notes = "")
+    private String smallClassifyHtml ;
 
 
 

@@ -1,7 +1,6 @@
 package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ning.domain.entity.Resume;
 import com.ning.domain.entity.UserResume;
 import com.ning.domain.vo.ResumeVo;
 import org.apache.ibatis.annotations.Mapper;

@@ -5,7 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.bind.DefaultValue;
-
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 /**
  * @Author: qjn
  * @Date: 2024/1/9 23:30
@@ -13,8 +18,10 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @Data
 public class WorkDto {
     //分页大小
+    @ApiModelProperty(value = "分页大小")
     private int pageNum;
     //每页显示记录数
+    @ApiModelProperty(value = "每页显示记录数")
     private int pageSize;
 
     //id
@@ -22,6 +29,7 @@ public class WorkDto {
 
 
     //分类id
+    @ApiModelProperty(value = "分类id")
     private String classifyId;
 
     //    //max分类
@@ -31,15 +39,20 @@ public class WorkDto {
 //    //子分类
 //    private String smallClassify;
     //薪资分类
+    @ApiModelProperty(value = "薪资分类")
     private Integer salary;
 
     //职位名称
+    @ApiModelProperty(value = "职位名称")
     private String title;
     //学历分类
+    @ApiModelProperty(value = "学历分类")
     private Integer education;
     //工作经验要求
+    @ApiModelProperty(value = "工作经验要求")
     private Integer jobExperience;
     //工作地点id
+    @ApiModelProperty(value = "工作地点id")
     private Integer cityName;
 
 
