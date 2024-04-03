@@ -15,6 +15,7 @@ import com.ning.exception.BaseException;
 import com.ning.mapper.*;
 import com.ning.service.*;
 import com.ning.utils.BeanCopyUtils;
+import com.ning.utils.GetResumeInfoUtils;
 import com.ning.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -64,6 +65,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private UserService userService;
     @Autowired
     private CompanyEmployeeMapper companyEmployeeMapper;
+    @Autowired
+    private GetResumeInfoUtils getResumeInfoUtils;
+    @Autowired
+    private UserPermitcompanyService userPermitcompanyService;
+    @Autowired
+    private AckService ackService;
 
     /**
      * 分页查询公司
@@ -443,6 +450,96 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         List<Company> companies = companyMapper.selectList(wrapper);
         List<String> collect = companies.stream().map(Company::getBrandIndustry).collect(Collectors.toList());
         return Result.success(collect);
+    }
+    /**
+     * 据id查询简历
+     * @return
+     * TODO 压力最大的一个接口
+     */
+    @Override
+    public Result<ResumeVo> getResumeVoByResumeId(Integer resumeId) {
+        Integer companyId = null;
+        // 拿到了当前操作者所属的公司id
+        try {
+            Integer hrId = SecurityUtils.getUserId();
+            LambdaQueryWrapper<UserCompany> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.eq(UserCompany::getUserId,hrId);
+            UserCompany userCompany = userCompanyMapper.selectOne(wrapper1);
+            companyId = userCompany.getCompanyId();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        try {
+
+            LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserResume::getResumeId,resumeId);
+            UserResume userResume = userResumeMapper.selectOne(wrapper);
+            Integer userId = userResume.getUserId();
+            // 根据用户找到当前所属公司
+            // 通过公司id查询发布的所有职位
+            /**
+             * SELECT * FROM relation re
+             * LEFT JOIN work w ON re.work_id = w.id
+             * LEFT JOIN work_user wu ON w.id = wu.work_id
+             * WHERE wu.user_id = 12 AND re.company_id = 3;
+             */
+            //这个找到了当前公司和用户的对应关系
+            if(relationMapper.getUserByCompany(companyId,userId) > 0){
+                //说明当前用户已经投递简历，直接回显即可
+                ResumeVo resumeVo = resumeMapper.getInfoByUserId(userId);
+                resumeVo.setUserId(userId);
+                //todo 如果用户允许才能回显所有的数据
+                //这里开始看有没有权限
+                LambdaQueryWrapper<UserPermitcompany> wrapper1 = new LambdaQueryWrapper<>();
+                wrapper1.eq(UserPermitcompany::getUserId,userId)
+                                .eq(UserPermitcompany::getCompanyPermitId,companyId);
+                UserPermitcompany one = userPermitcompanyService.getOne(wrapper1);
+                if (one != null){
+                    Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
+                    Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(userId, resume);
+
+                    resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
+                    return Result.success(resumeVo);
+                }
+                return Result.success(resumeVo);
+            }
+            // 通过职位找到当前用户对应的简历id
+            throw new BaseException(SystemConstants.USER_NO_PERMITED);
+
+        } catch (Exception e) {
+            throw new BaseException(e.toString());
+        }
+
+    }
+    /**
+     * 请求查看用户简历
+     * @param userId
+     * @return
+     */
+    @Override
+    public Result<String> sendRequestToUser(Integer userId) {
+        Integer companyId = null;
+        // 拿到了当前操作者所属的公司id
+        try {
+            Integer hrId = SecurityUtils.getUserId();
+            LambdaQueryWrapper<UserCompany> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.eq(UserCompany::getUserId,hrId);
+            UserCompany userCompany = userCompanyMapper.selectOne(wrapper1);
+            companyId = userCompany.getCompanyId();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        Company company = companyMapper.selectById(companyId);
+
+        Ack ack = new Ack();
+        ack.setCompanyId(companyId)
+                        .setUserId(userId)
+                                .setContent(company.getBrandName() + "公司希望查看您的简历");
+        ackService.save(ack);
+
+        return Result.success(SystemConstants.SUCCESS);
     }
 //    /**
 //     * 新增公司员工

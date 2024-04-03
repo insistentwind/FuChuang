@@ -1,5 +1,6 @@
 package com.ning.domain.result;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,9 +11,11 @@ import java.io.Serializable;
  */
 @Data
 public class Result<T> implements Serializable {
-
+    @ApiModelProperty(value = "1成功，0和其它数字为失败")
     private Integer code; //编码：1成功，0和其它数字为失败
+    @ApiModelProperty(value = "错误信息")
     private String msg; //错误信息
+    @ApiModelProperty(value = "数据")
     private T data; //数据
 
     public static <T> Result<T> success() {

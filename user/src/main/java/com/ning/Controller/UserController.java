@@ -1,5 +1,6 @@
 package com.ning.Controller;
 
+import com.ning.domain.entity.Ack;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;
@@ -9,6 +10,7 @@ import com.ning.domain.vo.DeliverVo;
 import com.ning.domain.vo.UserVo;
 import com.ning.enums.AppHttpCodeEnum;
 import com.ning.exception.SystemException;
+import com.ning.service.AckService;
 import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
@@ -31,6 +33,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
 
 
     // TODO 用户需要设置简历的隐私，加密
@@ -76,6 +79,7 @@ public class UserController {
         log.info("根据id获取用户的简历:{}",resumeId);
         return userService.getResumeById(resumeId);
     }
+
     /**
      * 获取当前用户默认的简历信息
      * @return
@@ -191,6 +195,17 @@ public class UserController {
     @ApiOperation("批量创建简历(maybe used)")
     public Result<String> deliverBatchResumes(@RequestBody List<ResumeVo> resumeVos){
         return userService.deliverBatchResumes(resumeVos);
+    }
+
+    /**
+     * 设置简历默认可见
+     * @param
+     * @return
+     */
+    @PutMapping("/setCanBeSeen/")
+    @ApiOperation("切换简历是否")
+    public Result<String> setResumeObscure(){
+        return userService.setResumeObscure();
     }
 
 

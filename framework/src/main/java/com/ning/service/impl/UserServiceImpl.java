@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.MessageConstant;
+import com.ning.constants.MqConstants;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.dto.UserDto;
@@ -15,20 +16,22 @@ import com.ning.exception.BaseException;
 import com.ning.mapper.ResumeMapper;
 import com.ning.mapper.UserMapper;
 import com.ning.service.*;
-import com.ning.utils.BeanCopyUtils;
-import com.ning.utils.JwtUtil;
-import com.ning.utils.RedisCache;
-import com.ning.utils.SecurityUtils;
+import com.ning.utils.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -54,8 +57,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private ResumeService resumeService;
     @Autowired
     private UserRoleService userRoleService;
-//    @Autowired
-//   private DeliverService deliverService;
+    @Autowired
+    private KdfUtils kdfUtils;
     @Autowired
     private WorkUserService workUserService;
     @Autowired
@@ -64,6 +67,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private WorkService workService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private GetResumeInfoUtils getResumeInfoUtils;
 
     /**
      * 用户登录接口
@@ -133,7 +140,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 //        user.setCreateTime(LocalDateTime.now());
-        if(user.getIsCompany() == null){
+        if (user.getIsCompany() == null) {
             user.setIsCompany(0);
         }
         save(user);
@@ -144,6 +151,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 获取当前用户默认的简历信息
+     *
      * @return
      */
     @Override
@@ -152,24 +160,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         try {
             UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             user = userDto.getUser();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
 
         LambdaQueryWrapper<UserResume> wrapper1 = new LambdaQueryWrapper<>();
         wrapper1.eq(UserResume::getUserId, user.getId())
-                .eq(UserResume::getIsDefault,SystemConstants.IS_DEFAULT_RESUME);
+                .eq(UserResume::getIsDefault, SystemConstants.IS_DEFAULT_RESUME);
         Resume resume = null;
         try {
             UserResume userResume = userResumeService.getOne(wrapper1);
 
             resume = resumeService.getById(userResume.getResumeId());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_HAS_NO_DEFAULT_RESUME);
         }
-        ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
-        return Result.success(resumeVo);
+        ResumeVo decodeResume = getDecodeResume(resume, user.getId());
+//        ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
+        return Result.success(decodeResume);
     }
 
     /**
@@ -198,7 +206,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             String oldPass = nowUser.getPassword();
             String oldPassword = user.getOldPassword();
 
-            if(!oldPass.equals(oldPassword)) throw new BaseException("密码校验错误，请检查后重试");
+            if (!oldPass.equals(oldPassword)) throw new BaseException("密码校验错误，请检查后重试");
 
             String password = passwordEncoder.encode(user.getPassword());
             user.setPassword(password);
@@ -318,6 +326,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
     /**
      * 查询当前用户的投递历史
      *
@@ -332,7 +343,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //            List<Deliver> list = deliverService.list(wrapper);
 
             LambdaQueryWrapper<WorkUser> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(WorkUser::getUserId,userId);
+            wrapper.eq(WorkUser::getUserId, userId);
             List<WorkUser> list = workUserService.list(wrapper);
 
             List<DeliverVo> collect = list.stream().map(
@@ -346,20 +357,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
-    // TODO 插入简历未校验当前用户是公司还是用户
+
     /**
      * 插入用户简历数据
+     * TODO 美中不足的是每次插入不管用户有没有密钥，都会重新创建一份新的密钥
      * @param resumeVo
      * @return
      */
     @Override
-    @Transactional
     public Result<String> insertResume(ResumeVo resumeVo) {
-        Integer userId;
+        User user = null;
         try {
-            userId = SecurityUtils.getUserId();
-        }
-        catch (Exception e){
+            user = SecurityUtils.getLoginUser().getUser();
+        } catch (Exception e) {
             throw new BaseException("用户未登录");
         }
         //这里是检验用户是否已投递过简历
@@ -368,47 +378,101 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        if(userResumeService.getOne(wrapper) != null){
 //            throw new BaseException(SystemConstants.USER_HAS_DILIVER_RESUME);
 //        }
+        if (resumeVo.getEmail() == null || resumeVo.getName() == null || resumeVo.getLive() == null
+        || resumeVo.getTel() == null){
+            throw new BaseException(SystemConstants.PLEASE_CHECK_RESUME);
+        }
 
         Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
-        resumeService.save(resume);
 
-        UserResume userResume = new UserResume();
-        userResume.setResumeId(resume.getId())
-                .setUserId(userId);
 
-        userResumeService.save(userResume);
+        String name = resume.getName();
+        String email = resume.getEmail();
+        String tel = resume.getTel();
+        String live = resume.getLive();
+        try {
+            SecretKeySpec key = kdfUtils.generateKey(null, null, 512);
+            //用户密钥后期可以变更,因为会被存储
+            SecretKeySpec userKey = kdfUtils.generateKey(user.getUsername(), null, 512);
+//                        System.out.println("通过(userId" + user.getId() +  ")信息拿到的密钥:" + kdfUtils.keyToString(userKey));
+            //结合密钥
+            SecretKey combinedKey = kdfUtils.generateCombinedKey(key, userKey);
+//                        System.out.println("整合后的密钥:" + kdfUtils.keyToString(combinedKey));
+            System.out.println();
+            UserKey userKey1 = new UserKey();
+            userKey1.setUserId(user.getId());
+            String msg = kdfUtils.keyToString(userKey);
+            userKey1.setSecretKey(msg);
+
+            rabbitTemplate.convertAndSend(MqConstants.FUCHUANG_EXCHANGE,
+                    MqConstants.FUCHUANG_INSERT_KEY,userKey1);
+
+            /**
+             * 获取密钥的方式都相同
+             */
+            String username = kdfUtils.Encoding(name, combinedKey);
+            String codeMail = kdfUtils.Encoding(email,combinedKey);
+            String codeTel = kdfUtils.Encoding(tel,combinedKey);
+            String codeLive = kdfUtils.Encoding(live, combinedKey);
+            resume.setName(username)
+                    .setEmail(codeMail)
+                    .setTel(codeTel)
+                    .setLive(codeLive);
+//            resumeService.updateById(resume);
+
+        } catch (Exception e) {
+            throw new BaseException("加密时出现错误!");
+        }
+
+        Integer finalUserId = user.getId();
+        //开启事务
+        transactionTemplate.execute(status -> {
+            resumeService.save(resume);
+
+            UserResume userResume = new UserResume();
+            userResume.setResumeId(resume.getId())
+                    .setUserId(finalUserId);
+
+            userResumeService.save(userResume);
+            return status;
+        });
 
         return Result.success("操作成功");
     }
+
     /**
      * 简历数据修改
+     *
      * @param resumeVo
      * @return
      */
     @Override
     public Result<String> resumeModify(ResumeVo resumeVo) {
-        Integer userId;
+        Integer userId = null;
         try {
             userId = SecurityUtils.getUserId();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
 //        ResumeVo oldResume = resumeMapper.getInfoByUserId(userId);
         Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
         LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserResume::getUserId,userId);
+        wrapper.eq(UserResume::getUserId, userId);
         UserResume userResume = userResumeService.getOne(wrapper);
-        if (userResume == null){
+        if (userResume == null) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
         resume.setId(userResume.getResumeId());
+        //加密
+        resume = getResumeInfoUtils.setResumeByKey(userId, resume);
+
         resumeMapper.updateById(resume);
         return Result.success("修改成功");
     }
 
     /**
      * 设置为默认简历
+     *
      * @param resumeId
      * @return
      */
@@ -421,22 +485,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         try {
             userId = SecurityUtils.getUserId();
 
-            wrapper.eq(UserResume::getUserId,userId)
-                    .eq(UserResume::getResumeId,resumeId);
+            wrapper.eq(UserResume::getUserId, userId)
+                    .eq(UserResume::getResumeId, resumeId);
             userResume = userResumeService.getOne(wrapper);
 
-            if (userResume == null){
+            if (userResume == null) {
                 return Result.error(SystemConstants.USER_HAS_NO_RESUME);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
         wrapper.clear();
-        wrapper.eq(UserResume::getUserId,userId)
-                .eq(UserResume::getIsDefault,SystemConstants.IS_DEFAULT_RESUME);
+        wrapper.eq(UserResume::getUserId, userId)
+                .eq(UserResume::getIsDefault, SystemConstants.IS_DEFAULT_RESUME);
         UserResume oldDefault = userResumeService.getOne(wrapper);
-        if (oldDefault != null){
+        if (oldDefault != null) {
             oldDefault.setIsDefault(SystemConstants.IS_NOT_DEFAULT_RESUME);
 
             userResumeService.updateById(oldDefault);
@@ -451,6 +514,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 当前用户所创建的简历列表
+     *
      * @return
      */
     @Override
@@ -459,20 +523,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         try {
             UserDto userDto = SecurityUtils.getLoginUser();
             user = userDto.getUser();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
 
         List<ResumeVo> resumeList = userResumeService.getListByUserId(user.getId());
 
-        if (resumeList.size() > 0){
-            List<ResumeVo> resumeVos = BeanCopyUtils.copyBeanList(resumeList, ResumeVo.class);
+        if (resumeList.size() > 0) {
+            User finalUser = user;
+
+            List<Resume> collect = resumeList.stream().map(item -> {
+                Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
+                try {
+                    //密钥解析
+                    Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(finalUser.getId(), resume);
+                    return resumeVoByKey;
+                } catch (Exception e) {
+                    throw new BaseException(SystemConstants.HAS_NO_KEY);
+                }
+            }).collect(Collectors.toList());
+
+            List<ResumeVo> resumeVos = BeanCopyUtils.copyBeanList(collect, ResumeVo.class);
             return Result.success(resumeVos);
         }
         return Result.error(SystemConstants.USER_HAS_NO_RESUME);
     }
+
     /**
      * 批量创建简历
+     *
      * @param resumeVos
      * @return
      */
@@ -482,8 +561,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = null;
         try {
             user = SecurityUtils.getLoginUser().getUser();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
 
@@ -491,6 +569,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         resumeVos.forEach(item -> {
             Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
+            // 加密
+            resume = getResumeInfoUtils.setResumeByKey(userId, resume);
+
+
             resumeMapper.insert(resume);
             Integer resumeId = resume.getId();
             UserResume userResume = UserResume.builder()
@@ -505,38 +587,58 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 根据id获取用户的简历
+     *
      * @param resumeId
      * @return
      */
     @Override
     public Result<ResumeVo> getResumeById(Integer resumeId) {
+        Integer userId = null;
         try {
-            Integer userId = SecurityUtils.getUserId();
+            userId = SecurityUtils.getUserId();
             LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(UserResume::getUserId,userId)
-                            .select(UserResume::getResumeId);
+            wrapper.eq(UserResume::getUserId, userId)
+                    .select(UserResume::getResumeId);
             List<UserResume> list = userResumeService.list(wrapper);
             List<Integer> resumeIds = list.stream().map(UserResume::getResumeId).collect(Collectors.toList());
 
-            if (!resumeIds.contains(resumeId)){
+            if (!resumeIds.contains(resumeId)) {
                 return Result.error(SystemConstants.USER_HAS_NO_RESUME);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
 
-        ResumeVo resumeVo = resumeMapper.getInfoByResumeId(resumeId);
-        return Result.success(resumeVo);
+        Resume resume = resumeMapper.selectById(resumeId);
+        //解密Vo
+        ResumeVo decodeResume = getDecodeResume(resume, userId);
+        return Result.success(decodeResume);
+    }
+
+    /**
+     * 密钥解析简历数据
+     * @param resume
+     * @param userId
+     * @return
+     */
+    private ResumeVo getDecodeResume(Resume resume,Integer userId){
+        try {
+            resume = getResumeInfoUtils.getResumeVoByKey(userId, resume);
+        } catch (Exception e) {
+            throw new BaseException(SystemConstants.CANT_BE_ANALYZED);
+        }
+        ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
+        return resumeVo;
     }
     /**
      * 根据id查询用户信息回显接口
+     *
      * @return
      */
     @Override
     public Result<UserRoleInfoVo> getUserInfoById(Integer id) {
         LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserRole::getUserId,id);
+        wrapper.eq(UserRole::getUserId, id);
         List<UserRole> userRoleList = userRoleService.list(wrapper);
         List<String> roleIds = userRoleList.stream().map(item -> item.getRoleId().toString()).collect(Collectors.toList());
 
@@ -548,8 +650,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         return Result.success(userRoleInfoVo.setUser(user).setRoles(roles).setRoleIds(roleIds));
     }
+
     /**
      * 更新用户信息接口
+     *
      * @param userRoleVo
      * @return
      */
@@ -559,17 +663,61 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateById(user);
         //先删除userRole表的id映射关系
         LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserRole::getUserId,user.getId());
+        wrapper.eq(UserRole::getUserId, user.getId());
         userRoleService.remove(wrapper);
 
         List<Integer> roleIds = userRoleVo.getRoleIds();
         roleIds.forEach(item -> {
             UserRole userRole = new UserRole();
             userRole.setUserId(user.getId())
-                            .setRoleId(item);
+                    .setRoleId(item);
             userRoleService.save(userRole);
         });
         return Result.success();
+    }
+
+    /**
+     * 设置简历默认可见
+     *
+     * @return
+     */
+    @Override
+    public Result<String> setResumeObscure() {
+        try {
+            Integer userId = SecurityUtils.getUserId();
+            LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserResume::getUserId, userId);
+            wrapper.select(UserResume::getResumeId);
+            List<UserResume> resumeIds = userResumeService.list(wrapper);
+
+            if (resumeIds.size() > 0){
+                Integer resumeId = resumeIds.get(0).getResumeId();
+                Resume resume = resumeService.getById(resumeId);
+                Integer status = null;
+                if (Objects.equals(resume.getObscure(), SystemConstants.CAN_NOT_BE_SEEN)){
+                    resume.setObscure(SystemConstants.CAN_BE_SEEN);
+                    status = SystemConstants.CAN_BE_SEEN;
+                }
+                else {
+                    resume.setObscure(SystemConstants.CAN_NOT_BE_SEEN);
+                    status = SystemConstants.CAN_NOT_BE_SEEN;
+                }
+                //遍历，给每一个resume设置是否可见
+                Integer finalStatus = status;
+//                resumeMapper.setObscureByUserId(userId,status);
+                resumeIds.forEach(item -> {
+                    Resume resume1 = new Resume();
+                    resume1.setObscure(finalStatus)
+                            .setId(item.getResumeId());
+                    resumeMapper.updateById(resume1);
+                });
+            }
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+
+        return Result.success(SystemConstants.SUCCESS);
     }
 
 

@@ -45,6 +45,9 @@ public class CompanyController {
      * @param companyDo
      * @return
      */
+
+
+
     /**
      * 公司端投递简历
      * 情景为：公司线下面试后，需要把面试者的信息投递到公司自己的职位里面去
@@ -118,15 +121,15 @@ public class CompanyController {
         //这里的简历列表被放入到了WorkVo中的ResumeList中
         return companyService.getResumeListByWorkId(id);
     }
-    /**
-     * 根据用户id查询此用户的简历
-     * @return
-     */
-    @ApiOperation("据用户id查询此用户的简历")
-    @GetMapping("/getByUserId")
-    public Result<ResumeVo> getResumeVoByUserId(Integer userId){
-        return companyService.getResumeVoByUserId(userId);
-    }
+//    /**
+//     * 根据用户id查询此用户的简历
+//     * @return
+//     */
+//    @ApiOperation("据用户id查询此用户的简历")
+//    @GetMapping("/getByUserId")
+//    public Result<ResumeVo> getResumeVoByUserId(Integer userId){
+//        return companyService.getResumeVoByUserId(userId);
+//    }
 
 
 

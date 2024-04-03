@@ -97,6 +97,17 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<List<String>> getIndustry(String companyBrand);
+    /**
+     * 据id查询简历
+     * @return
+     */
+    Result<ResumeVo> getResumeVoByResumeId(Integer resumeId);
+    /**
+     * 请求查看用户简历
+     * @param userId
+     * @return
+     */
+    Result<String> sendRequestToUser(Integer userId);
 //    /**
 //     * 新增公司员工
 //     * @param userRoleVo

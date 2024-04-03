@@ -3,11 +3,14 @@ package com.ning;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.domain.entity.*;
 import com.ning.service.*;
+import com.ning.utils.KdfUtils;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,9 @@ public class SplitSalary {
     private RelationService relationService;
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private KdfUtils kdfUtils;
 
 
     @Autowired
@@ -198,5 +204,6 @@ public class SplitSalary {
             }
         });
     }
+
 
 }

@@ -13,6 +13,7 @@
         <module>framework</module>
         <module>admin</module>
         <module>user</module>
+        <module>usersecret</module>
     </modules>
 
     <properties>
@@ -163,11 +164,11 @@
                     <archive>
                         <manifest>
                             <!-- 配置程序运行入口所在的类 -->
-                            <mainClass>com.huanf.HuanfBlogApplication</mainClass>
+                            <mainClass>com.ning.UserApplication</mainClass>
                         </manifest>
                         <manifest>
                             <!-- 配置程序运行入口所在的类 -->
-                            <mainClass>com.huanf.BlogAdminApplication</mainClass>
+                            <mainClass>com.ning.AdminApplication</mainClass>
                         </manifest>
                     </archive>
                     <!-- 设置 JAR 包输出目录 -->

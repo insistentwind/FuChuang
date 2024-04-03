@@ -61,4 +61,17 @@ public class ResumeController {
         return companyService.getResumeListByWorkId(id);
     }
 
+
+    /**
+     * 据id查询简历
+     * @return
+     */
+    @ApiOperation("据id查询简历")
+    @GetMapping("/getByResumeId")
+    public Result<ResumeVo> getResumeVoByResumeId(Integer ResumeId){
+        return companyService.getResumeVoByResumeId(ResumeId);
+    }
+
+
+
 }

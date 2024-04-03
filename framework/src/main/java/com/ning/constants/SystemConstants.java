@@ -177,5 +177,25 @@ public class SystemConstants {
     public static final String CONTENT_RECRUIT_INDEX = "content:recruit:index";
 
 
-
+    public static final String UP_TIME = "任务超时";
+    /**
+     * 设置简历不可见
+     */
+    public static final Integer CAN_NOT_BE_SEEN = 1;
+    /**
+     * 设置简历可见
+     */
+    public static final Integer CAN_BE_SEEN = 0;
+    public static final String PLEASE_CHECK_RESUME = "请检查简历信息是否填写完整";
+    public static final String CANT_BE_ANALYZED = "简历信息无法解析，可能的原因为用户没有权限";
+    public static final String HAS_NO_KEY = "密钥解析失败";
+    public static final String OPERATION_NOT_COMPARE_WITH_USER = "当前操作与用户不匹配";
+    /**
+     * 未读
+     */
+    public static final Integer HAS_NO_READ = 0;
+    /**
+     * 已读
+     */
+    public static final Integer HAS_READ = 1;
 }

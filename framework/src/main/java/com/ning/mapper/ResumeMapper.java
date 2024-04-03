@@ -3,6 +3,7 @@ package com.ning.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Resume;
 import com.ning.domain.vo.ResumeVo;
+import org.apache.ibatis.annotations.Param;
 import org.mapstruct.Mapper;
 
 
@@ -22,5 +23,12 @@ public interface ResumeMapper extends BaseMapper<Resume> {
     ResumeVo getInfoByUserId(Integer userId);
 
     ResumeVo getInfoByResumeId(Integer resumeId);
+
+    /**
+     * 设置隐私字段
+     * @param userId
+     * @param status
+     */
+    void setObscureByUserId(@Param("userId") Integer userId,@Param("status") Integer status);
 }
 

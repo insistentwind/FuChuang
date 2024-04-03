@@ -119,5 +119,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     Result<String> updateUserRoleVo(UserRoleVo userRoleVo);
+    /**
+     * 设置简历默认可见
+     * @return
+     */
+    Result<String> setResumeObscure();
 }
 
