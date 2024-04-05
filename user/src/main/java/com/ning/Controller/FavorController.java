@@ -72,26 +72,23 @@ public class FavorController {
     }
 
     /**
-     * 根据id查询该用户的所有收藏
-     * @param id
+     * 查询该用户的所有收藏
      * @return
      */
-    @GetMapping("/{id}")
-    @ApiOperation("据id查询该用户的收藏")
-    public Result<List<WorkVo>> getAllFavors(@PathVariable Integer id){
-        return favorService.getAllFavors(id);
+    @GetMapping("/user")
+    @ApiOperation("查询该用户的所有收藏")
+    public Result<List<WorkVo>> getAllFavors(){
+        return favorService.getAllFavors();
     }
 
     /**
-     * 查询当前用户的所有收藏
-     * @param
+     * 根据职位id查询该用户是否收藏
+     * @param workId
      * @return
      */
-    @GetMapping
-    @ApiOperation("当前用户所有收藏")
-    public Result<List<WorkVo>> getUserFavors(){
-        UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer id = userDto.getUser().getId();
-        return favorService.getAllFavors(id);
+    @GetMapping("/{workId}")
+    @ApiOperation("根据职位id查询该用户是否收藏")
+    public Result<String> getFavorByWorkId(@PathVariable Integer workId) {
+        return favorService.getListByWorkId(workId);
     }
 }

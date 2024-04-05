@@ -13,7 +13,14 @@ spring:
     host: ${fc.redis.host}
     port: ${fc.redis.port}
     database: ${fc.redis.database}
-#    password: ${fc.redis.password}
+
+  rabbitmq:
+    host: ${fc.rabbitmq.host}
+    port: ${fc.rabbitmq.port}
+    username: ${fc.rabbitmq.username}
+    password: ${fc.rabbitmq.password}
+    virtual-host: ${fc.rabbitmq.virtual-host}
+  #    password: ${fc.redis.password}
   #文件上传的配置
   servlet:
     multipart:

@@ -72,7 +72,6 @@ public class CompanyController {
     public Result<String> create(@RequestBody CompanySignUpDo companyDo){
         log.info("新增公司:{}",companyDo);
         return companyService.createCompany(companyDo);
-
     }
 
     /**

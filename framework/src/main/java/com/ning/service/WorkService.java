@@ -67,5 +67,17 @@ public interface WorkService extends IService<Work> {
      * @return
      */
     Result<String> commitResume(ResumeCommitDto resumeCommitDto);
+    /**
+     * 根据ids查询职位
+     * @param ids
+     * @return
+     */
+    Result<List<Work>> getWorksByIds(List<Integer> ids);
+    /**
+     * 判断是否已经投递过此职位
+     * @param resumeCommitDto
+     * @return
+     */
+    Result<String> whetherDeliverOrNot(ResumeCommitDto resumeCommitDto);
 }
 

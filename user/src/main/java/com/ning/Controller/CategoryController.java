@@ -1,11 +1,14 @@
 package com.ning.Controller;
 
+import com.ning.domain.dto.UniversityDto;
+import com.ning.domain.entity.University;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
 import com.ning.service.ClassifyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -157,5 +160,16 @@ public class CategoryController {
     @ApiOperation("id查询exp分类")
     public Result<WorkSalaryVo> getSalaryById(@PathVariable Integer id){
         return classifyService.getSalaryById(id);
+    }
+
+    /**
+     * 条件查询学校信息
+     * @param Universitydto
+     * @return
+     */
+    @ApiOperation("条件查询学校信息")
+    @PostMapping("/school/list")
+    public Result<List<UniversityVo>> getUniversityBySchoolName(@RequestBody UniversityDto Universitydto){
+        return classifyService.getUniversityBySchoolName(Universitydto);
     }
 }

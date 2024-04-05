@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @Slf4j
-@RequestMapping("/")
+@RequestMapping("")
 public class UserKeyController {
     @Autowired
     private UserKeyService userKeyService;
@@ -26,7 +26,7 @@ public class UserKeyController {
         LambdaQueryWrapper<UserKey> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserKey::getUserId,id);
         UserKey one = userKeyService.getOne(wrapper);
-        System.out.println(one);
+//        System.out.println(one);
         return one;
     }
 }

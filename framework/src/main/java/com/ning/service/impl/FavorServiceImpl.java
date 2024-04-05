@@ -1,8 +1,11 @@
 package com.ning.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.FavorDto;
 import com.ning.domain.entity.Favor;
+import com.ning.domain.entity.User;
 import com.ning.domain.entity.Work;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.WorkVo;
@@ -10,6 +13,7 @@ import com.ning.exception.BaseException;
 import com.ning.mapper.FavorMapper;
 import com.ning.service.FavorService;
 import com.ning.utils.BeanCopyUtils;
+import com.ning.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,25 +50,55 @@ public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements
     @Override
     public Result<String> unFavor(FavorDto favorDto) {
         Favor favor = BeanCopyUtils.copyBean(favorDto, Favor.class);
-        if(favorMapper.getByFavor(favor) == null){
+        favor = favorMapper.getByFavor(favor);
+        if(favor == null){
             throw new BaseException("未收藏该职位!");
         }
-        removeById(favor);
+
+        favorMapper.deleteById(favor);
         return Result.success();
     }
     /**
-     * 根据id查询该用户的所有收藏
-     * @param id
+     * 查询该用户的所有收藏
      * @return
      */
     @Override
-    public Result<List<WorkVo>> getAllFavors(Integer id) {
-        List<Work> workList = favorMapper.getAllFavorByUserId(id);
+    public Result<List<WorkVo>> getAllFavors() {
+        User user = checkUserLogin();
+        List<Work> workList = favorMapper.getAllFavorByUserId(user.getId());
+        if (workList.size() < 1){
+            throw new BaseException(SystemConstants.USER_HAS_NO_FAVOR);
+        }
         List<WorkVo> workVoList = workList.stream().map(item -> {
             WorkVo workVo = BeanCopyUtils.copyBean(item, WorkVo.class);
             return workVo;
         }).collect(Collectors.toList());
         return Result.success(workVoList);
+    }
+
+    private User checkUserLogin(){
+        User user = null;
+        try {
+            user = SecurityUtils.getLoginUser().getUser();
+        }catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        return user;
+    }
+    /**
+     * 根据职位id查询该用户是否收藏
+     * @param workId
+     * @return
+     */
+    @Override
+    public Result<String> getListByWorkId(Integer workId) {
+        User user = checkUserLogin();
+        Work work = favorMapper.getFavorByUserAndWorkId(user.getId(),workId);
+        if (work == null){
+            return Result.error(SystemConstants.USER_NOT_FAVOR_THIS_WORK);
+        }
+
+        return Result.success("该用户已收藏此职位");
     }
 
 

@@ -21,5 +21,11 @@ public interface WorkMapper extends BaseMapper<Work> {
      */
 
     List<Work> getWorkListByCategoryId(Integer id);
+    /**
+     * 根据ids查询职位
+     * @param ids
+     * @return
+     */
+    List<Work> selectListByIds(List<Integer> ids);
 }
 

@@ -168,6 +168,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper1.eq(UserResume::getUserId, user.getId())
                 .eq(UserResume::getIsDefault, SystemConstants.IS_DEFAULT_RESUME);
         Resume resume = null;
+        /**
+         * 这里如果有简历，那么就说明是一定存在密钥的
+         */
         try {
             UserResume userResume = userResumeService.getOne(wrapper1);
 
@@ -391,21 +394,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String tel = resume.getTel();
         String live = resume.getLive();
         try {
+            //TODO 这里是创建简历时的/密钥/相关操作
+            //获取初始密钥
             SecretKeySpec key = kdfUtils.generateKey(null, null, 512);
-            //用户密钥后期可以变更,因为会被存储
-            SecretKeySpec userKey = kdfUtils.generateKey(user.getUsername(), null, 512);
+            //用户密钥后期可以变更,因为会被存储,盐值可以随机改变
+            //todo 目前没有判断用户是否已经有密钥了，如果设置盐值随机，那么新创建的简历加密后的密钥会覆盖老的密钥.导致老的简历解析不出来
+            //解决方法是，先从mq中把另一个服务中查看当前用户是否已经创建了密钥
+            //这个是查询先查询密钥
+            UserKey userKeyEntity = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, user.getId());
+            SecretKeySpec userKey = null;
+            if (userKeyEntity == null){
+                userKey = kdfUtils.generateKey(user.getUsername(), null, 512);
+                //创建密钥
+                UserKey userKey1 = new UserKey();
+                userKey1.setUserId(user.getId());
+                String msg = kdfUtils.keyToString(userKey);
+                userKey1.setSecretKey(msg);
+
+                rabbitTemplate.convertAndSend(MqConstants.FUCHUANG_EXCHANGE,
+                        MqConstants.FUCHUANG_INSERT_KEY,userKey1);
+            }
+            else {
+                //否则，密钥存在，直接拿到密钥
+                String secretKey = userKeyEntity.getSecretKey();
+                userKey = kdfUtils.stringToKey(secretKey);
+            }
 //                        System.out.println("通过(userId" + user.getId() +  ")信息拿到的密钥:" + kdfUtils.keyToString(userKey));
             //结合密钥
             SecretKey combinedKey = kdfUtils.generateCombinedKey(key, userKey);
 //                        System.out.println("整合后的密钥:" + kdfUtils.keyToString(combinedKey));
             System.out.println();
-            UserKey userKey1 = new UserKey();
-            userKey1.setUserId(user.getId());
-            String msg = kdfUtils.keyToString(userKey);
-            userKey1.setSecretKey(msg);
 
-            rabbitTemplate.convertAndSend(MqConstants.FUCHUANG_EXCHANGE,
-                    MqConstants.FUCHUANG_INSERT_KEY,userKey1);
 
             /**
              * 获取密钥的方式都相同
@@ -418,10 +437,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     .setEmail(codeMail)
                     .setTel(codeTel)
                     .setLive(codeLive);
+
 //            resumeService.updateById(resume);
 
         } catch (Exception e) {
-            throw new BaseException("加密时出现错误!");
+            e.printStackTrace();
+            throw new BaseException("加密时出现错误!请检查字段是否填写完整");
         }
 
         Integer finalUserId = user.getId();
@@ -532,19 +553,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (resumeList.size() > 0) {
             User finalUser = user;
 
-            List<Resume> collect = resumeList.stream().map(item -> {
+            List<ResumeVo> collect = resumeList.stream().map(item -> {
                 Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
                 try {
                     //密钥解析
                     Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(finalUser.getId(), resume);
-                    return resumeVoByKey;
+                    ResumeVo resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
+                    return resumeVo;
                 } catch (Exception e) {
                     throw new BaseException(SystemConstants.HAS_NO_KEY);
                 }
             }).collect(Collectors.toList());
 
-            List<ResumeVo> resumeVos = BeanCopyUtils.copyBeanList(collect, ResumeVo.class);
-            return Result.success(resumeVos);
+            return Result.success(collect);
         }
         return Result.error(SystemConstants.USER_HAS_NO_RESUME);
     }
@@ -623,6 +644,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     private ResumeVo getDecodeResume(Resume resume,Integer userId){
         try {
+            //如果拿到的简历为空，说明密钥解析失败，当前用户和密钥是不匹配的
             resume = getResumeInfoUtils.getResumeVoByKey(userId, resume);
         } catch (Exception e) {
             throw new BaseException(SystemConstants.CANT_BE_ANALYZED);

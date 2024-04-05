@@ -4,4 +4,7 @@
     <select id="getWorkListByCategoryId" resultType="com.ning.domain.entity.Work">
 
     </select>
+    <select id="selectListByIds" resultType="com.ning.domain.entity.Work">
+
+    </select>
 </mapper>

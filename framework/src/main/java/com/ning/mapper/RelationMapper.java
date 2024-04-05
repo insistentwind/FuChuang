@@ -6,6 +6,7 @@ import com.ning.domain.entity.Relation;
 import com.ning.domain.entity.Work;
 import com.ning.domain.vo.WorkPageVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface RelationMapper extends BaseMapper<Relation> {
      * 根据用户查询当前公司中是否有其简历
      * @return
      */
-    Integer getUserByCompany(Integer companyId, Integer userId);
+    Integer getUserByCompany(@Param("companyId") Integer companyId, @Param("userId") Integer userId);
 
 
     /**

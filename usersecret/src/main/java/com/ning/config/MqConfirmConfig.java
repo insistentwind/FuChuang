@@ -31,6 +31,7 @@ public class MqConfirmConfig implements ApplicationContextAware {
     public MessageConverter jacksonMessageConvertor(){
         return new Jackson2JsonMessageConverter();
     }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         RabbitTemplate rabbitTemplate = applicationContext.getBean(RabbitTemplate.class);

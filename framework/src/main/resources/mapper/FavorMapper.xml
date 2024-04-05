@@ -17,4 +17,11 @@
         WHERE f.user_id = #{id}
         and w.del_flag != 1
     </select>
+    <select id="getFavorByUserAndWorkId" resultType="com.ning.domain.entity.Work">
+        SELECT *
+        FROM `favor` f
+                 LEFT JOIN work w ON f.work_id = w.id
+        where f.work_id = #{workId}
+          AND f.user_id = #{userId}
+    </select>
 </mapper>

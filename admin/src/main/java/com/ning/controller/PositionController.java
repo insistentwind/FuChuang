@@ -1,6 +1,9 @@
 package com.ning.controller;
 
+import com.aliyun.oss.common.utils.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.Do.WorkDo;
 import com.ning.domain.dto.NotifyDto;
@@ -23,8 +26,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -51,7 +60,6 @@ public class PositionController {
     @Autowired
     private UserCompanyService userCompanyService;
 
-
     @Autowired
     private TransactionTemplate transactionTemplate;
 
@@ -64,7 +72,7 @@ public class PositionController {
     // todo 权限设置了么？
     @ApiOperation("发布职位")
     @PostMapping("/save")
-    public Result<String> save(@RequestBody WorkDo workDo) {
+    public Result<String> save(@RequestBody WorkDo workDo) throws IOException, InterruptedException {
         Work work = BeanCopyUtils.copyBean(workDo,Work.class);
         log.info("需要新增的职位信息：{}", work);
         //职位发布后，通知对应的观察者（用户）
@@ -105,10 +113,43 @@ public class PositionController {
 
         redisTemplate.opsForHash().put(SystemConstants.WORK_VIEW_COUNT, work.getId().toString(), 0);
 
+        if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
+            //请求失败，插入待处理数据库中
+            WorkLog workLog = new WorkLog();
+            workLog.setWorkId(work.getId())
+                    .setTagFlag(SystemConstants.WORK_INSERT);
+        }
+
         return Result.success("职位新增成功");
     }
 
+    /**
+     * 职位操控数据，对接python端口
+     * @param workId
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public String positionRequest(Integer workId) throws IOException, InterruptedException {
 
+        String url = SystemConstants.PYTHON_URL;
+        // 创建 HttpClient 实例
+        HttpClient client = HttpClient.newHttpClient();
+
+        // 创建 HTTP 请求
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + workId.toString())) // 目标接口地址
+                .build();
+
+        // 发送 HTTP GET 请求并获取响应
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String content = response.body();
+        // 创建一个ObjectMapper对象，用于将JSON字符串解析为JSON对象
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 将HTTP响应内容解析为JSON对象
+        JsonNode jsonNode = objectMapper.readTree(content);
+        return jsonNode.get("code").asText();
+    }
 
     /**
      * 更新职位信息
@@ -118,7 +159,7 @@ public class PositionController {
      */
     @ApiOperation("更新职位信息")
     @PutMapping
-    public Result<String> update(@RequestBody WorkDo workDo) {
+    public Result<String> update(@RequestBody WorkDo workDo) throws IOException, InterruptedException {
         WorkVo workVo = BeanCopyUtils.copyBean(workDo, WorkVo.class);
         log.info("更新职位信息:{}", workVo);
         User user = check();
@@ -126,6 +167,14 @@ public class PositionController {
         if (!userCompanyService.judgePriByUserId(user.getId(), workVo.getId())) {
             //判断当前用户是否是该公司的职位发布者
             throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
+        }
+
+
+        if (!Objects.equals(positionRequest(workDo.getId()), SystemConstants.CODE_SUCCESS)){
+            //请求失败，插入待处理数据库中
+            WorkLog workLog = new WorkLog();
+            workLog.setWorkId(workDo.getId())
+                    .setTagFlag(SystemConstants.WORK_INSERT);
         }
         return workService.updateByWork(workVo);
     }
@@ -181,12 +230,20 @@ public class PositionController {
                 relation.setCompanyId(work.getCompanyId())
                         .setWorkId(work.getId());
 
+
+
                 transactionTemplate.execute((status) -> {
                     workService.removeById(work.getId());
                     relationService.removeById(relation);
                     return null;
                 });
 
+                if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
+                    //请求失败，插入待处理数据库中
+                    WorkLog workLog = new WorkLog();
+                    workLog.setWorkId(work.getId())
+                            .setTagFlag(SystemConstants.WORK_INSERT);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -254,6 +311,17 @@ public class PositionController {
     @GetMapping("/getByUserId")
     public Result<ResumeVo> getResumeVoByUserId(Integer userId){
         return companyService.getResumeVoByUserId(userId);
+    }
+
+    /**
+     * 根据ids查询职位
+     * @param ids
+     * @return
+     */
+    @GetMapping("/{ids}")
+    @ApiOperation("根据ids查询职位")
+    public Result<List<Work>> getWorkListByIds(@PathVariable List<Integer> ids){
+        return workService.getWorksByIds(ids);
     }
 
     private User check() {

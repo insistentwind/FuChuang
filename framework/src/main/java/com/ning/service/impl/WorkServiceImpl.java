@@ -62,9 +62,9 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     private ResumeMapper resumeMapper;
 
 
-
     /**
      * 分页条件查询对应职位
+     *
      * @param workDto
      * @return
      */
@@ -150,7 +150,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Override
     public Result<WorkVo> getByWorkId(Integer id) {
         Work work = workMapper.selectById(id);
-        if (work == null){
+        if (work == null) {
             throw new BaseException("没有该职位，请检查输入");
         }
         WorkVo workVo = new WorkVo();
@@ -177,7 +177,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         //TODO 这里可能因为职位绑定的id是空所以返回公司为空，出现code400异常
         // viewCount可能也有问题，没有更新
         Company company = relationMapper.getCompanyByWorkId(id);
-        if(company.getId() == null){
+        if (company.getId() == null) {
             return Result.error("职位没有绑定的公司");
         }
         workVo.setCompany(company.getBrandName());
@@ -276,7 +276,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         List<WorkVo> workList = null;
         try {
             workList = (List<WorkVo>) redisTemplate.opsForHash().get(SystemConstants.WORK_CATIGORY, id.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (workList != null && workList.size() > 0) {
@@ -285,7 +285,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             // TODO 根据分类查询对应的职位信息
 //            List<Work> works = workMapper.getWorkListByCategoryId(id);
             LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Work::getClassifyId,id);
+            wrapper.eq(Work::getClassifyId, id);
             List<Work> works = workMapper.selectList(wrapper);
             List<WorkVo> workVoList = works.stream().map(item -> {
                 Integer workId = item.getId();
@@ -314,7 +314,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         try {
             UserDto loginUser = SecurityUtils.getLoginUser();
             user = loginUser.getUser();
-            if (!Objects.equals(user.getId(), resumeCommitDto.getUserId())){
+            if (!Objects.equals(user.getId(), resumeCommitDto.getUserId())) {
                 return Result.error(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
             }
         } catch (Exception e) {
@@ -323,6 +323,15 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         Work work = this.getById(resumeCommitDto.getWorkId());
         if (work == null) {
             throw new BaseException(SystemConstants.WORK_NOT_EXIST);
+        }
+
+        LambdaQueryWrapper<WorkUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(WorkUser::getWorkId, resumeCommitDto.getWorkId())
+                .eq(WorkUser::getUserId, resumeCommitDto.getUserId())
+                .eq(WorkUser::getResumeId, resumeCommitDto.getResumeId());
+        List<WorkUser> workUsers = workUserMapper.selectList(wrapper);
+        if (workUsers.size() > 0){
+            return Result.error(SystemConstants.USER_HAS_DELEVERED);
         }
         try {
             //拿到了简历id
@@ -335,6 +344,37 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
+    }
+
+    /**
+     * 根据ids查询职位
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public Result<List<Work>> getWorksByIds(List<Integer> ids) {
+        LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Work::getId, ids);
+        List<Work> works = workMapper.selectList(wrapper);
+        return Result.success(works);
+    }
+    /**
+     * 判断是否已经投递过此职位
+     * @param resumeCommitDto
+     * @return
+     */
+    @Override
+    public Result<String> whetherDeliverOrNot(ResumeCommitDto resumeCommitDto) {
+        LambdaQueryWrapper<WorkUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(WorkUser::getWorkId, resumeCommitDto.getWorkId())
+                .eq(WorkUser::getUserId, resumeCommitDto.getUserId())
+                .eq(WorkUser::getResumeId, resumeCommitDto.getResumeId());
+        List<WorkUser> workUsers = workUserMapper.selectList(wrapper);
+        if (workUsers.size() > 0){
+            return Result.error(SystemConstants.USER_HAS_DELEVERED);
+        }
+        return Result.success(SystemConstants.USER_HAS_NOT_DELEVERED);
     }
 }
 

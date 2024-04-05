@@ -3,6 +3,7 @@ package com.ning.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Favor;
 import com.ning.domain.entity.Work;
+import org.apache.ibatis.annotations.Param;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -24,5 +25,11 @@ public interface FavorMapper extends BaseMapper<Favor> {
      * @return
      */
     List<Work> getAllFavorByUserId(Integer id);
+    /**
+     * 根据职位id查询该用户是否收藏
+     * @param workId
+     * @return
+     */
+    Work getFavorByUserAndWorkId(@Param("userId") Integer userId,@Param("workId") Integer workId);
 }
 

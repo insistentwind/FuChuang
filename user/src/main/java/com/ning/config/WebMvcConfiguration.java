@@ -7,6 +7,8 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,6 +38,15 @@ import java.util.List;
 @ComponentScan({"com.ning"})
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
+
+    /**
+     * 消息转换器
+     * @return
+     */
+    @Bean
+    public MessageConverter jacksonMessageConvertor(){
+        return new Jackson2JsonMessageConverter();
+    }
 
     /**
      * 跨域配置

@@ -1,6 +1,7 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ning.domain.dto.UniversityDto;
 import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
@@ -87,5 +88,11 @@ public interface ClassifyService extends IService<Classify> {
      * @return
      */
     Result<WorkSalaryVo> getSalaryById(Integer id);
+    /**
+     * 条件查询学校信息
+     * @param Universitydto
+     * @return
+     */
+    Result<List<UniversityVo>> getUniversityBySchoolName(UniversityDto Universitydto);
 }
 

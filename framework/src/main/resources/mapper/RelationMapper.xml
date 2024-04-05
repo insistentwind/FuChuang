@@ -8,7 +8,7 @@
         WHERE r.work_id = #{id};
     </select>
     <select id="getUserByCompany" resultType="java.lang.Integer">
-        SELECT *
+        SELECT count(*)
         FROM relation re
                  LEFT JOIN work w ON re.work_id = w.id
                  LEFT JOIN work_user wu ON w.id = wu.work_id

@@ -3,6 +3,7 @@ package com.ning.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.SystemConstants;
+import com.ning.domain.dto.UniversityDto;
 import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
@@ -39,6 +40,8 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     private RedisCache redisCache;
     @Autowired
     private WorkMapper workMapper;
+    @Autowired
+    private UniversityService universityService;
 
     @Autowired
     private WorkDegreeService workDegreeService;
@@ -279,6 +282,24 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
         }
         BeanCopyUtils.copyBean(workSalary, WorkSalaryVo.class);
         return Result.success();
+    }
+    /**
+     * 条件查询学校信息
+     * @param Universitydto
+     * @return
+     */
+    @Override
+    public Result<List<UniversityVo>> getUniversityBySchoolName(UniversityDto Universitydto) {
+        LambdaQueryWrapper<University> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Universitydto.getSchoolId() != null,University::getSchoolId,Universitydto.getSchoolId())
+                .eq(Universitydto.getName() != null,University::getName,Universitydto.getName())
+                .eq(Universitydto.getProvinceName() != null,University::getProvinceName,Universitydto.getProvinceName())
+                .eq(Universitydto.getCityName() != null,University::getCityName,Universitydto.getCityName())
+                .eq(Universitydto.getTownName() != null,University::getTownName,Universitydto.getTownName())
+                .eq(Universitydto.getArea() != null,University::getArea,Universitydto.getArea());
+        List<University> universityList = universityService.list(wrapper);
+        List<UniversityVo> universityVos = BeanCopyUtils.copyBeanList(universityList, UniversityVo.class);
+        return Result.success(universityVos);
     }
 
     /**

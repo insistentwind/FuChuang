@@ -203,7 +203,7 @@ public class UserController {
      * @return
      */
     @PutMapping("/setCanBeSeen/")
-    @ApiOperation("切换简历是否")
+    @ApiOperation("切换简历是否可见")
     public Result<String> setResumeObscure(){
         return userService.setResumeObscure();
     }

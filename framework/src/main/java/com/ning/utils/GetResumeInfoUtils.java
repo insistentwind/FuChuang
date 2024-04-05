@@ -27,19 +27,20 @@ public class GetResumeInfoUtils {
      * @throws Exception
      */
     public Resume getResumeVoByKey(Integer userId,Resume resume) throws Exception{
-        UserKey userKey = KeyHttpUtils.sendGetRequest("http://127.0.0.1:8082", userId);
+        UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
         if (userKey == null){
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
         //用户密钥
         SecretKeySpec urkey = kdfUtils.stringToKey(userKey.getSecretKey());
 
-        System.out.println("用户密钥:" + kdfUtils.keyToString(urkey));
+//        System.out.println("用户密钥:" + kdfUtils.keyToString(urkey));
+        //起始的密钥（需要固定）
         SecretKeySpec beginKey = kdfUtils.generateKey(null, null, 512);;
-        System.out.println("初始密钥:" + kdfUtils.keyToString(beginKey));
+//        System.out.println("初始密钥:" + kdfUtils.keyToString(beginKey));
         //结合密钥
         SecretKey combinedKey = kdfUtils.generateCombinedKey(beginKey, urkey);
-        System.out.println("结合密钥:" + kdfUtils.keyToString(combinedKey));
+//        System.out.println("结合密钥:" + kdfUtils.keyToString(combinedKey));
 
         String decodeName = kdfUtils.Decoding(resume.getName(), combinedKey);
         String email = kdfUtils.Decoding(resume.getEmail(), combinedKey);
@@ -61,7 +62,7 @@ public class GetResumeInfoUtils {
      * @return
      */
     public Resume setResumeByKey(Integer userId,Resume resume){
-        UserKey userKey = KeyHttpUtils.sendGetRequest("http://127.0.0.1:8082", userId);
+        UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
         if (userKey == null){
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
@@ -95,7 +96,7 @@ public class GetResumeInfoUtils {
      * @return
      */
     public SecretKey getUserKey(Integer userId){
-        UserKey userKey = KeyHttpUtils.sendGetRequest("http://127.0.0.1:8082", userId);
+        UserKey userKey = KeyHttpUtils.sendGetRequest("http://124.220.208.63:8082", userId);
         if (userKey == null){
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }

@@ -102,7 +102,7 @@ public class WorkController {
         //检查当前用户是否是公司
         check();
 
-        String companyName;
+        String companyName = null;
         Integer companyId;
 
         try {
@@ -276,6 +276,17 @@ public class WorkController {
     @ApiOperation("用户投递简历or允许某公司查看自己的简历")
     public Result<String> commitResume(ResumeCommitDto resumeCommitDto) {
         return workService.commitResume(resumeCommitDto);
+    }
+
+    /**
+     * 判断是否已经投递过此职位
+     * @param resumeCommitDto
+     * @return
+     */
+    @ApiOperation("判断是否已经投递过此职位")
+    @GetMapping("/judgeCommitted")
+    public Result<String> whetherDeliverOrNot(ResumeCommitDto resumeCommitDto){
+        return workService.whetherDeliverOrNot(resumeCommitDto);
     }
 
     /**

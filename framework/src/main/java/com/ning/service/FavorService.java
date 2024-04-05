@@ -30,9 +30,14 @@ public interface FavorService extends IService<Favor> {
     Result<String> unFavor(FavorDto favorDto);
     /**
      * 根据id查询该用户的所有收藏
-     * @param id
      * @return
      */
-    Result<List<WorkVo>> getAllFavors(Integer id);
+    Result<List<WorkVo>> getAllFavors();
+    /**
+     * 根据职位id查询该用户是否收藏
+     * @param workId
+     * @return
+     */
+    Result<String> getListByWorkId(Integer workId);
 }
 

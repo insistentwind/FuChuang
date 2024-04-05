@@ -66,7 +66,7 @@ public class ResumeController {
      * 据id查询简历
      * @return
      */
-    @ApiOperation("据id查询简历")
+    @ApiOperation("根据id查询简历")
     @GetMapping("/getByResumeId")
     public Result<ResumeVo> getResumeVoByResumeId(Integer ResumeId){
         return companyService.getResumeVoByResumeId(ResumeId);

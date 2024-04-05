@@ -198,4 +198,32 @@ public class SystemConstants {
      * 已读
      */
     public static final Integer HAS_READ = 1;
+    /**
+     * 密钥端url地址
+     */
+    public static final String KEY_CLIENT_URL = "http://124.220.208.63:8082";
+    public static final String USER_HAS_NO_FAVOR = "该用户还没有收藏职位";
+    public static final String USER_NOT_FAVOR_THIS_WORK = "该用户没有收藏该职位";
+    /**
+     * python端请求路径
+     */
+    public static final String PYTHON_URL = "http://10.33.53.216:4321/update_job?id=";
+    /**
+     * 请求成功响应码
+     */
+    public static final String CODE_SUCCESS = "200";
+    /**
+     * 职位插入操作
+     */
+    public static final Integer WORK_INSERT = 1;
+    /**
+     * 职位删除操作
+     */
+    public static final Integer WORK_DELETE = 0;
+    /**
+     * 职位更新操作
+     */
+    public static final Integer WORK_UPDATE = 2;
+    public static final String USER_HAS_DELEVERED = "该用户在此职位已投递相同简历";
+    public static final String USER_HAS_NOT_DELEVERED = "该用户还未投递此简历";
 }
