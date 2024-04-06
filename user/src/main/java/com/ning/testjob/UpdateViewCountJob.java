@@ -29,7 +29,7 @@ public class UpdateViewCountJob {
     @Autowired
     private RedisTemplate redisTemplate;
     //一分钟一次
-    @Scheduled(cron = "0/60 * * * * ?")
+    @Scheduled(cron = "0 0 * * * ?")
     public void updateViewCount(){
         //获取redis中的浏览量
         Map<String,Integer> viewCount = redisTemplate.opsForHash().entries(SystemConstants.WORK_VIEW_COUNT);

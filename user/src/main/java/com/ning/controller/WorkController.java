@@ -58,6 +58,7 @@ public class WorkController {
      * @param workDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("分页条件查询职位")
     @GetMapping("/page")
     public Result<PageResult> page(WorkDto workDto) {
@@ -165,10 +166,11 @@ public class WorkController {
 
     /**
      * 批量删除职位
-     *
+     *todo 需要放到管理端去
      * @param ids
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("批量删除职位")
     @DeleteMapping
     public Result<String> delete(@RequestParam List<Integer> ids) {
@@ -257,6 +259,7 @@ public class WorkController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("id查询职位详细信息")
     @GetMapping("/{id}")
     public Result<WorkVo> getById(@PathVariable Integer id) {
@@ -273,6 +276,7 @@ public class WorkController {
      * @return
      */
     //用户投递简历就是添加到历史记录中去
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/commitResume")
     @ApiOperation("用户投递简历or允许某公司查看自己的简历")
     public Result<String> commitResume(ResumeCommitDto resumeCommitDto) {
@@ -284,6 +288,7 @@ public class WorkController {
      * @param resumeCommitDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("判断是否已经投递过此职位")
     @GetMapping("/judgeCommitted")
     public Result<String> whetherDeliverOrNot(ResumeCommitDto resumeCommitDto){
@@ -296,8 +301,9 @@ public class WorkController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PutMapping("/updateViewCount/{id}")
-    @ApiOperation("更新职位浏览量")
+    @ApiOperation("更新职位浏览量,用户查看某职位时，同步调用该接口")
     public Result<String> updateViewCount(@PathVariable("id") Long id) {
         log.info("需要更新浏览的职位id是：{}", id);
         return workService.updateViewCount(id);

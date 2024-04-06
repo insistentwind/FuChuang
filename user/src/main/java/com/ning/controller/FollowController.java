@@ -79,6 +79,7 @@ public class FollowController {
      * @param followDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/add")
     @ApiOperation("新增关注公司")
     public Result<String> addFollow(@RequestBody FollowDto followDto){
@@ -133,6 +134,7 @@ public class FollowController {
      * @param followDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @DeleteMapping("/cancel")
     @ApiOperation("取消关注")
     public Result<String> cancelFollow(@RequestBody FollowDto followDto) {
@@ -157,6 +159,7 @@ public class FollowController {
      * 查看当前用户的所有关注列表
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping
     @ApiOperation("查看我的关注")
     public Result<List<CompanyDto>> getAllByUserId(){
@@ -170,6 +173,7 @@ public class FollowController {
      * @param followDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("查询是否已经关注了某一个公司")
     @GetMapping("/find")
     public FollowDto find(FollowDto followDto){

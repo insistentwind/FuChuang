@@ -61,7 +61,10 @@ public class KeyHttpUtils {
             // 发送 HTTP GET 请求并获取响应
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String content = response.body();
-
+            if (content == null || content.isEmpty()) {
+                // 如果响应为空，则返回 null 或者抛出异常，视需求而定
+                return null; // 或者抛出异常，比如 throw new RuntimeException("Empty response");
+            }
             // 使用 JSON 序列化/反序列化库将响应体字符串转换为对象
             ObjectMapper objectMapper = new ObjectMapper();
             UserKey myEntity = objectMapper.readValue(content, UserKey.class);

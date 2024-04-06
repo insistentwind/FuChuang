@@ -129,24 +129,6 @@ public class interfaceUtils {
      * @return
      */
     public String Decoding(String encodeMsg) throws Exception {
-//        // 生成密钥
-//        int keyLength = 256;
-//        String password = "MyInterfacesEncodeUtils";
-//
-//
-////        salt = new byte[16];
-//        byte[] salt = new byte[]{
-//                (byte) 0x45, (byte) 0x67, (byte) 0x89, (byte) 0xAB,
-//                (byte) 0xCD, (byte) 0xEF, (byte) 0xFE, (byte) 0xDC,
-//                (byte) 0xBA, (byte) 0x98, (byte) 0x76, (byte) 0x54,
-//                (byte) 0x32, (byte) 0x10, (byte) 0x78, (byte) 0x96
-//        };
-//
-//        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 10000, keyLength);
-//        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-//        byte[] keyBytes = factory.generateSecret(spec).getEncoded();
-//        key = new SecretKeySpec(keyBytes, "AES");
-//        cipher = Cipher.getInstance(ALGORITHMSTR);
 
 
 
@@ -161,12 +143,4 @@ public class interfaceUtils {
     }
 
 
-//    public static void main(String[] args) throws Exception {
-//
-//
-//        String str= "A9wsFLw3FDpUh1GoiNhY+c/oBxIAca93WxexNxs0ehN16M6ZNfyOlsq3WYSgLaU7/bUFVhfB73sKGSQK/WmxncsDRXoI8btRtq+aLGSoVREmEJ0MFWKBxxpi36gK+W+Y4eaFMAaKvcDHx0m7jDSywV/M9EomBEZm077Vdtvtud/h6QK8rMW9snJOehNAKLPT+xgAfn8NwLYJzo8qFAmENfnMbQve6i/412uXEX/dGs5B2mkAHDRhx/CC9C9vL4tBKoSxs5cbAmf/nnqtQwzKU3e0l08WTXUG/4XS0ucmfcEjLKhq26itORZTVczJ/ZrIbNNPdjebJlK17qLcuSEiU5aL+Uiw8mmn9lB6i5g1V+ciPs8kosq78GJ8bTgbQ2P+i6jiLaaIUmaO1Q0dyCcMFQHgUH/gpXT7Kp1EyGUczX5T2HzFEYOXUMfmJrL/mnb1UF3HZ70IZrddIafGup27fbK0XZAGkcvdvP0KldZezZ+p9Ap5NviVaM4355Cvhsr3mgWD5kZigBjBl0EoUGiZIUguGBpipA2i/ka7tg+jA2gqurwO0KxpC+SdE2Egl7epVPUFD/bpbk2fH7XaNrLfSEm7yxkZZcOrdEGWQU1FYTAhNADiauNsdE+y1KTAwSzwm9/4b9lSjShpBjW0qB4j2FVPyf3SC+Yu4nfbViwM9ZxORF5j9Q4fXicRqQBijx4rb1P/L4ahAaQJ4i2+7XOpTRhyVSCkUFnct62nMb4cprjRDOSgfP3CM/jTjOYXjwVU0VZglh36vafAf017AaNx1qcluqT6sD9nYbDAeYaXjJyc9sGVsa4r7hu+XKK2v2Ag";
-//
-//        String decoding = Decoding(str);
-//        System.out.println(decoding);
-//    }
 }

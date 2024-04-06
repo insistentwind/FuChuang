@@ -61,6 +61,7 @@ public class UserController {
      * @param userRegisterDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Result<String> userRegister(@RequestBody UserRegisterDto userRegisterDto){
@@ -74,6 +75,7 @@ public class UserController {
      * @param resumeId
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("根据id获取用户的简历")
     @GetMapping("/resumeById")
     public Result<ResumeVo> getResumeById(Integer resumeId){
@@ -85,6 +87,7 @@ public class UserController {
      * 获取当前用户默认的简历信息
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("获取当前用户默认的简历信息")
     @GetMapping("/resume")
     public Result<ResumeVo> getUserResume(){
@@ -98,6 +101,7 @@ public class UserController {
      * @param resumeVo
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("简历数据修改")
     @PostMapping("/modify")
     public Result<String> resumeModify(@RequestBody ResumeVo resumeVo){
@@ -109,6 +113,7 @@ public class UserController {
      * @param resumeVo
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("创建简历")
     @PostMapping("/insert")
     public Result<String> insertResume(@RequestBody ResumeVo resumeVo){
@@ -120,6 +125,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/update")
     @ApiOperation("修改当前用户的信息")
     public Result<String> update(@RequestBody UserVo user){
@@ -131,7 +137,7 @@ public class UserController {
      * 用户信息回显
      * @return
      */
-    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/info")
     @ApiOperation("用户信息回显")
     public Result<UserVo> getUserInfo(){
@@ -142,6 +148,7 @@ public class UserController {
      * 查询当前用户的投递记录
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/get")
     @ApiOperation("查询当前用户的投递记录")
     public Result<List<DeliverVo>> getDeliverHistory(){
@@ -152,6 +159,7 @@ public class UserController {
      * 用户注销
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("用户注销")
     @PostMapping("/logout")
     public Result<String> logout(){
@@ -163,6 +171,7 @@ public class UserController {
      * @param resumeId
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PutMapping("/default")
     @ApiOperation("设置为默认简历")
     public Result<String> setDefaultResume(Integer resumeId){
@@ -174,6 +183,7 @@ public class UserController {
      * 当前用户所创建的简历列表
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/resumeList")
     @ApiOperation("当前用户创建的简历列表")
     public Result<List<ResumeVo>> getResumeList(){
@@ -193,6 +203,7 @@ public class UserController {
      * @param resumeVos
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/cmtBatch")
     @ApiOperation("批量创建简历(maybe used)")
     public Result<String> deliverBatchResumes(@RequestBody List<ResumeVo> resumeVos){
@@ -204,6 +215,7 @@ public class UserController {
      * @param
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PutMapping("/setCanBeSeen/")
     @ApiOperation("切换简历是否可见")
     public Result<String> setResumeObscure(){

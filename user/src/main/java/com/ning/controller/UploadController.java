@@ -31,6 +31,8 @@ public class UploadController {
     @Autowired
     private AliOssUtil aliOssUtil;
 
+
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/resume")
     @ApiOperation("简历上传接口")
     //开启异步后，由于multipartfile文件是临时文件，在接口return时会被销毁，因此开启异步有可能会找不到文件
@@ -67,8 +69,10 @@ public class UploadController {
      * @param file
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/avatar")
     @ApiOperation("头像上传接口")
+
     //开启异步后，由于multipartfile文件是临时文件，在接口return时会被销毁，因此开启异步有可能会找不到文件
     public Result<String> uploadAvatar(@RequestParam MultipartFile file){
         log.info("头像上传:{}",file);

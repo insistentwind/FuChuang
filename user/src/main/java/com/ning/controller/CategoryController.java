@@ -31,6 +31,7 @@ public class CategoryController {
      * 职位分类
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     //workclassify
     @ApiOperation("所有职位分类")
     @GetMapping("/workCategoryList")
@@ -43,6 +44,7 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("id查询职位分类")
     @GetMapping("/work/{id}")
     public Result<ClassifyVo> getWorkClassifyById(@PathVariable Integer id){
@@ -57,6 +59,7 @@ public class CategoryController {
      * @return
      */
     //cityname
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/cityList")
     @ApiOperation("城市分类")
     public Result<List<CityClassifyVo>> getCitiClassify(){
@@ -68,6 +71,7 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("id查询城市分类")
     @GetMapping("/city/{id}")
     public Result<CityClassifyVo> getCityClazzById(@PathVariable Integer id){
@@ -79,6 +83,7 @@ public class CategoryController {
      * @return
      */
     //workDegree
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/workDegreeList")
     @ApiOperation("学历分类")
     public Result<List<WorkDegreeVo>> getWorkDegreeList(){
@@ -90,6 +95,7 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/degree/{id}")
     @ApiOperation("id查询学历")
     public Result<WorkDegreeVo> getDegreeById(@PathVariable Integer id){
@@ -100,6 +106,7 @@ public class CategoryController {
      * 公司规模分类
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/scaleList")
     @ApiOperation("公司规模分类")
     //brandScaleName
@@ -112,6 +119,7 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/scale/{id}")
     @ApiOperation("id查询规模分类")
     public Result<BrandScaleNameVo> getScale(@PathVariable Integer id){
@@ -122,6 +130,7 @@ public class CategoryController {
      * 工作经验分类
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/expList")
     @ApiOperation("工作经验分类")
     //workExperience
@@ -134,6 +143,7 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/exp/{id}")
     @ApiOperation("id查询exp分类")
     public Result<WorkExperienceVo> getExpById(@PathVariable Integer id){
@@ -144,6 +154,7 @@ public class CategoryController {
      * 薪资分类
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/salaryList")
     @ApiOperation("工作经验分类")
     //workExperience
@@ -156,6 +167,7 @@ public class CategoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/salary/{id}")
     @ApiOperation("id查询exp分类")
     public Result<WorkSalaryVo> getSalaryById(@PathVariable Integer id){
@@ -167,6 +179,7 @@ public class CategoryController {
      * @param Universitydto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("条件查询学校信息")
     @PostMapping("/school/list")
     public Result<List<UniversityVo>> getUniversityBySchoolName(@RequestBody UniversityDto Universitydto){

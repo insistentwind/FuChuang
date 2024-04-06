@@ -234,4 +234,5 @@ public class SystemConstants {
      * 入参加密按钮，false不开启
      */
     public static final boolean IN_DECODE_BUTTON = false;
+    public static final String USER_HAS_NO_KEY = "创建密钥时出现错误";
 }

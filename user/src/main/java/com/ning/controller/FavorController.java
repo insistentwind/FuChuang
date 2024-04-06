@@ -33,6 +33,7 @@ public class FavorController {
      * @param favorDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping
     @ApiOperation("添加收藏")
     public Result<String> create(@RequestBody FavorDto favorDto){
@@ -64,6 +65,7 @@ public class FavorController {
      * @param favorDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @DeleteMapping("/cancel")
     @ApiOperation("取消收藏")
     public Result<String> unFavor(FavorDto favorDto){
@@ -75,6 +77,7 @@ public class FavorController {
      * 查询该用户的所有收藏
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/user")
     @ApiOperation("查询该用户的所有收藏")
     public Result<List<WorkVo>> getAllFavors(){
@@ -86,6 +89,7 @@ public class FavorController {
      * @param workId
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/{workId}")
     @ApiOperation("根据职位id查询该用户是否收藏")
     public Result<String> getFavorByWorkId(@PathVariable Integer workId) {

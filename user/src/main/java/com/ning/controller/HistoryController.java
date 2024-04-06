@@ -34,6 +34,7 @@ public class HistoryController {
      * 查询当前用户的浏览历史
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("当前用户浏览职位历史记录")
     @GetMapping
     public Result<List<HistoryVo>> getHistoryByUserId(){
@@ -46,6 +47,7 @@ public class HistoryController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("据记录id查询职位详细")
     @GetMapping("/{id}")
     public Result<WorkVo> getHistoryById(@PathVariable Integer id){

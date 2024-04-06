@@ -81,6 +81,7 @@ public class CompanyController {
      * @param ids
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @DeleteMapping("/{ids}")
     @ApiOperation("删除公司(应在管理端)")
     public Result<String> deleteBatch(@PathVariable List<Integer> ids){
@@ -92,6 +93,7 @@ public class CompanyController {
      * @param companyDo
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("更新公司信息")
     @PutMapping("/update")
     public Result<String> update(@RequestBody CompanyDo companyDo){
@@ -104,6 +106,7 @@ public class CompanyController {
      * @param
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("此公司所有职位收到的简历列表")
     @GetMapping("/listByCompany")
     public Result<List<WorkVo>> getResumeListByCompany(){
@@ -116,6 +119,7 @@ public class CompanyController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("职位id查询投递的简历列表")
     @GetMapping("/listByResumeId/{id}")
     public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
@@ -142,6 +146,7 @@ public class CompanyController {
      * @param workPageVo
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("条件查询此公司下的职位")
     @GetMapping("/PositionList")
     public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo){
@@ -164,6 +169,7 @@ public class CompanyController {
      * @param companyDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("分页查询公司")
     @GetMapping("/page")
     public Result<PageResult> page(CompanyDto companyDto){
@@ -178,6 +184,7 @@ public class CompanyController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("id查询公司")
     @GetMapping("/{id}")
     public Result<CompanyVo> getCompanyById(@PathVariable Integer id){
@@ -190,6 +197,7 @@ public class CompanyController {
      * @param companyName
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("据公司名称查询公司信息")
     @GetMapping("/search")
     public Result<CompanyVo> getByName(@RequestParam String companyName) {
@@ -203,6 +211,7 @@ public class CompanyController {
      * 根据公司名查询其行业
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("根据公司名查询其行业")
     @GetMapping("/industry")
     public Result<List<String>> getIndustry(String companyBrand){

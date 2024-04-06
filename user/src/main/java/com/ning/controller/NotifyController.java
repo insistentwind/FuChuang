@@ -31,6 +31,7 @@ public class NotifyController {
      * @param notifyDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("")
     @ApiOperation("新增消息通知")
     public Result<String> create(@RequestBody NotifyDto notifyDto) {
@@ -42,6 +43,7 @@ public class NotifyController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PutMapping("/{id}")
     @ApiOperation("据id修改消息为已读")
     public Result<String> update(@PathVariable Integer id) {
@@ -54,6 +56,7 @@ public class NotifyController {
      * @param isRead
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping()
     @ApiOperation("根据id和已读状态查询该用户收到的通知")
     public Result<List<NotifyVo>> getList(@RequestParam Integer userId, @RequestParam Integer isRead) {
@@ -65,6 +68,7 @@ public class NotifyController {
      * @param userId
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/all")
     @ApiOperation("根据id查询该用户收到的通知")
     public Result<List<NotifyVo>> getAll(@RequestParam Integer userId) {

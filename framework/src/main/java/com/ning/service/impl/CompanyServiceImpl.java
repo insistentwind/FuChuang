@@ -495,7 +495,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 UserKey userKeyEntity = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, user.getId());
                 SecretKeySpec userKey = null;
                 if (userKeyEntity == null){
-                    userKey = kdfUtils.generateKey(user.getUsername(), null, 512);
+                    userKey = kdfUtils.generateKey(user.getUsername(), new byte[16], 512);
                     //创建密钥
                     UserKey userKey1 = new UserKey();
                     userKey1.setUserId(user.getId());

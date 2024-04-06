@@ -32,6 +32,8 @@ import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -411,7 +413,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             UserKey userKeyEntity = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, user.getId());
             SecretKeySpec userKey = null;
             if (userKeyEntity == null){
-                userKey = kdfUtils.generateKey(user.getUsername(), null, 512);
+                userKey = kdfUtils.generateKey(user.getUsername(), new byte[16], 512);
                 //创建密钥
                 UserKey userKey1 = new UserKey();
                 userKey1.setUserId(user.getId());
@@ -586,7 +588,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     @Transactional
-    public Result<String> deliverBatchResumes(List<ResumeVo> resumeVos) {
+    public Result<String> deliverBatchResumes(List<ResumeVo> resumeVos){
         User user = null;
         try {
             user = SecurityUtils.getLoginUser().getUser();
@@ -596,11 +598,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         Integer userId = user.getId();
 
+        try {
+            SecretKeySpec userKey = null;
+            UserKey userKey2 = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
+            //如果这个用户没有密钥，那么就先创建一个密钥
+            if (userKey2 == null){
+                userKey = kdfUtils.generateKey(user.getUsername(), new byte[16], 512);
+                //创建密钥
+                UserKey userKey1 = new UserKey();
+                userKey1.setUserId(user.getId());
+                String msg = kdfUtils.keyToString(userKey);
+                userKey1.setSecretKey(msg);
+                //保证rabbitmq消息必须送达
+                rabbitTemplate.convertSendAndReceive(MqConstants.FUCHUANG_EXCHANGE,
+                        MqConstants.FUCHUANG_INSERT_KEY,userKey1);
+            }
+        } catch (Exception e) {
+            throw new BaseException(SystemConstants.USER_HAS_NO_KEY);
+        }
+
         resumeVos.forEach(item -> {
             Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
             // 加密
             resume = getResumeInfoUtils.setResumeByKey(userId, resume);
-
 
             resumeMapper.insert(resume);
             Integer resumeId = resume.getId();

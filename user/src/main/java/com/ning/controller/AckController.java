@@ -33,6 +33,7 @@ public class AckController {
      * 查看所有收到的查看简历申请
      * @return
      */
+    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("查看所有收到的查看简历申请")
     @GetMapping("/allApplications")
     public Result<List<Ack>> getCompanyMessage(){
@@ -44,6 +45,7 @@ public class AckController {
      * @param id
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("根据id查看简历申请")
     @GetMapping("/application/{id}")
     public Result<Ack> getOneMessage(@PathVariable Integer id){
@@ -58,6 +60,7 @@ public class AckController {
      * @param userPermitcompanyVo
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/allow")
     @ApiOperation("是否同意公司查看简历,1同意,0不同意")
     public Result<String> allowCompanyCheckResume(UserPermitcompanyVo userPermitcompanyVo){

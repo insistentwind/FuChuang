@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 import com.ning.utils.interfaceUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -68,10 +69,7 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
 
         private InputStream body;
 
-        public MyHttpInputMessage(HttpInputMessage inputMessage) throws Exception {
-            this.headers = inputMessage.getHeaders();
-            this.body = IOUtils.toInputStream(interfaceUtils.Decoding(easpString(IOUtils.toString(inputMessage.getBody(), "UTF-8"))), "UTF-8");
-        }
+
 
         @Override
         public InputStream getBody() throws IOException {
@@ -84,20 +82,33 @@ public class DecodeRequestBodyAdvice implements RequestBodyAdvice {
         }
 
         /**
-         * @param requestData
+         * @param
          * @return
          */
+//        public String easpString(String requestData) {
+//            if (requestData != null && !requestData.equals("")) {
+//                String s = "{\"requestData\":";
+//                if (!requestData.startsWith(s)) {
+//                    throw new RuntimeException("参数【requestData】缺失异常！");
+//                } else {
+//                    int closeLen = requestData.length() - 1;
+//                    int openLen = "{\"requestData\":".length();
+//                    String substring = StringUtils.substring(requestData, openLen, closeLen);
+//                    return substring;
+//                }
+//            }
+//            return "";
+//        }
+        public MyHttpInputMessage(HttpInputMessage inputMessage) throws Exception {
+            this.headers = inputMessage.getHeaders();
+            this.body = IOUtils.toInputStream(interfaceUtils.Decoding(easpString(IOUtils.toString(inputMessage.getBody(), "UTF-8"))), "UTF-8");
+        }
         public String easpString(String requestData) {
             if (requestData != null && !requestData.equals("")) {
-                String s = "{\"requestData\":";
-                if (!requestData.startsWith(s)) {
-                    throw new RuntimeException("参数【requestData】缺失异常！");
-                } else {
-                    int closeLen = requestData.length() - 1;
-                    int openLen = "{\"requestData\":".length();
-                    String substring = StringUtils.substring(requestData, openLen, closeLen);
-                    return substring;
-                }
+                int closeLen = requestData.length() - 1;
+                String substring = StringUtils.substring(requestData, 1, closeLen);
+                System.out.println(substring);
+                return substring;
             }
             return "";
         }
