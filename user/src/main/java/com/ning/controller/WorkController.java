@@ -1,6 +1,7 @@
-package com.ning.Controller;
+package com.ning.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ning.annotation.SecurityParameter;
 import com.ning.domain.Do.WorkDo;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.dto.ResumeCommitDto;

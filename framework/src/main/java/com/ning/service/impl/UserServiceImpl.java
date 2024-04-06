@@ -349,9 +349,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             wrapper.eq(WorkUser::getUserId, userId);
             List<WorkUser> list = workUserService.list(wrapper);
 
-            List<DeliverVo> collect = list.stream().map(
-                            item -> BeanCopyUtils.copyBean(
-                                    workService.getById(item.getWorkId()), DeliverVo.class))
+            List<DeliverVo> collect = list.stream().map(item -> {
+                        Work work = workService.getById(item.getWorkId());
+                        return DeliverVo.builder()
+                                .title(work.getTitle())
+                                .workId(work.getId())
+                                .salary(work.getSalaryDesc())
+                                .education(work.getEducation().toString())
+                                .viewCount(work.getViewCount())
+                                .build();
+                    })
                     .collect(Collectors.toList());
 
             return Result.success(collect);
@@ -559,6 +566,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     //密钥解析
                     Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(finalUser.getId(), resume);
                     ResumeVo resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
+                    resumeVo.setIsDefault(item.getIsDefault());
                     return resumeVo;
                 } catch (Exception e) {
                     throw new BaseException(SystemConstants.HAS_NO_KEY);

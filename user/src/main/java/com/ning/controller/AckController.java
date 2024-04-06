@@ -1,8 +1,8 @@
-package com.ning.Controller;
+package com.ning.controller;
 
+import com.ning.annotation.SecurityParameter;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.entity.Ack;
-import com.ning.domain.entity.UserPermitcompany;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.UserPermitcompanyVo;
 import com.ning.service.AckService;

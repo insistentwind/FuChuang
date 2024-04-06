@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.FavorDto;
+import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Favor;
 import com.ning.domain.entity.User;
 import com.ning.domain.entity.Work;
@@ -11,6 +12,7 @@ import com.ning.domain.result.Result;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.mapper.FavorMapper;
+import com.ning.mapper.RelationMapper;
 import com.ning.service.FavorService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.SecurityUtils;
@@ -30,6 +32,8 @@ import java.util.stream.Collectors;
 public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements FavorService {
     @Autowired
     private FavorMapper favorMapper;
+    @Autowired
+    private RelationMapper relationMapper;
     /**
      * 收藏职位
      * @param favorDto
@@ -70,7 +74,11 @@ public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements
             throw new BaseException(SystemConstants.USER_HAS_NO_FAVOR);
         }
         List<WorkVo> workVoList = workList.stream().map(item -> {
+            Integer workId = item.getId();
+            Company company = relationMapper.getCompanyByWorkId(workId);
             WorkVo workVo = BeanCopyUtils.copyBean(item, WorkVo.class);
+            workVo.setCompany(company.getBrandName());
+            workVo.setCompanyId(company.getId());
             return workVo;
         }).collect(Collectors.toList());
         return Result.success(workVoList);

@@ -237,7 +237,7 @@ public class PositionController {
                     relationService.removeById(relation);
                     return null;
                 });
-
+                //这里是python端处理
                 if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
                     //请求失败，插入待处理数据库中
                     WorkLog workLog = new WorkLog();

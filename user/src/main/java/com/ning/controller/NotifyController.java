@@ -1,5 +1,6 @@
-package com.ning.Controller;
+package com.ning.controller;
 
+import com.ning.annotation.SecurityParameter;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.result.Result;
 import com.ning.constants.SystemConstants;

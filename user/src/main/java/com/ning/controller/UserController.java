@@ -1,6 +1,7 @@
-package com.ning.Controller;
+package com.ning.controller;
 
-import com.ning.domain.entity.Ack;
+import com.ning.annotation.SecurityParameter;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.dto.UserRegisterDto;
@@ -10,7 +11,6 @@ import com.ning.domain.vo.DeliverVo;
 import com.ning.domain.vo.UserVo;
 import com.ning.enums.AppHttpCodeEnum;
 import com.ning.exception.SystemException;
-import com.ning.service.AckService;
 import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
@@ -42,6 +42,7 @@ public class UserController {
      * @param userLoginDto
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/login")
     @ApiOperation("登录接口")
     public Result<UserVo> login(@RequestBody UserLoginDto userLoginDto){
@@ -130,6 +131,7 @@ public class UserController {
      * 用户信息回显
      * @return
      */
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/info")
     @ApiOperation("用户信息回显")
     public Result<UserVo> getUserInfo(){

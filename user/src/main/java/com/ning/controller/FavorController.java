@@ -1,8 +1,9 @@
-package com.ning.Controller;
+package com.ning.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ning.annotation.SecurityParameter;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.FavorDto;
-import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.Favor;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.WorkVo;
@@ -11,7 +12,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

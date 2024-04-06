@@ -1,0 +1,31 @@
+package com.ning.annotation;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.web.bind.annotation.Mapping;
+
+import java.lang.annotation.*;
+
+/**
+ * @author lu
+ * @desc 请求数据解密
+ * @date 2019/04/15
+ */
+@Target({ElementType.METHOD,ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Mapping
+@Documented
+public @interface SecurityParameter {
+
+    /**
+     * 入参是否解密，默认解密
+     */
+    boolean inDecode() default true;
+
+    /**
+     * 出参是否加密，默认加密
+     */
+    boolean outEncode() default true;
+}

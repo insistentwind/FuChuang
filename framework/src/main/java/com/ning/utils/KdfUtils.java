@@ -25,6 +25,10 @@ public class KdfUtils {
     private static SecretKeySpec key;
 
     private static Cipher cipher;
+
+    //参数分别代表 算法名称/加密模式/数据填充方式
+    private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
+//    Cipher cipher = Cipher.getInstance(ALGORITHMSTR);
     /**
      * 初始化
      * @return
@@ -132,8 +136,6 @@ public class KdfUtils {
     public SecretKey getSecretKey(){
         return key;
     }
-
-
 
 
 

@@ -226,4 +226,12 @@ public class SystemConstants {
     public static final Integer WORK_UPDATE = 2;
     public static final String USER_HAS_DELEVERED = "该用户在此职位已投递相同简历";
     public static final String USER_HAS_NOT_DELEVERED = "该用户还未投递此简历";
+    /**
+     * 加密解密，false是不开启
+     */
+    public static final boolean OUT_ENCODE_BUTTON = false;
+    /**
+     * 入参加密按钮，false不开启
+     */
+    public static final boolean IN_DECODE_BUTTON = false;
 }

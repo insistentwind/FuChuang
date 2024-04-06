@@ -1,5 +1,7 @@
-package com.ning.Controller;
+package com.ning.controller;
 
+import com.ning.annotation.SecurityParameter;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.Do.CompanyDo;
 import com.ning.domain.Do.CompanySignUpDo;
 import com.ning.domain.dto.CompanyDto;

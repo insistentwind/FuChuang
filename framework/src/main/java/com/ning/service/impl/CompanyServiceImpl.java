@@ -3,6 +3,7 @@ package com.ning.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ning.constants.MqConstants;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.Do.CompanySignUpDo;
 import com.ning.domain.dto.CompanyDto;
@@ -14,9 +15,8 @@ import com.ning.domain.vo.*;
 import com.ning.exception.BaseException;
 import com.ning.mapper.*;
 import com.ning.service.*;
-import com.ning.utils.BeanCopyUtils;
-import com.ning.utils.GetResumeInfoUtils;
-import com.ning.utils.SecurityUtils;
+import com.ning.utils.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -71,6 +73,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private UserPermitcompanyService userPermitcompanyService;
     @Autowired
     private AckService ackService;
+    @Autowired
+    private KdfUtils kdfUtils;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 分页查询公司
@@ -255,6 +261,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         List<Relation> companyWorks = relationMapper.selectList(wrapper);
         // 第一次 职位id的list
         List<WorkVo> workVoList = companyWorks.stream().map(
+                //公司的works 的id
                         item -> getWorkResumeList(item.getWorkId(),companyId))
                 .collect(Collectors.toList());
 
@@ -266,6 +273,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         LambdaQueryWrapper<WorkUser> wrapper1 = new LambdaQueryWrapper<>();
         wrapper1.eq(WorkUser::getWorkId, workId);
         List<WorkUser> workUsers = workUserMapper.selectList(wrapper1);
+        if (workUsers.size() < 1){
+            return null;
+        }
         // 第三次 要拿根据简历id拿到所有简历的内容
         List<ResumeVo> ResumeList = workUsers.stream().map(o -> {
             Integer resumeId = o.getResumeId();
@@ -291,6 +301,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         return null;
     }
 
+    /**
+     * 判断当前公司的用户是否匹配
+     * @param companyId
+     * @return
+     */
     //参数是公司id
     private UserCompany judgeUserMatchedCompany(Integer companyId) {
         Integer userId = SecurityUtils.getUserId();
@@ -371,7 +386,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     /**
-     * 审核有没有权限
+     * 密钥审核有没有权限
      *
      * @param userId
      * @param companyId
@@ -407,7 +422,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         try {
             UserDto loginUser = SecurityUtils.getLoginUser();
             user = loginUser.getUser();
-            if (user.getIsCompany() == SystemConstants.IS_NOT_COMPANY) {
+            if (Objects.equals(user.getIsCompany(), SystemConstants.IS_NOT_COMPANY)) {
                 return Result.error("当前用户没有权限查询发布职位");
             }
         } catch (Exception e) {
@@ -451,6 +466,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @param resumeVoList
      * @return
      */
+    //todo 还没有写加密
     @Override
     @Transactional
     public Result<String> commitResumeList(List<ResumeVo> resumeVoList) {
@@ -463,6 +479,61 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             UserResume userResume = UserResume.builder().resumeId(resumeId)
                     .userId(userId)
                     .build();
+            //todo 拿密钥
+            String name = resume.getName();
+            String email = resume.getEmail();
+            String tel = resume.getTel();
+            String live = resume.getLive();
+            try {
+                //TODO 这里是创建简历时的/密钥/相关操作
+                //获取初始密钥
+                SecretKeySpec key = kdfUtils.generateKey(null, null, 512);
+                //用户密钥后期可以变更,因为会被存储,盐值可以随机改变
+                //todo 目前没有判断用户是否已经有密钥了，如果设置盐值随机，那么新创建的简历加密后的密钥会覆盖老的密钥.导致老的简历解析不出来
+                //解决方法是，先从mq中把另一个服务中查看当前用户是否已经创建了密钥
+                //这个是查询先查询密钥
+                UserKey userKeyEntity = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, user.getId());
+                SecretKeySpec userKey = null;
+                if (userKeyEntity == null){
+                    userKey = kdfUtils.generateKey(user.getUsername(), null, 512);
+                    //创建密钥
+                    UserKey userKey1 = new UserKey();
+                    userKey1.setUserId(user.getId());
+                    String msg = kdfUtils.keyToString(userKey);
+                    userKey1.setSecretKey(msg);
+
+                    rabbitTemplate.convertAndSend(MqConstants.FUCHUANG_EXCHANGE,
+                            MqConstants.FUCHUANG_INSERT_KEY,userKey1);
+                }
+                else {
+                    //否则，密钥存在，直接拿到密钥
+                    String secretKey = userKeyEntity.getSecretKey();
+                    userKey = kdfUtils.stringToKey(secretKey);
+                }
+                //结合密钥
+                SecretKey combinedKey = kdfUtils.generateCombinedKey(key, userKey);
+
+
+                /**
+                 * 获取密钥的方式都相同
+                 */
+                String username = kdfUtils.Encoding(name, combinedKey);
+                String codeMail = kdfUtils.Encoding(email,combinedKey);
+                String codeTel = kdfUtils.Encoding(tel,combinedKey);
+                String codeLive = kdfUtils.Encoding(live, combinedKey);
+                resume.setName(username)
+                        .setEmail(codeMail)
+                        .setTel(codeTel)
+                        .setLive(codeLive);
+
+//            resumeService.updateById(resume);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BaseException("加密时出现错误!请检查字段是否填写完整");
+            }
+
+
             userResumeMapper.insert(userResume);
             //简历创建好后，把简历投递到自己公司
             WorkUser workUser = WorkUser.builder().workId(item.getWorkId())

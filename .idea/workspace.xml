@@ -9,55 +9,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="userInfo Encode Added,a little difficult">
-      <change afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/PositionLogController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/dto/UniversityDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/University.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkLog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UniversityVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/WorkLogVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/UniversityMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/WorkLogMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/UniversityService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkLogService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UniversityServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkLogServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/usersecret/src/test/java/com/ning/requestTest.java" afterDir="false" />
+    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="encode and decode resumes when company users want to view the resumes which are committed in their positions; control client perms check left">
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/annotation/SecurityParameter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/encodeHandler/DecodeRequestBodyAdvice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/encodeHandler/EncodeResponseBodyAdvice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/interfaceUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b0b099b-ec96-4cc1-ae52-7696ae1a9edf.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1b0b099b-ec96-4cc1-ae52-7696ae1a9edf.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/PositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/PositionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/ResumeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/ResumeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/framework/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Ack.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Ack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Work.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Work.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/FavorMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/FavorMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/ResumeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/ResumeMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/WorkMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/WorkMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/ClassifyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/ClassifyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/FavorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/FavorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/WorkService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ClassifyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ClassifyServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/DeliverVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/DeliverVo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/FavorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/FavorServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/WorkServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/GetResumeInfoUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/GetResumeInfoUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/WebUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/WebUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/resources/mapper/FavorMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/FavorMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/resources/mapper/WorkMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/WorkMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/FavorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/FavorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/config/WebMvcConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/config/WebMvcConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/config/MqConfirmConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/config/MqConfirmConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/controller/UserKeyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/controller/UserKeyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/KdfUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/KdfUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/AckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/AckController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/CompanyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/FavorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/FavorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/FollowController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/FollowController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/HistoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/NotifyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/NotifyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/Controller/WorkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/WorkController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,38 +88,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
-    &quot;database.data.extractors.current.id&quot;: &quot;SQL Inserts&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/FuChuang/FuChuang/framework/src/main/java/com/ning&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.sjhy.plugin.ui.TemplateSettingForm&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;3fa0425fccb47205e91d45787aff1607&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TODO_SCOPE": "All Places",
+    "WebServerToolWindowFactoryState": "false",
+    "database.data.extractors.current.export.id": "SQL Inserts",
+    "database.data.extractors.current.id": "SQL Inserts",
+    "jdk.selected.JAVA_MODULE": "11",
+    "last_opened_file_path": "E:/FuChuang/FuChuang/framework/src/main/java/com/ning/handler/encodeHandler",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "com.sjhy.plugin.ui.TemplateSettingForm",
+    "spring.configuration.checksum": "3fa0425fccb47205e91d45787aff1607",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -152,11 +129,11 @@
       <recent name="com.ning.service.impl" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\handler\encodeHandler" />
       <recent name="E:\FuChuang\FuChuang\usersecret\src\main\java\com\ning\config" />
       <recent name="E:\FuChuang\FuChuang\usersecret\src\main\resources" />
       <recent name="E:\FuChuang\FuChuang\admin\src\test\java" />
       <recent name="E:\FuChuang\FuChuang\framework\src\main\java\com\ning\handler" />
-      <recent name="E:\FuChuang\FuChuang\admin\src\main\java\com\ning" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\FuChuang\FuChuang" />
@@ -168,26 +145,23 @@
       <recent name="com.ning" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.ning.domain.vo" />
       <recent name="com.ning.config" />
+      <recent name="com.ning.annotation" />
+      <recent name="com.ning.domain.vo" />
       <recent name="com.ning.domain.entity" />
       <recent name="com.ning.controller" />
-      <recent name="com.ning.utils" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.AdminApplication">
-    <configuration name="DistributeKey.createKeyForUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="usersecret" />
+  <component name="RunManager" selected="Spring Boot.UserApplication">
+    <configuration name="interfaceUtils" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.ning.utils.interfaceUtils" />
+      <module name="framework" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.ning.*" />
+          <option name="PATTERN" value="com.ning.utils.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.ning" />
-      <option name="MAIN_CLASS_NAME" value="com.ning.DistributeKey" />
-      <option name="METHOD_NAME" value="createKeyForUsers" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -283,9 +257,9 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.interfaceUtils" />
       <item itemvalue="JUnit.requestTest.request" />
       <item itemvalue="JUnit.requestTest.request (1)" />
-      <item itemvalue="JUnit.DistributeKey.createKeyForUsers" />
       <item itemvalue="JUnit.DistributeKey.secureContrary" />
       <item itemvalue="Spring Boot.AdminApplication" />
       <item itemvalue="Spring Boot.UserSecretApplication" />
@@ -293,11 +267,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.UserApplication" />
+        <item itemvalue="Application.interfaceUtils" />
         <item itemvalue="JUnit.requestTest.request (1)" />
         <item itemvalue="JUnit.requestTest.request" />
-        <item itemvalue="Spring Boot.UserApplication" />
         <item itemvalue="JUnit.DistributeKey.secureContrary" />
-        <item itemvalue="JUnit.DistributeKey.createKeyForUsers" />
       </list>
     </recent_temporary>
   </component>
@@ -415,7 +389,10 @@
       <workItem from="1712040962085" duration="18326000" />
       <workItem from="1712107727891" duration="1888000" />
       <workItem from="1712128642901" duration="21642000" />
-      <workItem from="1712301263236" duration="24600000" />
+      <workItem from="1712301263236" duration="25874000" />
+      <workItem from="1712380186250" duration="604000" />
+      <workItem from="1712389535584" duration="2400000" />
+      <workItem from="1712392405351" duration="8876000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1705320423753</created>
@@ -522,7 +499,14 @@
       <option name="project" value="LOCAL" />
       <updated>1712156503550</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="encode and decode resumes when company users want to view the resumes which are committed in their positions; control client perms check left">
+      <created>1712326958771</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1712326958771</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -561,7 +545,8 @@
     <MESSAGE value="V1.01 has been published,admin client added,but not completely completed maybe" />
     <MESSAGE value="annotations added,encoding interfaces have to be done next" />
     <MESSAGE value="userInfo Encode Added,a little difficult" />
-    <option name="LAST_COMMIT_MESSAGE" value="userInfo Encode Added,a little difficult" />
+    <MESSAGE value="encode and decode resumes when company users want to view the resumes which are committed in their positions; control client perms check left" />
+    <option name="LAST_COMMIT_MESSAGE" value="encode and decode resumes when company users want to view the resumes which are committed in their positions; control client perms check left" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -576,9 +561,11 @@
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.ning.domain.dto.UserDto" memberName="username" />
+        <PinnedItemInfo parentTag="com.ning.domain.vo.WorkVo" memberName="areaDistrict" />
         <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
         <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
+        <PinnedItemInfo parentTag="com.ning.domain.vo.WorkVo" memberName="resumeList" />
         <PinnedItemInfo parentTag="com.ning.domain.entity.Deliver" memberName="workId" />
         <PinnedItemInfo parentTag="com.ning.domain.dto.UserDto" memberName="password" />
       </pinned-members>
