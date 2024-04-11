@@ -100,7 +100,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 .eq(StringUtils.hasText(companyDto.getBrandScaleName()), Company::getBrandScaleName, companyDto.getBrandScaleName());
 
 //        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
-        Page<Company> page = new Page<>(pageNum, pageSize);
+        Page<Company> page = new Page<>(pageNum, pageSize,false);
         page(page, wrapper);
         List<Company> records = page.getRecords();
         List<CompanyVo> companyVos = BeanCopyUtils.copyBeanList(records, CompanyVo.class);
@@ -116,6 +116,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public Result<CompanyVo> getCompanyById(Integer id) {
         Company company = getById(id);
+        if(company == null){
+            throw new BaseException(SystemConstants.HAS_NO_COMPANY);
+        }
         CompanyVo companyVo = BeanCopyUtils.copyBean(company, CompanyVo.class);
         return Result.success(companyVo);
     }
@@ -643,6 +646,22 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         ackService.save(ack);
 
         return Result.success(SystemConstants.SUCCESS);
+    }
+    /**
+     * 条件查询公司下发布的职位
+     * @param workPageVo
+     * @return
+     */
+    @Override
+    public Result<List<WorkVo>> pageUserClientByCategoryId(WorkPageVo workPageVo) {
+        List<Work> workList = relationMapper.getWorkByCategory(workPageVo);
+//        List<Work> workList = relationMapper.getWorkByCompanyId(companyId);
+        if (workList.size() > 0 && workList != null) {
+            List<WorkVo> workVos = BeanCopyUtils.copyBeanList(workList, WorkVo.class);
+            return Result.success(workVos);
+        } else {
+            return Result.error(SystemConstants.COMPANY_HAS_NO_POSITION);
+        }
     }
 //    /**
 //     * 新增公司员工

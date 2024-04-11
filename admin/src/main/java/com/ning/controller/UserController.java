@@ -1,11 +1,13 @@
 package com.ning.controller;
 
 import com.ning.domain.dto.CompanyDto;
+import com.ning.domain.entity.WorkLog;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.*;
 import com.ning.service.CompanyService;
 import com.ning.service.UserService;
+import com.ning.service.WorkLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private WorkLogService workLogService;
 
     @Autowired
     private CompanyService companyService;
@@ -117,4 +121,5 @@ public class UserController {
     public Result<String> deleteByIds(List<Integer> ids){
         return companyService.deleteByIds(ids);
     }
+
 }

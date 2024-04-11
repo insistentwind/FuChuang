@@ -27,7 +27,7 @@ public class ViewCountRunner implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Redis程序初始化");
+        System.out.println("放入职位浏览量");
         //获取到所有工作职位的信息
         List<Work> workList = workService.list();
         Map<String, Integer> collect = workList.stream().collect(Collectors.toMap(

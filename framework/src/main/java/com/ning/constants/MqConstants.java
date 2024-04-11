@@ -8,6 +8,8 @@ public class MqConstants {
      */
     public final static String FUCHUANG_EXCHANGE = "fuchuang.topic";
 
+
+
     /**
      * 监听新增和修改的队列
      */
@@ -36,5 +38,18 @@ public class MqConstants {
      * 查询的RoutingKey
      */
     public final static String FUCHUANG_SELECT_KEY = "fuchuang.select";
+
+
+
+    public final static String POSITION_EXCHANGE = "position.topic";
+    /**
+     * 监听新增和修改的队列
+     */
+    public final static String POSITION_INSERT_QUEUE = "position.insert.queue";
+
+    /**
+     * 监听删除的队列
+     */
+    public final static String POSITION_DELETE_QUEUE = "position.delete.queue";
 
 }

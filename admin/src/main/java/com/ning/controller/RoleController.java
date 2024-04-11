@@ -35,7 +35,7 @@ public class RoleController {
      * @param rolePageVo
      * @return
      */
-    @PreAuthorize("@ps.hasPermission('')")
+//    @PreAuthorize("@ps.hasPermission('')")
     @ApiOperation("角色列表分页查询接口")
     @GetMapping("/role/list")
     public Result<PageResult> list(RolePageVo rolePageVo){

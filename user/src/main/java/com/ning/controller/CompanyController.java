@@ -51,94 +51,6 @@ public class CompanyController {
 
 
     /**
-     * 公司端投递简历
-     * 情景为：公司线下面试后，需要把面试者的信息投递到公司自己的职位里面去
-     * 可能是一个List，导入
-     * @param resumeVoList
-     * @return
-     */
-
-    @ApiOperation("公司端投递简历(公司把面试者的信息录入)")
-    @GetMapping("/resume")
-    public Result<String> commitResumeList(List<ResumeVo> resumeVoList){
-        return companyService.commitResumeList(resumeVoList);
-    }
-
-    /**
-     * 公司注册
-     * @param companyDo
-     * @return
-     */
-    @PostMapping("/register")
-    @ApiOperation("公司注册")
-    public Result<String> create(@RequestBody CompanySignUpDo companyDo){
-        log.info("新增公司:{}",companyDo);
-        return companyService.createCompany(companyDo);
-    }
-
-    /**
-     * 删除公司
-     * @param ids
-     * @return
-     */
-    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @DeleteMapping("/{ids}")
-    @ApiOperation("删除公司(应在管理端)")
-    public Result<String> deleteBatch(@PathVariable List<Integer> ids){
-        return companyService.deleteBatch(ids);
-    }
-
-    /**
-     * 更新公司的信息
-     * @param companyDo
-     * @return
-     */
-    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @ApiOperation("更新公司信息")
-    @PutMapping("/update")
-    public Result<String> update(@RequestBody CompanyDo companyDo){
-        log.info("更改公司信息");
-        CompanyDto companyDto = BeanCopyUtils.copyBean(companyDo, CompanyDto.class);
-        return companyService.updateByCompany(companyDto);
-    }
-    /**
-     * 查询此公司下所有职位投递的简历列表
-     * @param
-     * @return
-     */
-    @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @ApiOperation("此公司所有职位收到的简历列表")
-    @GetMapping("/listByCompany")
-    public Result<List<WorkVo>> getResumeListByCompany(){
-        return companyService.getResumeListByCompany();
-    }
-
-
-    /**
-     * 根据职位id查询所有投递的简历列表
-     * @param id
-     * @return
-     */
-    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @ApiOperation("职位id查询投递的简历列表")
-    @GetMapping("/listByResumeId/{id}")
-    public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
-        //这里的简历列表被放入到了WorkVo中的ResumeList中
-        return companyService.getResumeListByWorkId(id);
-    }
-//    /**
-//     * 根据用户id查询此用户的简历
-//     * @return
-//     */
-//    @ApiOperation("据用户id查询此用户的简历")
-//    @GetMapping("/getByUserId")
-//    public Result<ResumeVo> getResumeVoByUserId(Integer userId){
-//        return companyService.getResumeVoByUserId(userId);
-//    }
-
-
-
-    /**
      * 以上均需要放入公司端中
      */
     /**
@@ -152,15 +64,6 @@ public class CompanyController {
     public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo){
         return companyService.pageByCategoryId(workPageVo);
     }
-
-
-
-
-
-
-
-
-
 
 
 

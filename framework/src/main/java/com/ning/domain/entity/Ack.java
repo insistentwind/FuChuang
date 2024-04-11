@@ -2,9 +2,11 @@ package com.ning.domain.entity;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +48,8 @@ public class Ack  {
     //是否已读(0否，1是)
     @ApiModelProperty(value = "是否已读(0否，1是)")
     private Integer read;
+    @ApiModelProperty(value = "操作时间")
+    private LocalDateTime time;
 
 }
 

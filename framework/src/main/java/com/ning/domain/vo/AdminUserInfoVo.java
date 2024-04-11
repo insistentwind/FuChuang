@@ -23,7 +23,7 @@ public class AdminUserInfoVo {
 
 //    private List<String> permissions;
     @ApiModelProperty(value = "权限")
-    private MenuVo permissions;
+    private List<String> permissions;
     @ApiModelProperty(value = "角色")
     private List<String> roles;
     @ApiModelProperty(value = "用户信息")

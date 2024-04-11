@@ -83,7 +83,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     public Result<PageResult> listByRoleVo(RolePageVo rolePageVo) {
-        Page page = new Page(rolePageVo.getPageNum(), rolePageVo.getPageSize());
+        Page page = new Page(rolePageVo.getPageNum(), rolePageVo.getPageSize(),false);
         LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByAsc(Role::getRoleSort);
         wrapper.like(rolePageVo.getRoleName() != null,Role::getRoleName,rolePageVo.getRoleName()).eq(rolePageVo.getStatus() != null,Role::getStatus,rolePageVo.getStatus());

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ning.mapper.ResumeMapper">
-    <update id="setObscureByUserId">
+    <update id="setObscureByResumeId">
         update resume r
         set r.obscure = #{status}
+        where r.id = #{resumeId}
     </update>
 
     <select id="getInfoByUserId" resultType="com.ning.domain.vo.ResumeVo">
@@ -11,11 +12,13 @@
         FROM `resume` r
                  LEFT JOIN user_resume ur on r.id = ur.resume_id
         WHERE ur.user_id = #{userId}
+        AND r.del_flag != 1
     </select>
     <select id="getInfoByResumeId" resultType="com.ning.domain.vo.ResumeVo">
         SELECT *
         FROM `resume` r
                  LEFT JOIN user_resume ur on r.id = ur.resume_id
         WHERE ur.resume_id = #{resumeId}
+        AND r.del_flag != 1
     </select>
 </mapper>

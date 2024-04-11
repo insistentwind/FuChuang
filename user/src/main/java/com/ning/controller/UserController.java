@@ -102,7 +102,7 @@ public class UserController {
      * @return
      */
     @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @ApiOperation("简历数据修改")
+    @ApiOperation("简历修改")
     @PostMapping("/modify")
     public Result<String> resumeModify(@RequestBody ResumeVo resumeVo){
         return userService.resumeModify(resumeVo);
@@ -216,13 +216,22 @@ public class UserController {
      * @return
      */
     @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @PutMapping("/setCanBeSeen/")
+    @PutMapping("/setCanBeSeen/{id}")
     @ApiOperation("切换简历是否可见")
-    public Result<String> setResumeObscure(){
-        return userService.setResumeObscure();
+    public Result<String> setResumeObscure(@PathVariable Integer id){
+        return userService.setResumeObscure(id);
     }
 
-
+    /**
+     * 删除简历
+     * @param id
+     * @return
+     */
+    @ApiOperation("删除简历")
+    @DeleteMapping("/delete/{id}")
+    public Result<String> deleteResume(@PathVariable Integer id){
+        return userService.deleteResumeById(id);
+    }
 
 
 }

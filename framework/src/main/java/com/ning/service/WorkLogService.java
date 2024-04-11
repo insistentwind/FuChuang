@@ -20,5 +20,27 @@ public interface WorkLogService extends IService<WorkLog> {
      * @return
      */
     Result<List<WorkLog>> getListByVo(WorkLogVo workLogVo);
+    /**
+     * 根据id获取职位信息
+     * @param workId
+     * @return
+     */
+    Result<List<WorkLog>> getListByWorkId(Integer workId);
+    /**
+     * 查看职位操作日志
+     */
+    Result<List<WorkLog>> getWorkLogs();
+    /**
+     * 批量删除日志信息
+     * @param ids
+     * @return
+     */
+    Result<String> deleteBatch(List<Integer> ids);
+    /**
+     * 根据vo修改日志信息
+     * @param workLogVo
+     * @return
+     */
+    Result<String> updateByVo(WorkLogVo workLogVo);
 }
 

@@ -28,9 +28,10 @@ public interface ResumeMapper extends BaseMapper<Resume> {
 
     /**
      * 设置隐私字段
-     * @param userId
+     * @param resumeId
      * @param status
      */
-    void setObscureByUserId(@Param("userId") Integer userId,@Param("status") Integer status);
+    void setObscureByResumeId(@Param("resumeId") Integer resumeId,@Param("status") Integer status);
+
 }
 

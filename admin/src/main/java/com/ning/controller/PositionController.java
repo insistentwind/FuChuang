@@ -4,9 +4,11 @@ import com.aliyun.oss.common.utils.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ning.constants.MqConstants;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.Do.WorkDo;
 import com.ning.domain.dto.NotifyDto;
+import com.ning.domain.dto.PositionMessage;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
@@ -19,6 +21,7 @@ import com.ning.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -35,7 +38,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
+import java.time.Duration;
 /**
  * @author: qjn
  * @create: 2024/03/30 22:29
@@ -59,13 +62,15 @@ public class PositionController {
     private RelationService relationService;
     @Autowired
     private UserCompanyService userCompanyService;
-
+    @Autowired
+    private WorkLogService workLogService;
     @Autowired
     private TransactionTemplate transactionTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 发布职位接口
-     *
      * @param workDo
      * @return
      */
@@ -101,7 +106,16 @@ public class PositionController {
         //还需要做的是启动的时候把所有的观察者和被观察者放入redis中
 //            Set<String> set = redisTemplate.opsForHash().keys(companyName);
 //            //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
-        sendMessage(companyName,message);
+        //这里放入消息队列中
+        //保证消息最起码被消费了一次
+        PositionMessage positionMessage = new PositionMessage();
+        positionMessage.setMessage(message)
+                        .setCompanyName(companyName);
+        rabbitTemplate.convertAndSend(MqConstants.POSITION_EXCHANGE,
+                MqConstants.POSITION_INSERT_QUEUE,positionMessage);
+
+        //这里是创建线程池发送消息，与消息队列冲突
+//        sendMessage(companyName,message);
 
         transactionTemplate.execute((status) ->{
             workService.save(work);
@@ -112,13 +126,15 @@ public class PositionController {
         });
 
         redisTemplate.opsForHash().put(SystemConstants.WORK_VIEW_COUNT, work.getId().toString(), 0);
-
-        if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
-            //请求失败，插入待处理数据库中
-            WorkLog workLog = new WorkLog();
-            workLog.setWorkId(work.getId())
-                    .setTagFlag(SystemConstants.WORK_INSERT);
-        }
+        //TODO 这里是把新增职位的消息告诉python端
+//        if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
+//            //请求失败，插入待处理数据库中
+//            WorkLog workLog = new WorkLog();
+//            workLog.setWorkId(work.getId())
+//                    .setTime(LocalDateTime.now())
+//                    .setTagFlag(SystemConstants.WORK_INSERT);
+//            workLogService.save(workLog);
+//        }
 
         return Result.success("职位新增成功");
     }
@@ -136,19 +152,28 @@ public class PositionController {
         // 创建 HttpClient 实例
         HttpClient client = HttpClient.newHttpClient();
 
+        // 设置超时时间为10秒
+        Duration timeout = Duration.ofSeconds(10);
+
         // 创建 HTTP 请求
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url + workId.toString())) // 目标接口地址
+                .timeout(timeout)
                 .build();
 
         // 发送 HTTP GET 请求并获取响应
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        String content = response.body();
-        // 创建一个ObjectMapper对象，用于将JSON字符串解析为JSON对象
-        ObjectMapper objectMapper = new ObjectMapper();
-        // 将HTTP响应内容解析为JSON对象
-        JsonNode jsonNode = objectMapper.readTree(content);
-        return jsonNode.get("code").asText();
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String content = response.body();
+            // 创建一个ObjectMapper对象，用于将JSON字符串解析为JSON对象
+            ObjectMapper objectMapper = new ObjectMapper();
+            // 将HTTP响应内容解析为JSON对象
+            JsonNode jsonNode = objectMapper.readTree(content);
+            return jsonNode.get("code").asText();
+        }
+        catch (Exception e){
+            throw new BaseException("python服务端失联");
+        }
     }
 
     /**
@@ -169,13 +194,15 @@ public class PositionController {
             throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
         }
 
-
-        if (!Objects.equals(positionRequest(workDo.getId()), SystemConstants.CODE_SUCCESS)){
-            //请求失败，插入待处理数据库中
-            WorkLog workLog = new WorkLog();
-            workLog.setWorkId(workDo.getId())
-                    .setTagFlag(SystemConstants.WORK_INSERT);
-        }
+        //TODO 更新职位的消息告诉python端
+//        if (!Objects.equals(positionRequest(workDo.getId()), SystemConstants.CODE_SUCCESS)){
+//            //请求失败，插入待处理数据库中
+//            WorkLog workLog = new WorkLog();
+//            workLog.setWorkId(workDo.getId())
+//                    .setTime(LocalDateTime.now())
+//                    .setTagFlag(SystemConstants.WORK_INSERT);
+//            workLogService.save(workLog);
+//        }
         return workService.updateByWork(workVo);
     }
 
@@ -223,27 +250,35 @@ public class PositionController {
 //            }
             //这里是删除redis中存储的公司键
             // 如果某一个用户不再关注这个公司了，那么也要删除redis中保存的键
-            sendMessage(companyName, message);
+
+            //这里放入消息队列中
+            //保证消息最起码被消费了一次
+            PositionMessage positionMessage = new PositionMessage();
+            positionMessage.setMessage(message)
+                    .setCompanyName(companyName);
+            rabbitTemplate.convertAndSend(MqConstants.POSITION_EXCHANGE,
+                    MqConstants.POSITION_INSERT_QUEUE,positionMessage);
+            //与消息队列冲突
+//            sendMessage(companyName, message);
 
             try {
                 Relation relation = new Relation();
                 relation.setCompanyId(work.getCompanyId())
                         .setWorkId(work.getId());
-
-
-
                 transactionTemplate.execute((status) -> {
                     workService.removeById(work.getId());
                     relationService.removeById(relation);
                     return null;
                 });
-                //这里是python端处理
-                if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
-                    //请求失败，插入待处理数据库中
-                    WorkLog workLog = new WorkLog();
-                    workLog.setWorkId(work.getId())
-                            .setTagFlag(SystemConstants.WORK_INSERT);
-                }
+                //TODO 这里是把新增职位的消息告诉python端
+//                if (!Objects.equals(positionRequest(work.getId()), SystemConstants.CODE_SUCCESS)){
+//                    //请求失败，插入待处理数据库中
+//                    WorkLog workLog = new WorkLog();
+//                    workLog.setWorkId(work.getId())
+//                            .setTime(LocalDateTime.now())
+//                            .setTagFlag(SystemConstants.WORK_INSERT);
+//                    workLogService.save(workLog);
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -262,7 +297,6 @@ public class PositionController {
     @Async("commonAsyncThreadPool")
     public void sendMessage(String companyName, String message) {
         try {
-
             Set<String> set = redisTemplate.opsForHash().keys(companyName);
             for (String user : set) {
                 NotifyDto notifyDto = new NotifyDto();
@@ -318,7 +352,7 @@ public class PositionController {
      * @param ids
      * @return
      */
-    @GetMapping("/{ids}")
+    @GetMapping("/list/{ids}")
     @ApiOperation("根据ids查询职位")
     public Result<List<Work>> getWorkListByIds(@PathVariable List<Integer> ids){
         return workService.getWorksByIds(ids);

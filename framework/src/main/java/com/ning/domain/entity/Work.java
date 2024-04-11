@@ -119,11 +119,6 @@ public class Work {
     @ApiModelProperty(name = "hr职位", notes = "")
     private String bossTitle;
     /**
-     * 唯一id
-     */
-    @ApiModelProperty(name = "唯一id", notes = "")
-    private String encryptBrandid;
-    /**
      * 创建人
      */
     @ApiModelProperty(name = "创建人", notes = "")

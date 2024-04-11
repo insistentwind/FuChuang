@@ -1,6 +1,9 @@
 package com.ning.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ning.domain.entity.Work;
 import org.mapstruct.Mapper;
 
@@ -14,6 +17,15 @@ import java.util.List;
  */
 @Mapper
 public interface WorkMapper extends BaseMapper<Work> {
+
+    long count();
+
+    // 使用MyBatis的分页查询
+    default IPage<Work> selectWorkPage(Page<Work> page) {
+        return selectPage(page, null);
+    }
+
+
     /**
      * 根据职位id查询工作列表
      * @param id

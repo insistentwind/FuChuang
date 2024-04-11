@@ -7,4 +7,7 @@
     <select id="selectListByIds" resultType="com.ning.domain.entity.Work">
 
     </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(*) from work where id = 1;
+    </select>
 </mapper>

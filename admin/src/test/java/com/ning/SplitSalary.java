@@ -67,6 +67,7 @@ public class SplitSalary {
                         .setName(companyName)
                         .setIsCompany(1);
                 try {
+                    //注册用户
                     userService.register(user);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -76,6 +77,7 @@ public class SplitSalary {
 
                 userCompany.setCompanyId(companyId)
                         .setUserId(user.getId());
+                // 保存用户公司对应关系
                 userCompanyService.save(userCompany);
             }
         });
@@ -93,9 +95,9 @@ public class SplitSalary {
             String companyEncryptBrandid = item.getEncryptBrandid();
 //            hrName = null == hrName ? "fuChuangTest" : hrName;
             Integer companyId = item.getId();
-
+            //TODO error 注意这里EncryptBrandId被删除了，此方法暂时弃用
             LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Work::getEncryptBrandid, companyEncryptBrandid);
+//            wrapper.eq(Work::getEncryptBrandid, companyEncryptBrandid);
             List<Work> workList = workService.list(wrapper);
             if (workList != null) {
                 for (Work work : workList) {
@@ -157,14 +159,16 @@ public class SplitSalary {
     public void workDistinct() {
         List<Work> workList = workService.list();
         for (Work work : workList) {
-            String encryptBrandid = work.getEncryptBrandid();
+            //TODO error 注意这里EncryptBrandId被删除了，此方法暂时弃用
+//            String encryptBrandid = work.getEncryptBrandid();
 
             String skills = work.getSkills();
             Integer cityName = work.getCityName();
             String businessDistrict = work.getBusinessDistrict();
 
             LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Work::getEncryptBrandid, encryptBrandid)
+            wrapper
+//                    .eq(Work::getEncryptBrandid, encryptBrandid)
                     .eq(Work::getSkills, skills)
                     .eq(Work::getCityName, cityName)
                     .eq(Work::getBusinessDistrict, businessDistrict)
@@ -180,7 +184,7 @@ public class SplitSalary {
 
 
     /**
-     * 公司和角色绑定
+     * 公司和公司角色绑定
      */
     @Test
     public void cpyAssociatedWithRole(){

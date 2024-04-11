@@ -60,7 +60,7 @@ public class SystemConstants {
      */
     public static final int WORK_STATUS_YES = 1;
 
-    public static final String WORK_VIEW_COUNT = "articleViewCount";
+    public static final String WORK_VIEW_COUNT = "positionViewCount";
 
     /**
      * 不需要筛选通知
@@ -187,7 +187,7 @@ public class SystemConstants {
      */
     public static final Integer CAN_BE_SEEN = 0;
     public static final String PLEASE_CHECK_RESUME = "请检查简历信息是否填写完整";
-    public static final String CANT_BE_ANALYZED = "简历信息无法解析，可能的原因为用户没有权限";
+    public static final String CANT_BE_ANALYZED = "简历信息无法解析，用户没有权限或不存在此简历";
     public static final String HAS_NO_KEY = "密钥解析失败";
     public static final String OPERATION_NOT_COMPARE_WITH_USER = "当前操作与用户不匹配";
     /**
@@ -235,4 +235,27 @@ public class SystemConstants {
      */
     public static final boolean IN_DECODE_BUTTON = false;
     public static final String USER_HAS_NO_KEY = "创建密钥时出现错误";
+    /**
+     * 允许查看简历
+     */
+    public static final Object AGREE_TO_SEE = 0;
+    public static final String HAS_NO_COMPANY = "没有此公司";
+    public static final String CANT_FIND_DRAW = "没有与之匹配的简历画像";
+    public static final String RESUME_POOL_HAS_NO_RESUME = "当前简历池中没有简历信息";
+    /**
+     * 加入公共建立池
+     * 0是1否
+     */
+    //加入公共建立池(0是1否)
+    public static final Integer PUBLIC_POOL_OPEN = 0;
+    //加入公共建立池(0是1否)
+    public static final Integer PUBLIC_POOL_CLOSE = 1;
+    public static final String DECODE_FAIL = "简历解密失败";
+    public static final String HAS_NO_POOL_PERMS = "当前简历不允许被查看";
+    public static final String CHECK_INPUT = "请检查输入";
+    public static final String RESUME_HAS_DELETED_OR_NOT_EXIST = "简历被删除或不存在";
+    /**
+     * 删除标志位，1为删除
+     */
+    public static final Integer DEL_FLAG = 1;
 }

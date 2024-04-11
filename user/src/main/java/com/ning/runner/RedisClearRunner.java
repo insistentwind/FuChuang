@@ -22,6 +22,7 @@ public class RedisClearRunner implements CommandLineRunner {
     //开机清空所有的redis缓存
     @Override
     public void run(String... args) throws Exception {
+        log.info("清空缓存中...");
         Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection().flushDb();
     }
 }

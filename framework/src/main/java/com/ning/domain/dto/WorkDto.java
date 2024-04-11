@@ -30,7 +30,7 @@ public class WorkDto {
 
     //分类id
     @ApiModelProperty(value = "分类id")
-    private String classifyId;
+    private Integer classifyId;
 
     //    //max分类
 //    private String bigClassify;

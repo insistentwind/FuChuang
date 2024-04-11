@@ -120,6 +120,9 @@ public class Resume  {
     /** 是否默认可见(0 是，1 否) */
     @ApiModelProperty(name = "是否默认可见(0 是，1 否)",notes = "")
     private Integer obscure ;
+    /**是否加入公共简历池(0 是，1否) */
+    @ApiModelProperty(value = "是否加入公共简历池(0 是，1否)")
+    private Integer publicPool;
     /** 删除标志位 */
     @ApiModelProperty(name = "删除标志位",notes = "")
     private Integer delFlag ;

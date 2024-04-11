@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.ning.domain.result.Result;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -72,7 +73,6 @@ public class UploadController {
     @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @PostMapping("/avatar")
     @ApiOperation("头像上传接口")
-
     //开启异步后，由于multipartfile文件是临时文件，在接口return时会被销毁，因此开启异步有可能会找不到文件
     public Result<String> uploadAvatar(@RequestParam MultipartFile file){
         log.info("头像上传:{}",file);
@@ -80,7 +80,12 @@ public class UploadController {
             throw new BaseException("发生错误,文件上传失败,请重试");
         }
         String originalFilename = file.getOriginalFilename();
-        if(!originalFilename.endsWith(".png") && !originalFilename.endsWith(".jpg")){
+        if((!Objects.requireNonNull(originalFilename).endsWith(".img") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".jpg") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".png") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".IMG") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".JPG") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".PNG"))){
             //文件类型错误
             throw new RuntimeException("头像文件类型错误");
         }

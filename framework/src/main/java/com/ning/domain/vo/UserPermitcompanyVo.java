@@ -28,9 +28,9 @@ public class UserPermitcompanyVo {
     //允许查看的公司id
     @ApiModelProperty(value = "允许查看的公司id")
     private Integer companyPermitId;
-
+    //0允许，1不允许
     @ApiModelProperty(value = "0允许，1不允许")
-    private Integer yesOrNo;
+    private Integer agree;
 
 }
 

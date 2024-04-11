@@ -16,11 +16,11 @@
           AND re.company_id = #{companyId};
     </select>
     <select id="getWorkByCompanyId" resultType="com.ning.domain.entity.Work">
-        SELECT w.*,r.company_id
+        SELECT w.*, r.company_id
         FROM relation r
                  LEFT JOIN `work` w ON r.work_id = w.id
-        WHERE r.company_id = #{companyId}
-        AND w.del_flag != 1
+        where r.company_id = #{companyId}
+          AND w.del_flag != 1
     </select>
     <select id="getWorkByCategory" resultType="com.ning.domain.entity.Work">
         SELECT *
@@ -28,16 +28,21 @@
                  LEFT JOIN `work` w ON r.work_id = w.id
         <where>
             w.del_flag != 1
-         <if test="companyId != null">
-             AND r.company_id = #{companyId}
-         </if>
-        <if test="companyId != null">
-            AND w.classify_id = #{categoryId}
-        </if>
-        <if test="companyId != null">
-            AND w.city_name = #{cityClassifyId}
-        </if>
-
+            <if test="companyId != null">
+                AND r.company_id = #{companyId}
+            </if>
+            <if test="salary != null">
+                AND w.salary = #{salary}
+            </if>
+            <if test="education != null">
+                AND w.education = #{education}
+            </if>
+            <if test="jobExperience != null">
+                AND w.job_experience = #{jobExperience}
+            </if>
+            <if test="classifyId != null">
+                AND w.classify_id = #{classifyId}
+            </if>
         </where>
 
     </select>

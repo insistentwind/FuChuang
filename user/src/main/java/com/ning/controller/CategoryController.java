@@ -156,7 +156,7 @@ public class CategoryController {
      */
     @SecurityParameter(outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/salaryList")
-    @ApiOperation("工作经验分类")
+    @ApiOperation("薪资分类")
     //workExperience
     public Result<List<WorkSalaryVo>> salaryList(){
         return classifyService.getSalaryList();
@@ -169,7 +169,7 @@ public class CategoryController {
      */
     @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @GetMapping("/salary/{id}")
-    @ApiOperation("id查询exp分类")
+    @ApiOperation("id查询薪资分类")
     public Result<WorkSalaryVo> getSalaryById(@PathVariable Integer id){
         return classifyService.getSalaryById(id);
     }
@@ -182,7 +182,7 @@ public class CategoryController {
     @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
     @ApiOperation("条件查询学校信息")
     @PostMapping("/school/list")
-    public Result<List<UniversityVo>> getUniversityBySchoolName(@RequestBody UniversityDto Universitydto){
+    public Result<List<UniversityVo>> getUniversityBySchoolName(@RequestBody(required = false) UniversityDto Universitydto){
         return classifyService.getUniversityBySchoolName(Universitydto);
     }
 }

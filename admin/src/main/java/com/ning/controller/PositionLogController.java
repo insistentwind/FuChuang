@@ -27,13 +27,46 @@ public class PositionLogController {
     private WorkLogService WorkLogService;
 
     /**
-     * 获取操作失败的职位list
+     * 条件查询职位日志list
      * @param workLogVo
      * @return
      */
-    @ApiOperation("获取操作失败的职位list")
+    @ApiOperation("条件查询职位日志list")
     @PostMapping("/list")
     public Result<List<WorkLog>> getWorkLogByFlag(@RequestBody (required = false) WorkLogVo workLogVo){
         return WorkLogService.getListByVo(workLogVo);
+    }
+
+    /**
+     * 根据id获取职位信息
+     * @param workId
+     * @return
+     */
+    @ApiOperation("根据id获取职位信息")
+    @GetMapping("/list/{workId}")
+    public Result<List<WorkLog>> getWorkLogByWorkId(@PathVariable Integer workId){
+        return WorkLogService.getListByWorkId(workId);
+    }
+
+    /**
+     * 批量删除日志信息
+     * @param ids
+     * @return
+     */
+    @ApiOperation("批量删除日志信息")
+    @DeleteMapping("/{ids}")
+    public Result<String> deleteBatch(@PathVariable List<Integer> ids){
+        return WorkLogService.deleteBatch(ids);
+    }
+
+    /**
+     * 根据vo修改日志信息
+     * @param workLogVo
+     * @return
+     */
+    @ApiOperation("根据vo修改日志信息")
+    @PutMapping("/update")
+    public Result<String> updateByVo(@RequestBody WorkLogVo workLogVo){
+        return WorkLogService.updateByVo(workLogVo);
     }
 }

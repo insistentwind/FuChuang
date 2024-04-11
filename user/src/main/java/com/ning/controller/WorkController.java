@@ -11,6 +11,7 @@ import com.ning.domain.entity.*;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.constants.SystemConstants;
+import com.ning.domain.vo.WorkPageVo;
 import com.ning.domain.vo.WorkVo;
 import com.ning.exception.BaseException;
 import com.ning.service.*;
@@ -62,7 +63,7 @@ public class WorkController {
     @ApiOperation("分页条件查询职位")
     @GetMapping("/page")
     public Result<PageResult> page(WorkDto workDto) {
-        log.info("分页条件查询对应职位:{}", workDto);
+//        log.info("分页条件查询对应职位:{}", workDto);
         return workService.getListByTag(workDto);
     }
 
@@ -84,173 +85,184 @@ public class WorkController {
 
 
 
-    @Autowired
-    private TransactionTemplate transactionTemplate;
+//    @Autowired
+//    private TransactionTemplate transactionTemplate;
 
-    /**
-     * 发布职位接口
-     *
-     * @param workDo
-     * @return
-     */
-    // todo 权限设置了么？
-    @ApiOperation("发布职位")
-    @PostMapping("/save")
-    public Result<String> save(@RequestBody WorkDo workDo) {
-        Work work = BeanCopyUtils.copyBean(workDo,Work.class);
-        log.info("需要新增的职位信息：{}", work);
-        //职位发布后，通知对应的观察者（用户）
-//        String companyName = work.getCompany();
-        //检查当前用户是否是公司
-        check();
-
-        String companyName = null;
-        Integer companyId;
-
-        try {
-            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(UserCompany::getUserId, userDto.getUser().getId());
-            UserCompany userCompany = userCompanyService.getOne(wrapper);
-            Company company = companyService.getById(userCompany.getCompanyId());
-
-            companyName = company.getBrandName();
-            companyId = company.getId();
-        } catch (Exception e) {
-            throw new BaseException("当前用户未绑定公司");
-        }
-
-
-        String message = companyName + "发布了新职位——" + work.getTitle() + ",快去看看吧";
-        //还需要做的是启动的时候把所有的观察者和被观察者放入redis中
-//            Set<String> set = redisTemplate.opsForHash().keys(companyName);
-//            //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
-        sendMessage(companyName,message);
-
-        transactionTemplate.execute((status) ->{
-            workService.save(work);
-            Relation relation = new Relation();
-            relation.setWorkId(work.getId()).setCompanyId(companyId);
-            relationService.save(relation);
-            return null;
-        });
-
-        redisTemplate.opsForHash().put(SystemConstants.WORK_VIEW_COUNT, work.getId().toString(), 0);
-
-        return Result.success("职位新增成功");
-    }
-
-
-
-    /**
-     * 更新职位信息
-     *
-     * @param workDo
-     * @return
-     */
-    @ApiOperation("更新职位信息")
-    @PutMapping
-    public Result<String> update(@RequestBody WorkDo workDo) {
-        WorkVo workVo = BeanCopyUtils.copyBean(workDo, WorkVo.class);
-        log.info("更新职位信息:{}", workVo);
-        User user = check();
-
-        if (!userCompanyService.judgePriByUserId(user.getId(), workVo.getId())) {
-            //判断当前用户是否是该公司的职位发布者
-            throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
-        }
-        return workService.updateByWork(workVo);
-    }
+//    /**
+//     * 发布职位接口
+//     *
+//     * @param workDo
+//     * @return
+//     */
+//    // todo 权限设置了么？
+//    @ApiOperation("发布职位")
+//    @PostMapping("/save")
+//    public Result<String> save(@RequestBody WorkDo workDo) {
+//        Work work = BeanCopyUtils.copyBean(workDo,Work.class);
+//        log.info("需要新增的职位信息：{}", work);
+//        //职位发布后，通知对应的观察者（用户）
+////        String companyName = work.getCompany();
+//        //检查当前用户是否是公司
+//        check();
+//
+//        String companyName = null;
+//        Integer companyId;
+//
+//        try {
+//            UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+//            wrapper.eq(UserCompany::getUserId, userDto.getUser().getId());
+//            UserCompany userCompany = userCompanyService.getOne(wrapper);
+//            Company company = companyService.getById(userCompany.getCompanyId());
+//
+//            companyName = company.getBrandName();
+//            companyId = company.getId();
+//        } catch (Exception e) {
+//            throw new BaseException("当前用户未绑定公司");
+//        }
+//
+//
+//        String message = companyName + "发布了新职位——" + work.getTitle() + ",快去看看吧";
+//        //还需要做的是启动的时候把所有的观察者和被观察者放入redis中
+////            Set<String> set = redisTemplate.opsForHash().keys(companyName);
+////            //这里之前已经在对应的观察者子类中，存入SingleUtil.messageMap.put(name, message);对应的消息
+//        sendMessage(companyName,message);
+//
+//        transactionTemplate.execute((status) ->{
+//            workService.save(work);
+//            Relation relation = new Relation();
+//            relation.setWorkId(work.getId()).setCompanyId(companyId);
+//            relationService.save(relation);
+//            return null;
+//        });
+//
+//        redisTemplate.opsForHash().put(SystemConstants.WORK_VIEW_COUNT, work.getId().toString(), 0);
+//
+//        return Result.success("职位新增成功");
+//    }
 
 
 
-    /**
-     * 批量删除职位
-     *todo 需要放到管理端去
-     * @param ids
-     * @return
-     */
-    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
-    @ApiOperation("批量删除职位")
-    @DeleteMapping
-    public Result<String> delete(@RequestParam List<Integer> ids) {
-        log.info("需要删除的职位信息:{}", ids);
-
-        User user1 = check();
-        for (Integer id : ids) {
-
-            if (!userCompanyService.judgePriByUserId(user1.getId(), id)) {
-                //判断当前用户是否是该公司的职位发布者
-                throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
-            }
-
-            Work work = workService.getById(id);
-//            LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
-//            wrapper.eq(Company::getCompanyName,work.getCompany());
-//            Company company = companyService.getOne(wrapper);
-            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(UserCompany::getUserId, user1.getId());
-            UserCompany userCompany = userCompanyService.getOne(wrapper);
-
-            LambdaQueryWrapper<Company> wrapper1 = new LambdaQueryWrapper<>();
-            wrapper1.eq(Company::getId, userCompany.getCompanyId());
-            Company company = companyService.getOne(wrapper1);
-
-            String companyName = company.getBrandName();
-            //这里是删除对应的公司-职位关系表
+//    /**
+//     * 更新职位信息
+//     *
+//     * @param workDo
+//     * @return
+//     */
+//    @ApiOperation("更新职位信息")
+//    @PutMapping
+//    public Result<String> update(@RequestBody WorkDo workDo) {
+//        WorkVo workVo = BeanCopyUtils.copyBean(workDo, WorkVo.class);
+//        log.info("更新职位信息:{}", workVo);
+//        User user = check();
+//
+//        if (!userCompanyService.judgePriByUserId(user.getId(), workVo.getId())) {
+//            //判断当前用户是否是该公司的职位发布者
+//            throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
+//        }
+//        return workService.updateByWork(workVo);
+//    }
 
 
-            String message = companyName + "下架了职位——" + work.getTitle() + "，快去看看吧！";
-
-//            if (redisTemplate.hasKey(companyName) == null) {
-//                throw new RuntimeException("不存在此公司");
+//
+//    /**
+//     * 批量删除职位
+//     *todo 需要放到管理端去
+//     * @param ids
+//     * @return
+//     */
+//    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
+//    @ApiOperation("批量删除职位")
+//    @DeleteMapping
+//    public Result<String> delete(@RequestParam List<Integer> ids) {
+//        log.info("需要删除的职位信息:{}", ids);
+//
+//        User user1 = check();
+//        for (Integer id : ids) {
+//
+//            if (!userCompanyService.judgePriByUserId(user1.getId(), id)) {
+//                //判断当前用户是否是该公司的职位发布者
+//                throw new BaseException("error,可能的错误是您没有权限修改其他公司的职位信息");
 //            }
-            //这里是删除redis中存储的公司键
-            // 如果某一个用户不再关注这个公司了，那么也要删除redis中保存的键
-            sendMessage(companyName, message);
+//
+//            Work work = workService.getById(id);
+////            LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
+////            wrapper.eq(Company::getCompanyName,work.getCompany());
+////            Company company = companyService.getOne(wrapper);
+//            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+//            wrapper.eq(UserCompany::getUserId, user1.getId());
+//            UserCompany userCompany = userCompanyService.getOne(wrapper);
+//
+//            LambdaQueryWrapper<Company> wrapper1 = new LambdaQueryWrapper<>();
+//            wrapper1.eq(Company::getId, userCompany.getCompanyId());
+//            Company company = companyService.getOne(wrapper1);
+//
+//            String companyName = company.getBrandName();
+//            //这里是删除对应的公司-职位关系表
+//
+//
+//            String message = companyName + "下架了职位——" + work.getTitle() + "，快去看看吧！";
+//
+////            if (redisTemplate.hasKey(companyName) == null) {
+////                throw new RuntimeException("不存在此公司");
+////            }
+//            //这里是删除redis中存储的公司键
+//            // 如果某一个用户不再关注这个公司了，那么也要删除redis中保存的键
+//            sendMessage(companyName, message);
+//
+//            try {
+//                Relation relation = new Relation();
+//                relation.setCompanyId(work.getCompanyId())
+//                        .setWorkId(work.getId());
+//
+//                transactionTemplate.execute((status) -> {
+//                    workService.removeById(work.getId());
+//                    relationService.removeById(relation);
+//                    return null;
+//                });
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//
+//        return Result.success(SystemConstants.SUCCESS);
+//    }
 
-            try {
-                Relation relation = new Relation();
-                relation.setCompanyId(work.getCompanyId())
-                        .setWorkId(work.getId());
-
-                transactionTemplate.execute((status) -> {
-                    workService.removeById(work.getId());
-                    relationService.removeById(relation);
-                    return null;
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return Result.success(SystemConstants.SUCCESS);
-    }
+//    /**
+//     * 联动职位发布信息
+//     *
+//     * @param companyName
+//     * @param message
+//     */
+//    @Async("commonAsyncThreadPool")
+//    public void sendMessage(String companyName, String message) {
+//        try {
+//
+//            Set<String> set = redisTemplate.opsForHash().keys(companyName);
+//            for (String user : set) {
+//                NotifyDto notifyDto = new NotifyDto();
+//                notifyDto.setUserId(Integer.valueOf(user));
+//                notifyDto.setContent(message);
+//                Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
+//                notify.setTime(LocalDateTime.now());
+//                notifyService.save(notify);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
-     * 联动职位发布信息
-     *
-     * @param companyName
-     * @param message
+     * 条件查询公司下发布的职位
+     * @param workPageVo
+     * @return
      */
-    @Async("commonAsyncThreadPool")
-    public void sendMessage(String companyName, String message) {
-        try {
-
-            Set<String> set = redisTemplate.opsForHash().keys(companyName);
-            for (String user : set) {
-                NotifyDto notifyDto = new NotifyDto();
-                notifyDto.setUserId(Integer.valueOf(user));
-                notifyDto.setContent(message);
-                Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
-                notify.setTime(LocalDateTime.now());
-                notifyService.save(notify);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @ApiOperation("条件查询公司下的职位")
+    @GetMapping("/WorkListByCompanyId")
+    public Result<List<WorkVo>> pageByCategoryId(WorkPageVo workPageVo){
+        return companyService.pageUserClientByCategoryId(workPageVo);
     }
 
     /**

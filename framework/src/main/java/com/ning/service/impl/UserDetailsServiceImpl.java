@@ -48,11 +48,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info("账户存在");
         //后台系统需要封装权限
         if (!user.getIsCompany().equals(SystemConstants.IS_NOT_COMPANY)) {
-            MenuVo menuVo = menuMapper.selectPermsByUserId(user.getId());
-            if (menuVo == null){
+            List<String> perms = menuMapper.selectPermsByUserId(user.getId());
+            if (perms == null){
                 return new UserDto(user,null);
             }
-            List<String> perms = menuVo.getPerms();
             return new UserDto(user, perms);
         }
 

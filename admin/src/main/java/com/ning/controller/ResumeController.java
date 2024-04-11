@@ -28,6 +28,8 @@ public class ResumeController {
     private CompanyService companyService;
     /**
      * 公司端投递简历
+     * 情景为：公司线下面试后，需要把面试者的信息投递到公司自己的职位里面去
+     * 可能是一个List，导入
      * @param resumeVoList
      * @return
      */
@@ -68,8 +70,8 @@ public class ResumeController {
      */
     @ApiOperation("根据id查询简历")
     @GetMapping("/getByResumeId")
-    public Result<ResumeVo> getResumeVoByResumeId(Integer ResumeId){
-        return companyService.getResumeVoByResumeId(ResumeId);
+    public Result<ResumeVo> getResumeVoByResumeId(Integer resumeId){
+        return companyService.getResumeVoByResumeId(resumeId);
     }
 
 

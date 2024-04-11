@@ -21,14 +21,15 @@ public class GetResumeInfoUtils {
 
     /**
      * 简历解密
+     *
      * @param userId
      * @param resume
      * @return
      * @throws Exception
      */
-    public Resume getResumeVoByKey(Integer userId,Resume resume) throws Exception{
+    public Resume getResumeVoByKey(Integer userId, Resume resume) throws Exception {
         UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
-        if (userKey == null){
+        if (userKey == null) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
         //用户密钥
@@ -36,7 +37,8 @@ public class GetResumeInfoUtils {
 
 //        System.out.println("用户密钥:" + kdfUtils.keyToString(urkey));
         //起始的密钥（需要固定）
-        SecretKeySpec beginKey = kdfUtils.generateKey(null, null, 512);;
+        SecretKeySpec beginKey = kdfUtils.generateKey(null, null, 512);
+        ;
 //        System.out.println("初始密钥:" + kdfUtils.keyToString(beginKey));
         //结合密钥
         SecretKey combinedKey = kdfUtils.generateCombinedKey(beginKey, urkey);
@@ -57,35 +59,39 @@ public class GetResumeInfoUtils {
 
     /**
      * 简历加密
+     *
      * @param userId
      * @param resume
      * @return
      */
-    public Resume setResumeByKey(Integer userId,Resume resume){
+    public Resume setResumeByKey(Integer userId, Resume resume) {
         UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
-        if (userKey == null){
-            throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
+        if (userKey == null) {
+            throw new BaseException(SystemConstants.USER_HAS_NO_KEY);
         }
         try {
             //用户密钥
             SecretKeySpec urkey = kdfUtils.stringToKey(userKey.getSecretKey());
 
-            SecretKeySpec beginKey = kdfUtils.generateKey(null, null, 512);;
+            SecretKeySpec beginKey = kdfUtils.generateKey(null, null, 512);
             //结合密钥
             SecretKey combinedKey = kdfUtils.generateCombinedKey(beginKey, urkey);
+            String decodeName = null;
+            String email = null;
+            String tel = null;
+            String live = null;
 
-            String decodeName = kdfUtils.Encoding(resume.getName(), combinedKey);
-            String email = kdfUtils.Encoding(resume.getEmail(), combinedKey);
-            String tel = kdfUtils.Encoding(resume.getTel(), combinedKey);
-            String live = kdfUtils.Encoding(resume.getLive(), combinedKey);
+            if (resume.getName() != null) decodeName = kdfUtils.Encoding(resume.getName(), combinedKey);
+            if (resume.getEmail() != null) email = kdfUtils.Encoding(resume.getEmail(), combinedKey);
+            if (resume.getTel() != null) tel = kdfUtils.Encoding(resume.getTel(), combinedKey);
+            if (resume.getLive() != null) live = kdfUtils.Encoding(resume.getLive(), combinedKey);
 
             resume.setName(decodeName)
                     .setEmail(email)
                     .setTel(tel)
                     .setLive(live);
             return resume;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
     }
@@ -95,9 +101,9 @@ public class GetResumeInfoUtils {
      *
      * @return
      */
-    public SecretKey getUserKey(Integer userId){
+    public SecretKey getUserKey(Integer userId) {
         UserKey userKey = KeyHttpUtils.sendGetRequest("http://124.220.208.63:8082", userId);
-        if (userKey == null){
+        if (userKey == null) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
         try {
@@ -109,7 +115,7 @@ public class GetResumeInfoUtils {
             //结合密钥
             SecretKey combinedKey = kdfUtils.generateCombinedKey(beginKey, urkey);
             return combinedKey;
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }
     }

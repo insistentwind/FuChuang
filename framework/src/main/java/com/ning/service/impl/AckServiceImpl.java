@@ -20,6 +20,7 @@ import com.ning.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,9 +35,11 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
     @Autowired
     private UserPermitcompanyService userPermitcompanyService;
     @Autowired
-    private  UserCompanyService userCompanyService;
+    private UserCompanyService userCompanyService;
+
     /**
      * 查看所有收到的查看简历申请
+     *
      * @return
      */
     @Override
@@ -44,18 +47,19 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
         User user = null;
         try {
             user = SecurityUtils.getLoginUser().getUser();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
         LambdaQueryWrapper<Ack> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Ack::getUserId,user.getId())
-                .eq(Ack::getIsCompany,SystemConstants.IS_COMPANY);
+        wrapper.eq(Ack::getUserId, user.getId())
+                .eq(Ack::getIsCompany, SystemConstants.IS_COMPANY);
         List<Ack> list = this.list(wrapper);
         return Result.success(list);
     }
+
     /**
      * 允许公司查看简历
+     *
      * @param userPermitcompanyVo
      * @return
      */
@@ -65,37 +69,57 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
         User user = null;
         try {
             user = SecurityUtils.getLoginUser().getUser();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
-        if (!Objects.equals(userPermitcompany.getUserId(), user.getId())){
+        if (!Objects.equals(userPermitcompany.getUserId(), user.getId())) {
             return Result.error(SystemConstants.OPERATION_NOT_COMPARE_WITH_USER);
         }
-        if (Objects.equals(userPermitcompanyVo.getYesOrNo(), SystemConstants.CAN_BE_SEEN)){
+        LambdaQueryWrapper<UserPermitcompany> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserPermitcompany::getUserId, userPermitcompanyVo.getUserId())
+                .eq(UserPermitcompany::getCompanyPermitId, userPermitcompanyVo.getCompanyPermitId());
+        UserPermitcompany userPermit = userPermitcompanyService.getOne(wrapper);
+
+        if (Objects.equals(userPermitcompanyVo.getAgree(), SystemConstants.AGREE_TO_SEE)) {
             Ack ack = new Ack();
             ack.setContent("用户同意了您的申请");
             ack.setIsCompany(SystemConstants.IS_NOT_COMPANY);
             ack.setRead(SystemConstants.HAS_NO_READ)
                     .setUserId(user.getId())
+                    .setTime(LocalDateTime.now())
                     .setCompanyId(userPermitcompanyVo.getCompanyPermitId());
-            userPermitcompanyService.save(userPermitcompany);
+            this.save(ack);
+            if (userPermit == null) {
+                userPermitcompanyService.save(userPermitcompany);
+            } else {
+                userPermitcompany.setId(userPermit.getId());
+                userPermitcompanyService.updateById(userPermitcompany);
+            }
+
             return Result.success(SystemConstants.SUCCESS);
-        }
-        else {
+        } else {
             Ack ack = new Ack();
             ack.setContent("用户拒绝了您的申请");
-            ack.setIsCompany(SystemConstants.IS_NOT_COMPANY);
-            ack.setRead(SystemConstants.HAS_NO_READ)
-                            .setUserId(user.getId())
-                                    .setCompanyId(userPermitcompanyVo.getCompanyPermitId());
-            userPermitcompanyService.save(userPermitcompany);
+            ack.setIsCompany(SystemConstants.IS_NOT_COMPANY)
+                    .setRead(SystemConstants.HAS_NO_READ)
+                    .setUserId(user.getId())
+                    .setTime(LocalDateTime.now())
+                    .setCompanyId(userPermitcompanyVo.getCompanyPermitId());
+            this.save(ack);
+
+            if (userPermit == null) {
+                userPermitcompanyService.save(userPermitcompany);
+            } else {
+                userPermitcompany.setId(userPermit.getId());
+                userPermitcompanyService.updateById(userPermitcompany);
+            }
             return Result.success(SystemConstants.SUCCESS);
         }
     }
 
     /**
      * 查看所有收到的简历查看申请
+     *
      * @return
      */
     @Override
@@ -104,19 +128,18 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
         try {
             User user = SecurityUtils.getLoginUser().getUser();
             LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(UserCompany::getUserId,user.getId());
+            wrapper.eq(UserCompany::getUserId, user.getId());
             List<UserCompany> list = userCompanyService.list(wrapper);
-            if (list.size() > 0){
+            if (list.size() > 0) {
                 UserCompany userCompany = list.get(0);
                 companyId = userCompany.getCompanyId();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
         LambdaQueryWrapper<Ack> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Ack::getCompanyId,companyId)
-                .eq(Ack::getIsCompany,SystemConstants.IS_NOT_COMPANY);
+        wrapper.eq(Ack::getCompanyId, companyId)
+                .eq(Ack::getIsCompany, SystemConstants.IS_NOT_COMPANY);
         List<Ack> list = this.list(wrapper);
         return Result.success(list);
     }

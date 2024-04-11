@@ -38,8 +38,10 @@ public class WorkLog implements Serializable {
     @ApiModelProperty(value = "", notes = "")
     @TableId
     private Integer id;
-
-    @ApiModelProperty(value = "职位id")
+    //操作时间
+    @ApiModelProperty(value = "操作时间")
+    private LocalDateTime time;
+    @ApiModelProperty(value = "操作失败的职位id")
     private Integer workId;
     @ApiModelProperty(value = "操作标识位(0是删除，1是插入，2是更新操作)", notes = "")
     private Integer tagFlag;

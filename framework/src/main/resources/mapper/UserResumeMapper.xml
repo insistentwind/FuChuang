@@ -6,5 +6,6 @@
         FROM `user_resume` ur
                  LEFT JOIN resume r on ur.resume_id = r.id
         WHERE ur.user_id = #{userId}
+        AND r.del_flag != 1
     </select>
 </mapper>

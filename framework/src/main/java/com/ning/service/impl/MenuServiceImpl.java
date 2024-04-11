@@ -33,7 +33,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      * @return
      */
     @Override
-    public MenuVo selectPermsByUserId(Integer id) {
+    public List<String> selectPermsByUserId(Integer id) {
         try {
             if(SecurityUtils.isAdmin()){
                 //返回所有的权限
@@ -43,8 +43,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 wrapper.eq(Menu::getStatus,SystemConstants.STATUS_NORMAL);
                 List<Menu> list = list(wrapper);
                 List<String> perms = list.stream().map(Menu::getPerms).collect(Collectors.toList());
-                List<String> menuName = list.stream().map(Menu::getMenuName).collect(Collectors.toList());
-                return new MenuVo(perms,menuName);
+//                List<String> menuName = list.stream().map(Menu::getMenuName).collect(Collectors.toList());
+                return perms;
             }
         }catch (Exception e){
             throw new BaseException("当前用户未登录!");

@@ -111,10 +111,16 @@ public class ResumeVo {
     @ApiModelProperty(value = "是否默认可见(0 是，1 否)")
     private Integer obscure ;
 
+    /**是否加入公共简历池(0 是，1否) */
+    @ApiModelProperty(value = "是否加入公共简历池(0 是，1否)")
+    private Integer publicPool;
+
     //要投递的职位id，公司端投递要用
+    @ApiModelProperty(value = "要投递的职位id，公司端投递要用")
     private Integer workId;
 
     //1为默认，0否
+    @ApiModelProperty(value = "1为默认，0否")
     private Integer isDefault;
 
 }

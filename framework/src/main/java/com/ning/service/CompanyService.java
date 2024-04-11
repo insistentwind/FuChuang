@@ -108,6 +108,12 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<String> sendRequestToUser(Integer userId);
+    /**
+     * 条件查询公司下发布的职位
+     * @param workPageVo
+     * @return
+     */
+    Result<List<WorkVo>> pageUserClientByCategoryId(WorkPageVo workPageVo);
 //    /**
 //     * 新增公司员工
 //     * @param userRoleVo

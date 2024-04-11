@@ -32,17 +32,19 @@ public class UserKeyListener {
             LambdaQueryWrapper<UserKey> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(UserKey::getUserId,userKey.getUserId());
             UserKey one = userKeyService.getOne(wrapper);
+            //判断如果没有这个userkey就插入
             if (one == null || one.getSecretKey() == null){
                 userKeyService.save(userKey);
             }
             else {
+                //不操作
 //                one.setSecretKey(userKey.getSecretKey());
 //                userKeyService.updateById(one);
             }
         }
         catch (Exception e){
             e.printStackTrace();
-//            throw new BaseException(SystemConstants.UP_TIME);
+            throw new BaseException(SystemConstants.UP_TIME);
         }
     }
 

@@ -64,7 +64,7 @@ public class LoginController {
         UserDto userDto = SecurityUtils.getLoginUser();
         User user = userDto.getUser();
         //根据用户id查询权限信息
-        MenuVo perms = menuService.selectPermsByUserId(userDto.getUser().getId());
+        List<String> perms = menuService.selectPermsByUserId(userDto.getUser().getId());
 //        List<String> perms =  menuService.selectPermsByUserId(userDto.getUser().getId());
         //根据用户id查询角色信息
         // 一个用户可能有多个角色

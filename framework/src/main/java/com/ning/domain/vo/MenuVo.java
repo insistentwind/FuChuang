@@ -15,7 +15,5 @@ import java.util.List;
 public class MenuVo {
     @ApiModelProperty(value = "权限id")
     private List<String> perms;
-    @ApiModelProperty(value = "权限名称")
-    private List<String> menuName;
 
 }

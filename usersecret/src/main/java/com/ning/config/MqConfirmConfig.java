@@ -53,6 +53,11 @@ public class MqConfirmConfig implements ApplicationContextAware {
     public TopicExchange topicExchange(){
         return new TopicExchange(MqConstants.FUCHUANG_EXCHANGE,true,false);
     }
+    @Bean
+    public TopicExchange positionTopicExchange(){
+        return new TopicExchange(MqConstants.POSITION_EXCHANGE,true,false);
+    }
+
 
     /**
      * 新增队列和修改队列
@@ -61,6 +66,11 @@ public class MqConfirmConfig implements ApplicationContextAware {
     @Bean
     public Queue insertQueue(){
         return new Queue(MqConstants.FUCHUANG_INSERT_QUEUE,true);
+    }
+
+    @Bean
+    public Queue positionInsertQueue(){
+        return new Queue(MqConstants.POSITION_INSERT_QUEUE,true);
     }
 
 
@@ -72,6 +82,10 @@ public class MqConfirmConfig implements ApplicationContextAware {
     public Queue deleteQueue(){
         return new Queue(MqConstants.FUCHUANG_DELETE_QUEUE,true);
     }
+    @Bean
+    public Queue positionDeleteQueue(){
+        return new Queue(MqConstants.POSITION_DELETE_QUEUE,true);
+    }
 //
     /**
      * 队列交换机绑定
@@ -81,6 +95,11 @@ public class MqConfirmConfig implements ApplicationContextAware {
     public Binding insertQueueBinding(){
         return BindingBuilder.bind(insertQueue()).
                 to(topicExchange()).with(MqConstants.FUCHUANG_INSERT_KEY);
+    }
+    @Bean
+    public Binding positionInsertQueueBinding(){
+        return BindingBuilder.bind(positionInsertQueue()).
+                to(positionTopicExchange()).with(MqConstants.FUCHUANG_INSERT_KEY);
     }
 //
 //
@@ -92,6 +111,11 @@ public class MqConfirmConfig implements ApplicationContextAware {
     public Binding deleteQueueBinding(){
         return BindingBuilder.bind(deleteQueue()).
                 to(topicExchange()).with(MqConstants.FUCHUANG_DELETE_KEY);
+    }
+    @Bean
+    public Binding positionDeleteQueueBinding(){
+        return BindingBuilder.bind(positionDeleteQueue()).
+                to(positionTopicExchange()).with(MqConstants.FUCHUANG_DELETE_KEY);
     }
 
 }

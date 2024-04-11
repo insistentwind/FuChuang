@@ -1,6 +1,7 @@
 package com.ning.controller;
 
 import com.ning.constants.MessageConstant;
+import com.ning.exception.BaseException;
 import com.ning.utils.AliOssUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.ning.domain.result.Result;
+
 import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
@@ -31,12 +33,18 @@ public class UploadController {
 
     @PostMapping
     @ApiOperation("文件（头像）上传接口")
-    public Result<String> upload(@RequestParam MultipartFile file){
-        log.info("文件（头像）上传:{}",file);
+    public Result<String> upload(@RequestParam MultipartFile file) {
+        log.info("文件（头像）上传:{}", file);
+        if(file == null){
+            throw new BaseException("发生错误,文件上传失败,请重试");
+        }
         String originalFilename = file.getOriginalFilename();
-        if(!Objects.requireNonNull(originalFilename).endsWith(".img") &&
+        if (!Objects.requireNonNull(originalFilename).endsWith(".img") &&
                 !Objects.requireNonNull(originalFilename).endsWith(".jpg") &&
-                !Objects.requireNonNull(originalFilename).endsWith(".png")){
+                !Objects.requireNonNull(originalFilename).endsWith(".png") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".IMG") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".JPG") &&
+                !Objects.requireNonNull(originalFilename).endsWith(".PNG")) {
             //文件类型错误
             throw new RuntimeException("文件类型错误");
         }
@@ -52,7 +60,7 @@ public class UploadController {
 
             return Result.success(filePath);
         } catch (IOException e) {
-            log.error("文件上传失败: {}",e);
+            log.error("文件上传失败: {}", e);
         }
 
         return Result.error(MessageConstant.UPLOAD_FAILED);

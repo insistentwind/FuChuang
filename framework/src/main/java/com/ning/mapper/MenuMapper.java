@@ -20,7 +20,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param id
      * @return
      */
-    MenuVo selectPermsByUserId(Integer id);
+    List<String> selectPermsByUserId(Integer id);
     /**
      * 返回所有符合要求的menu
      * @return

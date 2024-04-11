@@ -74,13 +74,15 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         int pageSize = workDto.getPageSize();
         Work work = BeanCopyUtils.copyBean(workDto, Work.class);
         LambdaQueryWrapper<Work> wrapper = new LambdaQueryWrapper<>();
-        Page<Work> page = new Page<Work>(pageNum, pageSize);
+        Page<Work> page = new Page<Work>(pageNum, pageSize,false);
         List<Work> records = new ArrayList<>();
         if (work != null) {
             wrapper.like(StringUtils.hasText(work.getTitle()), Work::getTitle, work.getTitle())
                     .eq(work.getClassifyId() != null, Work::getClassifyId, work.getClassifyId())
                     .eq(work.getCityName() != null, Work::getCityName, work.getCityName())
-                    .eq(work.getEducation() != null, Work::getEducation, work.getEducation());
+                    .eq(work.getEducation() != null, Work::getEducation, work.getEducation())
+                    .eq(work.getSalary() != null, Work::getSalary, work.getSalary())
+                    .eq(work.getJobExperience() != null,Work::getJobExperience,work.getJobExperience());
             page(page, wrapper);
             records = page.getRecords();
         } else {

@@ -123,6 +123,12 @@ public interface UserService extends IService<User> {
      * 设置简历默认可见
      * @return
      */
-    Result<String> setResumeObscure();
+    Result<String> setResumeObscure(Integer resumeId);
+    /**
+     * 删除简历
+     * @param id
+     * @return
+     */
+    Result<String> deleteResumeById(Integer id);
 }
 

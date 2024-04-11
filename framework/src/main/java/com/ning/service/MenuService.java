@@ -21,7 +21,7 @@ public interface MenuService extends IService<Menu> {
      * @param id
      * @return
      */
-    MenuVo selectPermsByUserId(Integer id);
+    List<String> selectPermsByUserId(Integer id);
 
     /**
      * 查询menu结果是tree的形式，也就是子父菜单
