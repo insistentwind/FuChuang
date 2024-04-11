@@ -3,7 +3,9 @@ package com.ning.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ning.domain.entity.WorkLog;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.AdminWorkLogVo;
 import com.ning.domain.vo.WorkLogVo;
+import com.ning.domain.vo.WorkVo;
 
 import java.util.List;
 
@@ -42,5 +44,17 @@ public interface WorkLogService extends IService<WorkLog> {
      * @return
      */
     Result<String> updateByVo(WorkLogVo workLogVo);
+    /**
+     * 条件查询职位日志list
+     * @param workLogVo
+     * @return
+     */
+    Result<List<AdminWorkLogVo>> getWorkVoListByVo(WorkLogVo workLogVo);
+    /**
+     * 根据id获取职位信息
+     * @param workId
+     * @return
+     */
+    Result<List<AdminWorkLogVo>> getWorkVoListByWorkId(Integer workId);
 }
 
