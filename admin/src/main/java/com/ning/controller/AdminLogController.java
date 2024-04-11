@@ -2,27 +2,27 @@ package com.ning.controller;
 
 import com.ning.domain.entity.WorkLog;
 import com.ning.domain.result.Result;
+import com.ning.domain.vo.AdminWorkLogVo;
 import com.ning.domain.vo.WorkLogVo;
+import com.ning.domain.vo.WorkVo;
 import com.ning.service.WorkLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * @author: qjn
- * @create: 2024/04/05 16:03
+ * @create: 2024/04/11 22:20
  **/
 @RestController
-@Api(tags = "(前端在另一个类似接口)python职位操作失败日志")
-@RequestMapping("/log/python")
+@Api(tags = "(前端)职位操作日志")
+@RequestMapping("/log/front")
 @Slf4j
-public class PositionLogController {
-
+public class AdminLogController {
     @Autowired
     private WorkLogService WorkLogService;
 
@@ -33,8 +33,8 @@ public class PositionLogController {
      */
     @ApiOperation("条件查询职位日志list")
     @PostMapping("/list")
-    public Result<List<WorkLog>> getWorkLogByFlag(@RequestBody (required = false) WorkLogVo workLogVo){
-        return WorkLogService.getListByVo(workLogVo);
+    public Result<List<AdminWorkLogVo>> getWorkLogByFlag(@RequestBody(required = false) WorkLogVo workLogVo){
+        return WorkLogService.getWorkVoListByVo(workLogVo);
     }
 
     /**
@@ -44,8 +44,8 @@ public class PositionLogController {
      */
     @ApiOperation("根据id获取职位信息")
     @GetMapping("/list/{workId}")
-    public Result<List<WorkLog>> getWorkLogByWorkId(@PathVariable Integer workId){
-        return WorkLogService.getListByWorkId(workId);
+    public Result<List<AdminWorkLogVo>> getWorkLogByWorkId(@PathVariable Integer workId){
+        return WorkLogService.getWorkVoListByWorkId(workId);
     }
 
     /**

@@ -27,7 +27,7 @@ public class TreeSelectVo {
     private String label;
     //父id
     @ApiModelProperty(value = "父id")
-    private Integer parentId;
+    private Long parentId;
     //子目录
     @ApiModelProperty(value = "子目录")
     private List<TreeSelectVo> children;

@@ -106,6 +106,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 //满足parentId = parentId就保留
                 .filter(menu -> menu.getParentId().equals(parentId))
                 .map(item -> {
+                    System.out.println(item);
 //                    List<Menu> list = menuMapper.selectChildrenMenuTree();
                     List<Menu> list = getChildren(item, menus);
                     return item.setChildren(list);

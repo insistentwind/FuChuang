@@ -38,7 +38,7 @@ public class LoginServiceImpl implements LoginService {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(), userLoginDto.getPassword());
         //调用这个方法开始认证
         Authentication authenticate = authenticationManager.authenticate(token);
-        System.out.println(authenticate);
+//        System.out.println(authenticate);
         if(Objects.isNull(authenticate)){
             throw new RuntimeException("用户认证失败,用户名或密码错误");
         }

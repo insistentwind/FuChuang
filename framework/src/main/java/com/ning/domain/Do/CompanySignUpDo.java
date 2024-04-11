@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 public class CompanySignUpDo {
 
     //账户
-    @ApiModelProperty(value = "账户")
+    @ApiModelProperty(value = "用户名")
     private String username;
     //密码
     @ApiModelProperty(value = "密码")

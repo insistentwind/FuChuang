@@ -35,7 +35,7 @@ public class Menu  {
     private String menuName ;
     /** 父菜单ID */
     @ApiModelProperty(name = "父菜单ID",notes = "")
-    private Integer parentId ;
+    private Long parentId ;
     /** 显示顺序 */
     @ApiModelProperty(name = "显示顺序",notes = "")
     private Integer orderNum ;

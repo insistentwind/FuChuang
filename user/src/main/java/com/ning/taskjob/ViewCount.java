@@ -37,7 +37,7 @@ public class ViewCount extends QuartzJobBean {
                 .collect(Collectors.toList());
         workService.updateBatchById(collect);
     }
-
+    //设置为公共的，让配置类可以注入到里面
     public WorkService getWorkService() {
         return workService;
     }

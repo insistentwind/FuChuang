@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -26,6 +27,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 @ApiModel(value = "公司表",description = "")
+@Builder
 @TableName("company")
 public class Company  {
     /**  */
@@ -47,6 +49,9 @@ public class Company  {
     /** 公司规模 */
     @ApiModelProperty(name = "公司规模",notes = "")
     private Integer brandScaleName ;
+    /** 审核状态 */
+    @ApiModelProperty(value = "审核状态(0待审核，1审核通过，2审核拒绝)")
+    private Integer status;
     /** 更新人 */
     @ApiModelProperty(name = "更新人",notes = "")
     @TableField(fill = FieldFill.INSERT_UPDATE)

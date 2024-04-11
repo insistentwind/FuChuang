@@ -258,4 +258,15 @@ public class SystemConstants {
      * 删除标志位，1为删除
      */
     public static final Integer DEL_FLAG = 1;
+    public static final String PARAMS_MUST_NOT_BE_NULL = "参数不能为空";
+    public static final String NO_SUCH_RESUME = "没有此简历画像";
+    public static final String RESUMEDRAW_MUST_HAVE_RESUMEID = "传入的画像必须有对应的简历id";
+    /**
+     * 审核通过
+     */
+    public static final Integer COMPANY_CHECK_PASS = 1;
+    /**
+     * 审核拒绝
+     */
+    public static final Integer COMPANY_CHECK_NO_PASS = 2;
 }

@@ -45,13 +45,13 @@ public class LoginController {
     @PostMapping("/user/login")
     @ApiOperation("登录接口")
     public Result<UserVo> login(@RequestBody UserLoginDto userLoginDto){
-        log.info("后台用户登录:{}",userLoginDto);
         if(userLoginDto.getUsername() == null || userLoginDto.getPassword() == null){
             throw new RuntimeException("用户名或密码不能为空");
         }
         return loginService.login(userLoginDto);
     }
-
+    // 这个查询用户权限，只需要前端掉接口的时候回显进行路由就可以了，
+    // 因为其他的情况是通过jwt解析出用户，在userDetail方法中每次登录就查询出这个用户所属角色的权限列表
     /**
      * 查询当前登录的用户的信息，权限等
      * @return
@@ -79,7 +79,7 @@ public class LoginController {
         return Result.success(adminUserInfoVo);
     }
 
-
+    //用于当前用户所属角色的页面路由路径
     /**
      * 返回路由子目录的接口
      */

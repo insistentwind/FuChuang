@@ -40,7 +40,7 @@ public class QuartzConfig {
         bean.setJobDataMap(map);
         return bean;
     }
-
+    //定义执行时间
     @Bean
     CronTriggerFactoryBean cronTriggerFactoryBean() {
         CronTriggerFactoryBean bean = new CronTriggerFactoryBean();

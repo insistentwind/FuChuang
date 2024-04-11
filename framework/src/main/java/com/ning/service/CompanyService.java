@@ -114,6 +114,12 @@ public interface CompanyService extends IService<Company> {
      * @return
      */
     Result<List<WorkVo>> pageUserClientByCategoryId(WorkPageVo workPageVo);
+    /**
+     * 分页查询待审核公司
+     * @param companyDto
+     * @return
+     */
+    Result<PageResult> getStatusList(CompanyDto companyDto);
 //    /**
 //     * 新增公司员工
 //     * @param userRoleVo

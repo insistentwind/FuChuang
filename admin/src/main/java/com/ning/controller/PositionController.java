@@ -95,6 +95,10 @@ public class PositionController {
             UserCompany userCompany = userCompanyService.getOne(wrapper);
             Company company = companyService.getById(userCompany.getCompanyId());
 
+            if (!Objects.equals(company.getStatus(), SystemConstants.COMPANY_CHECK_PASS)){
+                throw new BaseException("当前公司暂未通过管理员审核");
+            }
+
             companyName = company.getBrandName();
             companyId = company.getId();
         } catch (Exception e) {

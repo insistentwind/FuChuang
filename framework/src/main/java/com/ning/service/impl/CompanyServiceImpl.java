@@ -86,14 +86,23 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     @Override
     public Result<PageResult> getListByDto(CompanyDto companyDto) {
-        int pageSize = companyDto.getPageSize();
-        int pageNum = companyDto.getPageNum();
+        Integer pageSize = null;
+        Integer pageNum = null;
+        try {
+            pageSize = companyDto.getPageSize();
+            pageNum = companyDto.getPageNum();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.CHECK_INPUT);
+        }
 
         LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
         Company company = BeanCopyUtils.copyBean(companyDto, Company.class);
         if (company == null) {
             throw new RuntimeException("信息为空，请检查后重试");
         }
+
+        wrapper.eq(Company::getStatus,SystemConstants.COMPANY_CHECK_PASS);
 
         wrapper.eq(StringUtils.hasText(companyDto.getBrandIndustry()), Company::getBrandIndustry, companyDto.getBrandIndustry())
                 .like(StringUtils.hasText(companyDto.getBrandName()), Company::getBrandName, companyDto.getBrandName())
@@ -115,6 +124,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     @Override
     public Result<CompanyVo> getCompanyById(Integer id) {
+
         Company company = getById(id);
         if(company == null){
             throw new BaseException(SystemConstants.HAS_NO_COMPANY);
@@ -168,6 +178,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
         Company company = BeanCopyUtils.copyBean(companyDo, Company.class);
         company.setCreateTime(LocalDateTime.now());
+        //这里就直接保存了
+        //默认是没有被审核过的
         save(company);
 
         User user = new User();
@@ -182,12 +194,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         String password = passwordEncoder.encode(companyDo.getPassword());
         user.setPassword(password);
         userMapper.insert(user);
+        //用户可以先插入，但是公司待审核
         UserCompany userCompany = new UserCompany();
         userCompany.setUserId(user.getId());
         userCompany.setCompanyId(company.getId());
         userCompanyMapper.insert(userCompany);
-        // redis哈希键初始化
-        redisTemplate.opsForHash().put(company.getBrandName(), "", 0);
+//        // redis哈希键初始化
+//        redisTemplate.opsForHash().put(company.getBrandName(), "", 0);
         return Result.success("创建成功");
     }
 
@@ -654,6 +667,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     @Override
     public Result<List<WorkVo>> pageUserClientByCategoryId(WorkPageVo workPageVo) {
+        if(workPageVo == null){
+            throw new BaseException(SystemConstants.PARAMS_MUST_NOT_BE_NULL);
+        }
         List<Work> workList = relationMapper.getWorkByCategory(workPageVo);
 //        List<Work> workList = relationMapper.getWorkByCompanyId(companyId);
         if (workList.size() > 0 && workList != null) {
@@ -662,6 +678,41 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         } else {
             return Result.error(SystemConstants.COMPANY_HAS_NO_POSITION);
         }
+    }
+    /**
+     * 分页查询待审核公司
+     * @param companyDto
+     * @return
+     */
+    @Override
+    public Result<PageResult> getStatusList(CompanyDto companyDto) {
+        Integer pageSize = null;
+        Integer pageNum = null;
+        try {
+            pageSize = companyDto.getPageSize();
+            pageNum = companyDto.getPageNum();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.CHECK_INPUT);
+        }
+
+        LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
+        Company company = BeanCopyUtils.copyBean(companyDto, Company.class);
+        if (company == null) {
+            throw new RuntimeException("信息为空，请检查后重试");
+        }
+
+
+        wrapper.eq(StringUtils.hasText(companyDto.getBrandIndustry()), Company::getBrandIndustry, companyDto.getBrandIndustry())
+                .like(StringUtils.hasText(companyDto.getBrandName()), Company::getBrandName, companyDto.getBrandName())
+                .eq(StringUtils.hasText(companyDto.getBrandScaleName()), Company::getBrandScaleName, companyDto.getBrandScaleName());
+
+//        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
+        Page<Company> page = new Page<>(pageNum, pageSize,false);
+        page(page, wrapper);
+        List<Company> records = page.getRecords();
+        List<CompanyVo> companyVos = BeanCopyUtils.copyBeanList(records, CompanyVo.class);
+        return Result.success(new PageResult(page.getRecords().size(), companyVos));
     }
 //    /**
 //     * 新增公司员工

@@ -28,6 +28,9 @@ public class CompanyVo {
     //公司规模
     @ApiModelProperty(value = "公司规模")
     private String brandScaleName;
+    /** 审核状态 */
+    @ApiModelProperty(value = "审核状态(0待审核，1审核通过，2审核拒绝)")
+    private Integer status;
 
 
 }
