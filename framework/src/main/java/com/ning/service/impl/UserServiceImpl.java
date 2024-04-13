@@ -251,12 +251,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.like(StringUtils.hasText(userPageVo.getTele()), User::getTele, userPageVo.getTele())
                 .like(StringUtils.hasText(userPageVo.getUsername()), User::getUsername, userPageVo.getUsername())
                 .eq(StringUtils.hasText(userPageVo.getStatus()), User::getStatus, userPageVo.getStatus());
-        wrapper.orderByDesc(User::getIsCompany);
-        Page<User> page = new Page<>(userPageVo.getPageNum(), userPageVo.getPageSize(), false);
+
+        Page<User> page = new Page<>(userPageVo.getPageNum(), userPageVo.getPageSize());
         page(page, wrapper);
 //        List<User> records = page.getRecords();
         List<AdminVo> records = BeanCopyUtils.copyBeanList(page.getRecords(), AdminVo.class);
-        return Result.success(new PageResult(records.size(), records));
+        return Result.success(new PageResult((int) page.getTotal(), records));
     }
 
     /**
@@ -294,10 +294,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .setIsCompany(SystemConstants.IS_ADMIN);
         save(user);
         Integer userId = user.getId();
-        List<Integer> roleIds = userRoleVo.getRoleIds();
+        List<Long> roleIds = userRoleVo.getRoleIds();
         roleIds.forEach(item -> {
             UserRole userRole = new UserRole();
-            userRole.setRoleId(userId).setRoleId(item);
+            userRole.setRoleId(Long.valueOf(userId)).setRoleId(item);
             userRoleService.save(userRole);
         });
         return Result.success();
@@ -392,9 +392,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        if(userResumeService.getOne(wrapper) != null){
 //            throw new BaseException(SystemConstants.USER_HAS_DILIVER_RESUME);
 //        }
-        if (resumeVo.getEmail() == null || resumeVo.getName() == null || resumeVo.getLive() == null
+        if (resumeVo.getEmail() == null || resumeVo.getName() == null
                 || resumeVo.getTel() == null) {
             throw new BaseException(SystemConstants.PLEASE_CHECK_RESUME);
+        }
+        if (resumeVo.getLive() == null) {
+            resumeVo.setLive("火星");
         }
 
         Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
@@ -404,6 +407,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String email = resume.getEmail();
         String tel = resume.getTel();
         String live = resume.getLive();
+
         try {
             //TODO 这里是创建简历时的/密钥/相关操作
             //获取初始密钥
@@ -555,6 +559,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      *
      * @return
      */
+
     @Override
     public Result<List<ResumeVo>> getResumeList() {
         User user = null;
@@ -568,14 +573,44 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<ResumeVo> resumeList = userResumeService.getListByUserId(user.getId());
 
         if (resumeList.size() > 0) {
-            User finalUser = user;
+            SecretKey combinedKey = null;
+            try {
+                //先拿到密钥，在进行分别回显
+                UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, user.getId());
+                if (userKey == null) {
+                    throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
+                }
+                //用户密钥
+                SecretKeySpec urkey = kdfUtils.stringToKey(userKey.getSecretKey());
+                //起始的密钥（需要固定）
+                SecretKeySpec beginKey = kdfUtils.generateKey(null, null, 512);
+                //结合密钥
+                combinedKey = kdfUtils.generateCombinedKey(beginKey, urkey);
+                if (combinedKey == null) {
+                    throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
+                }
+            } catch (Exception e) {
+                throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
+            }
 
+            //数据流操作需要保证数据固定
+            SecretKey finalCombinedKey = combinedKey;
             List<ResumeVo> collect = resumeList.stream().map(item -> {
-                Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
                 try {
-                    //密钥解析
-                    Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(finalUser.getId(), resume);
-                    ResumeVo resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
+
+                    String decodeName = kdfUtils.Decoding(item.getName(), finalCombinedKey);
+                    String email = kdfUtils.Decoding(item.getEmail(), finalCombinedKey);
+                    String tel = kdfUtils.Decoding(item.getTel(), finalCombinedKey);
+                    String live = kdfUtils.Decoding(item.getLive(), finalCombinedKey);
+
+                    item.setName(decodeName)
+                            .setEmail(email)
+                            .setTel(tel)
+                            .setLive(live);
+                    ResumeVo resumeVo = BeanCopyUtils.copyBean(item, ResumeVo.class);
+//                    //密钥解析
+//                    Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(finalUser.getId(), resume);
+//                    ResumeVo resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
                     resumeVo.setIsDefault(item.getIsDefault());
                     return resumeVo;
                 } catch (Exception e) {
@@ -669,8 +704,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Resume resume = resumeMapper.selectById(resumeId);
 
         LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserResume::getResumeId,resumeId)
-                        .eq(UserResume::getUserId,userId);
+        wrapper.eq(UserResume::getResumeId, resumeId)
+                .eq(UserResume::getUserId, userId);
         UserResume userResume = userResumeService.getOne(wrapper);
         //解密Vo
         ResumeVo decodeResume = getDecodeResume(resume, userId);
@@ -732,10 +767,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.eq(UserRole::getUserId, user.getId());
         userRoleService.remove(wrapper);
 
-        List<Integer> roleIds = userRoleVo.getRoleIds();
+        List<Long> roleIds = userRoleVo.getRoleIds();
         roleIds.forEach(item -> {
             UserRole userRole = new UserRole();
-            userRole.setUserId(user.getId())
+            userRole.setUserId(Long.valueOf(user.getId()))
                     .setRoleId(item);
             userRoleService.save(userRole);
         });
@@ -790,12 +825,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Integer userId = judgeUserHasResume(resumeId);
 
         Resume resume = resumeMapper.selectById(resumeId);
-        if(resume == null){
+        if (resume == null) {
             throw new BaseException(SystemConstants.RESUME_HAS_DELETED_OR_NOT_EXIST);
         }
         UserResume userResume = new UserResume();
         userResume.setResumeId(resumeId)
-                        .setUserId(userId);
+                .setUserId(userId);
         userResumeService.removeById(userResume);
         resumeService.removeById(resumeId);
         return Result.success(SystemConstants.SUCCESS);

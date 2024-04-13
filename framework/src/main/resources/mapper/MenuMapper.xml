@@ -8,45 +8,41 @@
     <select id="selectAllRouterMenu" resultType="com.ning.domain.entity.Menu">
         SELECT DISTINCT m.id,
                         m.parent_id,
-                        m.menu_name,
+                        m.name,
                         m.path,
                         m.component,
                         m.visible,
-                        m.status,
+
                         IFNULL(m.perms, '') AS perms,
-                        m.is_frame,
-                        m.menu_type,
+
+                        m.type,
                         m.icon,
-                        m.order_num,
-                        m.create_time
+                        m.sort
         FROM sys_menu m
-        WHERE m.menu_type IN ('C', 'M')
-          AND m.`status` = 0
+        WHERE m.`visible` = 1
           AND m.del_flag = 0
-        order by m.parent_id, m.order_num
+        order by m.parent_id, m.sort
     </select>
     <select id="selectRouterMenuTreeByUserId" resultType="com.ning.domain.entity.Menu">
         SELECT DISTINCT m.id,
                         m.parent_id,
-                        m.menu_name,
+                        m.name,
                         m.path,
                         m.component,
                         m.visible,
-                        m.status,
+
                         IFNULL(m.perms, '') AS perms,
-                        m.is_frame,
-                        m.menu_type,
+
+                        m.type,
                         m.icon,
-                        m.order_num,
-                        m.create_time
+                        m.sort
         FROM `sys_user_role` ur
                  LEFT JOIN `sys_role_menu` rm ON ur.`role_id` = rm.`role_id`
                  LEFT JOIN `sys_menu` m ON m.`id` = rm.`menu_id`
-        WHERE ur.`user_id` = #{id}
-          AND m.`menu_type` IN ('C', 'M')
-          AND m.`status` = 0
+        WHERE ur.`user_id` = #{userId}
+          AND m.`visible` = 1
           AND m.`del_flag` = 0
-        ORDER BY m.parent_id, m.order_num
+        ORDER BY m.parent_id, m.sort
     </select>
     <select id="selectPermsByUserId" resultType="java.lang.String">
         SELECT distinct m.perms
@@ -54,8 +50,8 @@
                  LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
                  LEFT JOIN sys_menu m ON m.id = rm.menu_id
         WHERE ur.user_id = #{id}
-          AND m.menu_type IN ('C', 'F')
-          AND m.`status` = 0
+          AND m.type = 4
+          AND m.`visible` = 1
           AND m.del_flag = 0
     </select>
 </mapper>

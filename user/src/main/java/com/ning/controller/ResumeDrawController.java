@@ -34,37 +34,16 @@ public class ResumeDrawController {
         return resumeDrawService.getDrawById(resumeId);
     }
 
-    /**
-     * 插入对应简历画像
-     * @param resumeDrawVo
-     * @return
-     */
-    @ApiOperation("插入对应简历画像")
-    @PostMapping("/insert")
-    public Result<String> insertDrawById(@RequestBody ResumeDrawVo resumeDrawVo){
-        return resumeDrawService.insert(resumeDrawVo);
-    }
 
 
-    /**
-     * 更新简历画像
-     * @param resumeDrawVo
-     * @return
-     */
-    @ApiOperation("更新简历画像")
-    @PutMapping("/update")
-    public Result<String> updateDrawById(@RequestBody ResumeDrawVo resumeDrawVo){
-        return resumeDrawService.insert(resumeDrawVo);
-    }
-
-    /**
-     * 删除画像
-     * @param resumeId
-     * @return
-     */
-    @ApiOperation("删除画像")
-    @DeleteMapping("/{id}")
-    public Result<String> deleteDrawById(@PathVariable(value = "id") Integer resumeId){
-        return resumeDrawService.delete(resumeId);
-    }
+//    /**
+//     * 删除画像
+//     * @param resumeId
+//     * @return
+//     */
+//    @ApiOperation("删除画像")
+//    @DeleteMapping("/{id}")
+//    public Result<String> deleteDrawById(@PathVariable(value = "id") Integer resumeId){
+//        return resumeDrawService.delete(resumeId);
+//    }
 }

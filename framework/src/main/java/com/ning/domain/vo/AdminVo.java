@@ -28,4 +28,7 @@ public class AdminVo {
     //电话
     @ApiModelProperty(value = "电话")
     private String tele;
+    /** 身份（学生，社会人士） */
+    @ApiModelProperty(name = "身份（学生，社会人士）",notes = "")
+    private String idCard ;
 }

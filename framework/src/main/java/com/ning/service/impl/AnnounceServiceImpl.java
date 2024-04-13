@@ -60,7 +60,7 @@ public class AnnounceServiceImpl extends ServiceImpl<AnnounceMapper, Announce> i
      */
     @Override
     public Result<PageResult> getPage(AnnouncePageVo announcePageVo) {
-        Page page = new Page(announcePageVo.getPageNum(), announcePageVo.getPageSize(),false);
+        Page page = new Page(announcePageVo.getPageNum(), announcePageVo.getPageSize());
         LambdaQueryWrapper<Announce> wrapper= new LambdaQueryWrapper<>();
 
         wrapper.like(announcePageVo.getTitle() != null,Announce::getTitle,announcePageVo.getTitle());
@@ -68,7 +68,7 @@ public class AnnounceServiceImpl extends ServiceImpl<AnnounceMapper, Announce> i
         wrapper.like(announcePageVo.getSummary() != null,Announce::getSummary,announcePageVo.getSummary());
         page(page,wrapper);
 
-        return Result.success(new PageResult(page.getRecords().size(),page.getRecords()));
+        return Result.success(new PageResult((int) page.getTotal(),page.getRecords()));
     }
     /**
      * 公告内容回显

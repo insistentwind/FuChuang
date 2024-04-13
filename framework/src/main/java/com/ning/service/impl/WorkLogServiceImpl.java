@@ -97,7 +97,7 @@ public class WorkLogServiceImpl extends ServiceImpl<WorkLogMapper, WorkLog> impl
     @Override
     @Transactional
     public Result<String> deleteBatch(List<Integer> ids) {
-        deleteBatch(ids);
+        workLogMapper.deleteBatchIds(ids);
         return Result.success(SystemConstants.SUCCESS);
     }
 
@@ -123,14 +123,19 @@ public class WorkLogServiceImpl extends ServiceImpl<WorkLogMapper, WorkLog> impl
     @Override
     public Result<List<AdminWorkLogVo>> getWorkVoListByVo(WorkLogVo workLogVo) {
         LambdaQueryWrapper<WorkLog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(workLogVo.getWorkId() != null, WorkLog::getWorkId, workLogVo.getWorkId())
-                .eq(workLogVo.getTagFlag() != null, WorkLog::getTagFlag, workLogVo.getTagFlag());
+        try {
+            wrapper.eq(workLogVo.getWorkId() != null, WorkLog::getWorkId, workLogVo.getWorkId())
+                    .eq(workLogVo.getTagFlag() != null, WorkLog::getTagFlag, workLogVo.getTagFlag());
+        }catch (Exception e){
+            throw new BaseException(SystemConstants.CHECK_INPUT);
+        }
         List<WorkLog> list = this.list(wrapper);
         List<AdminWorkLogVo> collect = list.stream().map(item -> {
             Work work = workMapper.selectById(item.getWorkId());
             if (work != null) {
                 AdminWorkLogVo adminWorkLogVo = BeanCopyUtils.copyBean(work, AdminWorkLogVo.class);
                 adminWorkLogVo.setTagFlag(item.getTagFlag());
+                adminWorkLogVo.setId(item.getId());
                 return adminWorkLogVo;
             }
             return null;

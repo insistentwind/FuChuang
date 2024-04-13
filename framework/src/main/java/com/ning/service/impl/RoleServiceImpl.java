@@ -3,6 +3,7 @@ package com.ning.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.entity.Menu;
 import com.ning.domain.entity.RoleMenu;
 import com.ning.domain.result.PageResult;
@@ -13,6 +14,7 @@ import com.ning.domain.entity.Role;
 import com.ning.service.MenuService;
 import com.ning.service.RoleMenuService;
 import com.ning.utils.BeanCopyUtils;
+import jdk.management.jfr.RecordingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ning.service.RoleService;
@@ -46,9 +48,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         //如果是管理员，那么返回的集合中只需要有admin
         if(id == 1){
             LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Role::getId,1);
+            wrapper.eq(Role::getId, SystemConstants.SUPER_ADMIN);
             List<Role> list = list(wrapper);
-            return list.stream().map(Role::getRoleKey).collect(Collectors.toList());
+            return list.stream().map(Role::getCode).collect(Collectors.toList());
         }
         return roleMapper.selectRoleKeyById(id);
     }
@@ -66,9 +68,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         List<TreeSelectVo> collect = highestMenuList.stream()
                 .map(item -> {
                     TreeSelectVo treeSelectVo = new TreeSelectVo();
-                    treeSelectVo.setLabel(item.getMenuName())
+                    treeSelectVo.setLabel(item.getName())
                             .setId(item.getId())
-                            .setParentId(item.getParentId());
+                            .setParentId(item.getParentId())
+                            .setType(item.getType())
+                            .setComponent(item.getComponent());
 
                     treeSelectVo.setChildren(getAllChildren(treeSelectVo.getId()));
                     return treeSelectVo;
@@ -83,19 +87,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     public Result<PageResult> listByRoleVo(RolePageVo rolePageVo) {
-        Page page = new Page(rolePageVo.getPageNum(), rolePageVo.getPageSize(),false);
+        Page page = new Page(rolePageVo.getPageNum(), rolePageVo.getPageSize());
         LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
-        wrapper.orderByAsc(Role::getRoleSort);
-        wrapper.like(rolePageVo.getRoleName() != null,Role::getRoleName,rolePageVo.getRoleName()).eq(rolePageVo.getStatus() != null,Role::getStatus,rolePageVo.getStatus());
+        wrapper.orderByAsc(Role::getSort);
+        wrapper.like(rolePageVo.getRoleName() != null,Role::getName,rolePageVo.getRoleName()).eq(rolePageVo.getStatus() != null,Role::getStatus,rolePageVo.getStatus());
         page(page,wrapper);
-        return Result.success(new PageResult(page.getRecords().size(),page.getRecords()));
+        return Result.success(new PageResult((int) page.getTotal(),page.getRecords()));
     }
     /**
      * 修改角色的停启用状态
      * @return
      */
     @Override
-    public Result<String> changeStatus(Integer roleId, Integer status) {
+    public Result<String> changeStatus(Long roleId, Integer status) {
         Role role = new Role();
         role.setId(roleId);
         role.setStatus(status);
@@ -112,13 +116,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public Result<String> insertRole(RoleMenuVo roleMenuVo) {
         Role role = BeanCopyUtils.copyBean(roleMenuVo, Role.class);
         roleMapper.insert(role);
-        Integer roleId = role.getId();
+        Long roleId = role.getId();
         List<String> menuIds = roleMenuVo.getMenuIds();
         menuIds.stream().forEach(item -> {
             RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRoleId(roleId);
 
-            roleMenu.setMenuId(Integer.valueOf(item));
+            roleMenu.setMenuId(Long.valueOf(item));
             roleMenuService.save(roleMenu);
         });
         return Result.success("新增角色成功");
@@ -139,7 +143,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                     .map(item -> {
                         TreeSelectVo treeSelectVo = TreeSelectVo.builder()
                                 .id(item.getId())
-                                .label(item.getMenuName())
+                                .label(item.getName())
                                 .parentId(item.getParentId())
                                 .build();
                         treeSelectVo.setChildren(ListByParentId(item.getId()));
@@ -171,7 +175,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                     .map(item -> {
                         TreeSelectVo treeSelectVo = TreeSelectVo.builder()
                                 .id(item.getId())
-                                .label(item.getMenuName())
+                                .label(item.getName())
                                 .parentId(item.getParentId())
                                 .build();
                         treeSelectVo.setChildren(ListByParentId(item.getId()));
@@ -185,7 +189,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
             List<String> checkedKeys = new ArrayList<>();
             for (RoleMenu rolemenu : rolemenus) {
-                Integer menuId = rolemenu.getMenuId();
+                Long menuId = rolemenu.getMenuId();
                 checkedKeys.add(menuId.toString());
             }
 
@@ -218,10 +222,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         wrapper.eq(RoleMenu::getRoleId,roleMenuVo.getId());
         roleMenuService.remove(wrapper);
 
-        Integer roleId = role.getId();
+        Long roleId = role.getId();
         List<String> menuIds = roleMenuVo.getMenuIds();
         menuIds.forEach(item -> {
-            Integer menuId = Integer.valueOf(item);
+            Long menuId = Long.valueOf((item));
             RoleMenu roleMenu = new RoleMenu(roleId,menuId);
             roleMenuService.save(roleMenu);
         });
@@ -253,7 +257,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @param
      * @return
      */
-    private List<TreeSelectVo> ListByParentId(Integer parentId) {
+    private List<TreeSelectVo> ListByParentId(Long parentId) {
 
 
         LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
@@ -268,7 +272,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                     TreeSelectVo treeSelectVo = new TreeSelectVo();
                     treeSelectVo.setId(item.getId())
                             .setParentId(item.getParentId())
-                            .setLabel(item.getMenuName());
+                            .setLabel(item.getName())
+                            .setType(item.getType())
+                            .setComponent(item.getComponent());
                     treeSelectVo.setChildren(ListByParentId(item.getId()));
                     return treeSelectVo;
                 }).collect(Collectors.toList());
@@ -281,7 +287,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @param parentId
      * @return
      */
-    private List<TreeSelectVo> getAllChildren(Integer parentId) {
+    private List<TreeSelectVo> getAllChildren(Long parentId) {
 
         LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Menu::getParentId,parentId);
@@ -291,8 +297,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         List<TreeSelectVo> collect = menuList.stream().map(item -> {
             TreeSelectVo treeSelectVo = new TreeSelectVo();
             treeSelectVo.setParentId(item.getParentId())
-                    .setLabel(item.getMenuName())
+                    .setLabel(item.getName())
                     .setId(item.getId())
+                    .setType(item.getType())
+                    .setComponent(item.getComponent())
                     .setChildren(getAllChildren(item.getId()));
             return treeSelectVo;
         }).collect(Collectors.toList());

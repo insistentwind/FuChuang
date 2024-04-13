@@ -50,7 +50,7 @@ public class RoleController {
     @ApiOperation("修改角色的停启用状态")
     @PutMapping("/role/changeStatus")
     public Result<String> changeStatus(@RequestBody RoleVo roleVo){
-        Integer roleId = roleVo.getRoleId();
+        Long roleId = roleVo.getRoleId();
         log.info("修改角色的停启用状态:{}",roleId);
         return roleService.changeStatus(roleId, roleVo.getStatus());
     }

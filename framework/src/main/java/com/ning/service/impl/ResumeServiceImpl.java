@@ -6,12 +6,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.ResumePageDto;
 import com.ning.domain.entity.Resume;
+import com.ning.domain.entity.ResumeDraw;
 import com.ning.domain.entity.UserResume;
+import com.ning.domain.entity.WorkUser;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.exception.BaseException;
+import com.ning.mapper.ResumeDrawMapper;
 import com.ning.mapper.ResumeMapper;
 import com.ning.mapper.UserResumeMapper;
+import com.ning.mapper.WorkUserMapper;
+import com.ning.service.ResumeDrawService;
 import com.ning.service.ResumeService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.GetResumeInfoUtils;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * (Resume)表服务实现类
@@ -35,6 +41,12 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
     private UserResumeMapper userResumeMapper;
     @Autowired
     private GetResumeInfoUtils getResumeInfoUtils;
+    @Autowired
+    private ResumeDrawService resumeDrawService;
+    @Autowired
+    private ResumeDrawMapper resumeDrawMapper;
+    @Autowired
+    private WorkUserMapper workUserMapper;
     /**
      * 查询公共简历池数据
      * @param resumePageDto
@@ -110,6 +122,44 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
         ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
 
         return Result.success(resumeVo);
+    }
+    /**
+     * 简历池画像列表
+     * @param resumePageDto
+     * @return
+     */
+    @Override
+    public Result<List<ResumeDraw>> getDrawPage(ResumePageDto resumePageDto) {
+        if (resumePageDto.getPageNum() == null || resumePageDto.getPageSize() == null){
+            throw new BaseException(SystemConstants.CHECK_INPUT);
+        }
+        Integer pageSize = resumePageDto.getPageSize();
+        Integer pageNum = resumePageDto.getPageNum();
+
+        Integer offset = (pageNum-1) * pageSize;
+
+        List<ResumeDraw> drawList = resumeDrawService.getDrawByPage(pageSize,offset);
+
+        if (drawList.size() < 1){
+            throw new BaseException(SystemConstants.RESUME_POOL_HAS_NO_RESUME);
+        }
+
+        return Result.success(drawList);
+    }
+    /**
+     * 查看职位下简历画像
+     * @param workId
+     * @return
+     */
+    @Override
+    public Result<List<ResumeDraw>> getDrawByPositionId(Integer workId) {
+        LambdaQueryWrapper<WorkUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(WorkUser::getWorkId,workId);
+        List<WorkUser> workUsers = workUserMapper.selectList(wrapper);
+        List<Integer> resumeIds = workUsers.stream().map(WorkUser::getResumeId).distinct().collect(Collectors.toList());
+        List<ResumeDraw> collect = resumeIds.stream()
+                .map(item -> resumeDrawMapper.getDrawByResumeId(item)).collect(Collectors.toList());
+        return Result.success(collect);
     }
 }
 

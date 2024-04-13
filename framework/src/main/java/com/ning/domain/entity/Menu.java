@@ -26,61 +26,57 @@ import lombok.experimental.Accessors;
 @TableName("sys_menu")
 @Accessors(chain = true)
 public class Menu  {
-    /** 菜单ID */
-    @ApiModelProperty(name = "菜单ID",notes = "")
+    //菜单ID
     @TableId
-    private Integer id ;
-    /** 菜单名称 */
-    @ApiModelProperty(name = "菜单名称",notes = "")
-    private String menuName ;
-    /** 父菜单ID */
-    @ApiModelProperty(name = "父菜单ID",notes = "")
-    private Long parentId ;
-    /** 显示顺序 */
-    @ApiModelProperty(name = "显示顺序",notes = "")
-    private Integer orderNum ;
-    /** 路由地址 */
-    @ApiModelProperty(name = "路由地址",notes = "")
-    private String path ;
-    /** 组件路径 */
-    @ApiModelProperty(name = "组件路径",notes = "")
-    private String component ;
-    /** 是否为外链（0是 1否） */
-    @ApiModelProperty(name = "是否为外链（0是 1否）",notes = "")
-    private Integer isFrame ;
-    /** 菜单类型（M目录 C菜单 F按钮） */
-    @ApiModelProperty(name = "菜单类型（M目录 C菜单 F按钮）",notes = "")
-    private String menuType ;
-    /** 菜单状态（0显示 1隐藏） */
-    @ApiModelProperty(name = "菜单状态（0显示 1隐藏）",notes = "")
-    private String visible ;
-    /** 菜单状态（0正常 1停用） */
-    @ApiModelProperty(name = "菜单状态（0正常 1停用）",notes = "")
-    private Integer status ;
-    /** 权限标识 */
-    @ApiModelProperty(name = "权限标识",notes = "")
-    private String perms ;
-    /** 菜单图标 */
-    @ApiModelProperty(name = "菜单图标",notes = "")
-    private String icon ;
-    /** 创建者 */
-    @ApiModelProperty(name = "创建者",notes = "")
-    private Integer createBy ;
-    /** 创建时间 */
-    @ApiModelProperty(name = "创建时间",notes = "")
-    private LocalDateTime createTime ;
-    /** 更新者 */
-    @ApiModelProperty(name = "更新者",notes = "")
-    private Integer updateBy ;
-    /** 更新时间 */
-    @ApiModelProperty(name = "更新时间",notes = "")
-    private LocalDateTime updateTime ;
-    /** 备注 */
-    @ApiModelProperty(name = "备注",notes = "")
-    private String remark ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
-    private Integer delFlag ;
+    private Long id;
+    //父菜单ID
+    @ApiModelProperty(value = "父菜单ID",notes = "")
+    private Long parentId;
+    //父节点ID路径
+    @ApiModelProperty(value = "父节点ID路径",notes = "")
+    private String treePath;
+    //菜单名称
+    @ApiModelProperty(value = "菜单名称",notes = "")
+    private String name;
+    //菜单类型(1:菜单 2:目录 3:外链 4:按钮)
+    @ApiModelProperty(value = "菜单类型(1:菜单 2:目录 3:外链 4:按钮)",notes = "")
+    private Integer type;
+    //路由路径(浏览器地址栏路径)
+    @ApiModelProperty(value = "浏览器地址栏路径",notes = "")
+    private String path;
+    //组件路径(vue页面完整路径，省略.vue后缀)
+    @ApiModelProperty(value = "组件路径(vue页面完整路径，省略.vue后缀)",notes = "")
+    private String component;
+    //权限标识
+    @ApiModelProperty(value = "权限标识",notes = "")
+    private String perms;
+    //显示状态(1-显示;0-隐藏)
+    @ApiModelProperty(value = "显示状态(1-显示;0-隐藏)",notes = "")
+    private Integer visible;
+    //排序
+    @ApiModelProperty(value = "排序",notes = "")
+    private Integer sort;
+    //菜单图标
+    @ApiModelProperty(value = "菜单图标",notes = "")
+    private String icon;
+    //跳转路径
+    @ApiModelProperty(value = "跳转路径",notes = "")
+    private String redirect;
+    //创建时间
+    @ApiModelProperty(value = "创建时间",notes = "")
+    private LocalDateTime createTime;
+    //更新时间
+    @ApiModelProperty(value = "更新时间",notes = "")
+    private LocalDateTime updateTime;
+    //【目录】只有一个子路由是否始终显示(1:是 0:否)
+    @ApiModelProperty(value = "【目录】只有一个子路由是否始终显示(1:是 0:否)",notes = "")
+    private Integer alwaysShow;
+    //【菜单】是否开启页面缓存(1:是 0:否)
+    @ApiModelProperty(value = "【菜单】是否开启页面缓存(1:是 0:否)",notes = "")
+    private Integer keepAlive;
+    //删除标志位
+    @ApiModelProperty(value = "删除标志位",notes = "")
+    private Integer delFlag;
 
     @TableField(exist = false)
     private List<Menu> children;

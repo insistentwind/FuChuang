@@ -2,6 +2,8 @@ package com.ning.domain.entity;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,8 +41,6 @@ public class UserResume  {
     /** 默认简历(0否，1是) */
     @ApiModelProperty(name = "默认简历(0否，1是)",notes = "")
     private Integer isDefault ;
-
-
 
 }
 

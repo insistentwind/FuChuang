@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.Mapping;
 import java.lang.annotation.*;
 
 /**
- * @author lu
+ * @author qjn
  * @desc 请求数据解密
- * @date 2019/04/15
+ * @date 2024/02/15
  */
 @Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -36,9 +36,9 @@ public class SystemConstants {
     public static final String CONTENT = "M";
 
     /**
-     * 是否启用，0启用
+     * 是否启用，1启用
      */
-    public static final String STATUS_NORMAL = "0";
+    public static final Integer STATUS_NORMAL = 1;
     /**
      * 代表是否是管理端用户
      */
@@ -259,7 +259,7 @@ public class SystemConstants {
      */
     public static final Integer DEL_FLAG = 1;
     public static final String PARAMS_MUST_NOT_BE_NULL = "参数不能为空";
-    public static final String NO_SUCH_RESUME = "没有此简历画像";
+    public static final String NO_SUCH_RESUME_DRAW = "没有此简历画像";
     public static final String RESUMEDRAW_MUST_HAVE_RESUMEID = "传入的画像必须有对应的简历id";
     /**
      * 审核通过
@@ -269,4 +269,13 @@ public class SystemConstants {
      * 审核拒绝
      */
     public static final Integer COMPANY_CHECK_NO_PASS = 2;
+    /**
+     * 按钮菜单
+     */
+    public static final Integer NEW_BUTTON = 4;
+    /**
+     * 管理员用户
+     */
+    public static final Long SUPER_ADMIN = 1L;
+    public static final String WORK_HAS_NO_RESUME = "当前职位下暂未有简历";
 }

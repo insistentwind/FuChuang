@@ -3,6 +3,8 @@ package com.ning.domain.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +42,8 @@ public class WorkUser  {
     @ApiModelProperty(name = "用户简历id",notes = "")
     private Integer resumeId ;
 
-
+    @ApiModelProperty(value = "简历投递时间")
+    private LocalDateTime createTime;
 
 }
 

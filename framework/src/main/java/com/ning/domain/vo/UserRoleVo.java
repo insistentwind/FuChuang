@@ -40,6 +40,6 @@ public class UserRoleVo {
     private String tele;
 
     @ApiModelProperty(value = "角色id")
-    private List<Integer> roleIds;
+    private List<Long> roleIds;
 
 }

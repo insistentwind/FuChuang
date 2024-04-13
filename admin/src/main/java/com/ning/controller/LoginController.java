@@ -1,5 +1,6 @@
 package com.ning.controller;
 
+import com.ning.domain.Do.MenuDo;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.UserLoginDto;
 import com.ning.domain.entity.Menu;

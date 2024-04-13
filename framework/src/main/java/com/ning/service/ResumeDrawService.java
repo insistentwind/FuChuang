@@ -5,6 +5,8 @@ import com.ning.domain.entity.ResumeDraw;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.ResumeDrawVo;
 
+import java.util.List;
+
 /**
  * 简历画像(ResumeDraw)表服务接口
  *
@@ -30,5 +32,19 @@ public interface ResumeDrawService extends IService<ResumeDraw> {
      * @return
      */
     Result<String> delete(Integer resumeId);
+
+    /**
+     * 分页查询简历池画像
+     * @param pageSize
+     * @param offset
+     * @return
+     */
+    List<ResumeDraw> getDrawByPage(Integer pageSize, Integer offset);
+    /**
+     * 根据简历id查询对应画像
+     * @param resumeId
+     * @return
+     */
+    Result<ResumeDrawVo> getDrawByIdWithoutLogin(Integer resumeId);
 }
 

@@ -158,7 +158,6 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         WorkVo workVo = new WorkVo();
         BeanUtils.copyProperties(work, workVo);
         try {
-            // 如果用户是已经登录的用户，那么将此次浏览放入历史记录中
             UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Integer userId = userDto.getUser().getId();
 

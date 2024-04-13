@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ning.service.MenuService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -39,8 +42,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 //返回所有的权限
                 LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
                 //返回菜单类型是C和F的
-                wrapper.in(Menu::getMenuType, SystemConstants.MENU,SystemConstants.BUTTON);
-                wrapper.eq(Menu::getStatus,SystemConstants.STATUS_NORMAL);
+                wrapper.in(Menu::getType, SystemConstants.NEW_BUTTON);
+                wrapper.eq(Menu::getVisible,SystemConstants.STATUS_NORMAL);
                 List<Menu> list = list(wrapper);
                 List<String> perms = list.stream().map(Menu::getPerms).collect(Collectors.toList());
 //                List<String> menuName = list.stream().map(Menu::getMenuName).collect(Collectors.toList());
@@ -80,20 +83,70 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     /**
      * 展示菜单列表，不需要分页
      * @param menuName
-     * @param status
+     * @param visible
      * @return
      */
     @Override
-    public Result<List<Menu>> listByWrapper(String menuName, String status) {
+    public Result<List<Menu>> listByWrapper(String menuName, Integer visible) {
         LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
         if(menuName != null){
-            wrapper.like(Menu::getMenuName,menuName);
+            wrapper.like(Menu::getName,menuName);
         }
-        if(status != null){
-            wrapper.eq(Menu::getStatus,status);
+        if(visible != null){
+            wrapper.eq(Menu::getVisible,visible);
         }
         List<Menu> menuList = list(wrapper);
         return Result.success(menuList);
+    }
+    /**
+     * 新增菜单
+     * @param menu
+     * @return
+     */
+    @Override
+    public Result<String> insertMenu(Menu menu) {
+        menuMapper.insert(menu);
+        return Result.success(SystemConstants.SUCCESS);
+    }
+    /**
+     * 根据id查询菜单数据
+     */
+    @Override
+    public Result<Menu> showMenuById(Long id) {
+        Menu menu = menuMapper.selectById(id);
+        return Result.success(menu);
+    }
+    /**
+     * 更新菜单
+     * @param menu
+     * @return
+     */
+    @Override
+    public Result<String> updateByEntity(Menu menu) {
+        Menu nowMenu = getById(menu.getId());
+        if(nowMenu.getId().equals(menu.getParentId())){
+            throw new RuntimeException("修改菜单" + menu.getName()+"失败,上级菜单不能选择自己");
+        }
+        updateById(menu);
+        return Result.success(SystemConstants.SUCCESS);
+    }
+
+    /**
+     * 删除菜单
+     * @param id
+     * @return
+     */
+    @Override
+    public Result<String> deleteById(Long id) {
+        //查询当前菜单是否有子菜单
+        Map map = new HashMap();
+        map.put("parent_id",id.toString());
+        List list = menuMapper.selectByMap(map);
+        if(list.size() > 0 || list != null){
+            throw new RuntimeException("存在子菜单不允许删除");
+        }
+        menuMapper.deleteById(id);
+        return Result.success(SystemConstants.SUCCESS);
     }
 
     /**
@@ -104,9 +157,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private List<Menu> builderMenuTree(List<Menu> menus,Long parentId){
         List<Menu> menuTree = menus.stream()
                 //满足parentId = parentId就保留
-                .filter(menu -> menu.getParentId().equals(parentId))
+                .filter(menu -> menu.getParentId().equals(parentId)
+                        && !Objects.equals(menu.getType(), SystemConstants.NEW_BUTTON))
                 .map(item -> {
-                    System.out.println(item);
 //                    List<Menu> list = menuMapper.selectChildrenMenuTree();
                     List<Menu> list = getChildren(item, menus);
                     return item.setChildren(list);
@@ -125,7 +178,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private List<Menu> getChildren(Menu item, List<Menu> menus) {
         List<Menu> children = menus.stream()
                 //满足parentId = parentId就保留
-                .filter(menu ->menu.getParentId().equals(item.getId()))
+                .filter(menu ->menu.getParentId().equals(item.getId())
+                        && !Objects.equals(menu.getType(), SystemConstants.NEW_BUTTON))
                 //这里处理如果有三级子目录就进行递归的方法找到子目录
                 .map(m -> m.setChildren(getChildren(m,menus)))
                 .collect(Collectors.toList());

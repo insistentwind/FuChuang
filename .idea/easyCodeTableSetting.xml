@@ -946,6 +946,34 @@
             </TableInfoDTO>
           </value>
         </entry>
+        <entry key="fuchuang_a15.similar_jobs">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="workId" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="similarId" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="SimilarJobs" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="framework" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./framework/src/main/java" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
         <entry key="fuchuang_a15.sys_menu">
           <value>
             <TableInfoDTO>

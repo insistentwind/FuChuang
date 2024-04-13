@@ -27,12 +27,14 @@ import lombok.experimental.Accessors;
 @TableName("sys_role_menu")
 public class RoleMenu {
 
+    //角色ID
     /** 角色ID */
     @ApiModelProperty(name = "角色ID",notes = "")
-    private Integer roleId ;
+    private Long roleId;
+    //菜单ID
     /** 菜单ID */
     @ApiModelProperty(name = "菜单ID",notes = "")
-    private Integer menuId ;
+    private Long menuId;
 
 
 }

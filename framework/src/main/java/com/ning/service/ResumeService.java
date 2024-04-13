@@ -3,6 +3,7 @@ package com.ning.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ning.domain.dto.ResumePageDto;
 import com.ning.domain.entity.Resume;
+import com.ning.domain.entity.ResumeDraw;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.ResumeVo;
 
@@ -34,5 +35,18 @@ public interface ResumeService extends IService<Resume> {
      * @return
      */
     Result<ResumeVo> getResumeVoByResumeId(Integer resumeId);
+    /**
+     * 简历池画像列表
+     * @param resumePageDto
+     * @return
+     */
+    Result<List<ResumeDraw>> getDrawPage(ResumePageDto resumePageDto);
+
+    /**
+     * 查看职位下简历画像
+     * @param workId
+     * @return
+     */
+    Result<List<ResumeDraw>> getDrawByPositionId(Integer workId);
 }
 

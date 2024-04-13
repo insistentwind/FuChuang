@@ -77,6 +77,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private KdfUtils kdfUtils;
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private WorkUserService workUserService;
 
     /**
      * 分页查询公司
@@ -109,11 +111,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 .eq(StringUtils.hasText(companyDto.getBrandScaleName()), Company::getBrandScaleName, companyDto.getBrandScaleName());
 
 //        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
-        Page<Company> page = new Page<>(pageNum, pageSize,false);
+        Page<Company> page = new Page<>(pageNum, pageSize);
         page(page, wrapper);
         List<Company> records = page.getRecords();
         List<CompanyVo> companyVos = BeanCopyUtils.copyBeanList(records, CompanyVo.class);
-        return Result.success(new PageResult(page.getRecords().size(), companyVos));
+        return Result.success(new PageResult((int) page.getTotal(), companyVos));
     }
 
     /**
@@ -287,7 +289,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private WorkVo getWorkResumeList(Integer workId,Integer companyId) {
         // 第二次 这里拿到了简历id的list
         LambdaQueryWrapper<WorkUser> wrapper1 = new LambdaQueryWrapper<>();
-        wrapper1.eq(WorkUser::getWorkId, workId);
+        wrapper1.eq(WorkUser::getWorkId, workId)
+                .orderByDesc(WorkUser::getCreateTime);
         List<WorkUser> workUsers = workUserMapper.selectList(wrapper1);
         if (workUsers.size() < 1){
             return null;
@@ -357,6 +360,48 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         // 第二次 这里拿到了简历id的list
         return Result.success(getWorkResumeList(id,companyId));
     }
+
+    /**
+     * 拿到分页内容
+     * 与getWorkResumeList接口类似，应替代其作为新接口
+     * 作用为查询某职位下所有的简历内容(分页查询 ！重要)
+     */
+//    private PageResult getWorkResumePageList(Integer workId,Integer companyId,Integer pageSize,Integer pageNum) {
+//        Page<WorkUser> page = new Page<>(pageNum,pageSize);
+//
+//        // 第二次 这里拿到了简历id的list
+//        LambdaQueryWrapper<WorkUser> wrapper1 = new LambdaQueryWrapper<>();
+//        wrapper1.eq(WorkUser::getWorkId, workId)
+//                .orderByDesc(WorkUser::getCreateTime);
+//        Page<WorkUser> records = workUserService.page(page, wrapper1);
+//        List<WorkUser> workUsers = records.getRecords();
+////        List<WorkUser> workUsers = workUserMapper.selectList(wrapper1);
+//        if (workUsers.size() < 1){
+//            throw new BaseException(SystemConstants.WORK_HAS_NO_RESUME);
+//        }
+//        // 第三次 要拿根据简历id拿到所有简历的内容
+//        List<ResumeVo> ResumeList = workUsers.stream().map(o -> {
+//            Integer resumeId = o.getResumeId();
+//            Integer userId = o.getUserId();
+//            Resume resume = resumeMapper.selectById(resumeId);
+//            //判断权限并拿到信息
+//            try {
+//                return selectPermsToViewResume(userId, companyId,
+//                        BeanCopyUtils.copyBean(resume, ResumeVo.class));
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+////                getResumeInfoUtils.
+//        }).collect(Collectors.toList());
+//
+//        return new PageResult((int) page.getTotal(),ResumeList);
+////        Work work = workMapper.selectById(workId);
+////        if (work != null){
+////            WorkVo workVo = BeanCopyUtils.copyBean(work, WorkVo.class);
+////            workVo.setResumeList(ResumeList);
+////            return workVo;
+////        }
+//    }
 
     /**
      * 根据用户id查询此用户的简历
@@ -705,14 +750,15 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
         wrapper.eq(StringUtils.hasText(companyDto.getBrandIndustry()), Company::getBrandIndustry, companyDto.getBrandIndustry())
                 .like(StringUtils.hasText(companyDto.getBrandName()), Company::getBrandName, companyDto.getBrandName())
-                .eq(StringUtils.hasText(companyDto.getBrandScaleName()), Company::getBrandScaleName, companyDto.getBrandScaleName());
+                .eq(StringUtils.hasText(companyDto.getBrandScaleName()), Company::getBrandScaleName, companyDto.getBrandScaleName())
+                .eq(companyDto.getStatus() != null,Company::getStatus, companyDto.getStatus());
 
 //        wrapper.eq(Company::getStatus, SystemConstants.WORK_STATUS_NO);
-        Page<Company> page = new Page<>(pageNum, pageSize,false);
+        Page<Company> page = new Page<>(pageNum, pageSize);
         page(page, wrapper);
         List<Company> records = page.getRecords();
         List<CompanyVo> companyVos = BeanCopyUtils.copyBeanList(records, CompanyVo.class);
-        return Result.success(new PageResult(page.getRecords().size(), companyVos));
+        return Result.success(new PageResult((int) page.getTotal(), companyVos));
     }
 //    /**
 //     * 新增公司员工

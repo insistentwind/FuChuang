@@ -193,17 +193,17 @@ public class SplitSalary {
             if(item.getIsCompany() == 1){
                 Integer userId = item.getId();
                 UserRole userRole = new UserRole();
-                userRole.setUserId(userId)
+                userRole.setUserId(Long.valueOf(userId))
                         //公司管理员
-                        .setRoleId(2);
+                        .setRoleId(4L);
                 userRoleService.save(userRole);
             }
             else if(item.getIsCompany() == 2){
                 Integer userId = item.getId();
                 UserRole userRole = new UserRole();
-                userRole.setUserId(userId)
+                userRole.setUserId(Long.valueOf(userId))
                         //系统管理员
-                        .setRoleId(12);
+                        .setRoleId(2L);
                 userRoleService.save(userRole);
             }
         });

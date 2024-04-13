@@ -24,15 +24,13 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "用户-角色表",description = "")
 @TableName("sys_user_role")
 public class UserRole  {
-    @ApiModelProperty(name = "",notes = "")
-    @TableId
-    private Integer id ;
     /** 管理端用户id */
     @ApiModelProperty(name = "管理端用户id",notes = "")
-    private Integer userId ;
+    private Long userId;
     /** 角色id */
     @ApiModelProperty(name = "角色id",notes = "")
-    private Integer roleId ;
+    private Long roleId;
+
 
 
 

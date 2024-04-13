@@ -29,44 +29,33 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "系统角色表",description = "")
 @TableName("sys_role")
 public class Role  {
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
     @TableId
-    private Integer id ;
-    /** 角色名称 */
-    @ApiModelProperty(name = "角色名称",notes = "")
-    private String roleName ;
-    /** 角色权限字符串 */
-    @ApiModelProperty(name = "角色权限字符串",notes = "")
-    private String roleKey ;
-    /** 排序 */
-    @ApiModelProperty(name = "排序",notes = "")
-    private Integer roleSort ;
-    /** 是否启用(0是,1是) */
-    @ApiModelProperty(name = "是否启用(0是,1是)",notes = "")
-    private Integer status ;
-    /** 创建人id */
-    @ApiModelProperty(name = "创建人id",notes = "")
-    @TableField(fill = FieldFill.INSERT)
-    private Integer createBy ;
-    /** 创建时间 */
-    @ApiModelProperty(name = "创建时间",notes = "")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime ;
-    /** 更新人id */
-    @ApiModelProperty(name = "更新人id",notes = "")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Integer updateBy ;
-    /** 更新时间 */
-    @ApiModelProperty(name = "更新时间",notes = "")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime ;
-    /** 标记 */
-    @ApiModelProperty(name = "标记",notes = "")
-    private String remark ;
-    /** 是否启用(0是，1否) */
-    @ApiModelProperty(name = "是否启用(0是，1否)",notes = "")
-    private Integer delFlag ;
+    private Long id;
+
+    //角色名称
+    @ApiModelProperty(value = "角色名称",notes = "")
+    private String name;
+    //角色编码
+    @ApiModelProperty(value = "角色编码",notes = "")
+    private String code;
+    //显示顺序
+    @ApiModelProperty(value = "显示顺序",notes = "")
+    private Integer sort;
+    //角色状态(1-正常；0-停用)
+    @ApiModelProperty(value = "角色状态(1-正常；0-停用)",notes = "")
+    private Integer status;
+    //数据权限(0-所有数据；1-部门及子部门数据；2-本部门数据；3-本人数据)
+    @ApiModelProperty(value = "数据权限(0-所有数据；1-部门及子部门数据；2-本部门数据；3-本人数据)",notes = "")
+    private Integer dataScope;
+    //逻辑删除标识(0-未删除；1-已删除)
+    @ApiModelProperty(value = "逻辑删除标识(0-未删除；1-已删除)",notes = "")
+    private Integer delFlag;
+    //更新时间
+    @ApiModelProperty(value = "更新时间",notes = "")
+    private LocalDateTime createTime;
+    //创建时间
+    @ApiModelProperty(value = "创建时间",notes = "")
+    private LocalDateTime updateTime;
 
 
 }

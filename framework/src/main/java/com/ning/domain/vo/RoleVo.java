@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoleVo {
     @ApiModelProperty(value = "角色id")
-    private Integer roleId;
+    private Long roleId;
     @ApiModelProperty(value = "状态")
     private Integer status;
 

@@ -33,6 +33,28 @@ public interface MenuService extends IService<Menu> {
      * 展示菜单列表，不需要分页
      * @return
      */
-    Result<List<Menu>> listByWrapper(String menuName, String status);
+    Result<List<Menu>> listByWrapper(String menuName, Integer visible);
+    /**
+     * 新增菜单
+     * @param menu
+     * @return
+     */
+    Result<String> insertMenu(Menu menu);
+    /**
+     * 根据id查询菜单数据
+     */
+    Result<Menu> showMenuById(Long id);
+    /**
+     * 更新菜单
+     * @param menu
+     * @return
+     */
+    Result<String> updateByEntity(Menu menu);
+    /**
+     * 删除菜单
+     * @param id
+     * @return
+     */
+    Result<String> deleteById(Long id);
 }
 

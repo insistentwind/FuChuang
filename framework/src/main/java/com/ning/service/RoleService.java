@@ -37,7 +37,7 @@ public interface RoleService extends IService<Role> {
      * 修改角色的停启用状态
      * @return
      */
-    Result<String> changeStatus(Integer roleId, Integer status);
+    Result<String> changeStatus(Long roleId, Integer status);
     /**
      * 新增角色接口
      * @param roleMenuVo

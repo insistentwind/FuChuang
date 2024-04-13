@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,8 +31,8 @@ public class ResumeController {
      * @return
      */
     @ApiOperation("公司端投递简历(公司把面试者的信息录入)")
-    @GetMapping("/resume")
-    public Result<String> commitResumeList(List<ResumeVo> resumeVoList){
+    @PostMapping("/resume")
+    public Result<String> commitResumeList(@RequestBody List<ResumeVo> resumeVoList){
         return companyService.commitResumeList(resumeVoList);
     }
 
@@ -55,10 +52,13 @@ public class ResumeController {
      * 根据职位id查询所有投递的简历列表
      * @param id
      * @return
+     * TODO 数据量太大，应该改为分页查询
      */
     @ApiOperation("职位id查询投递的简历列表")
     @GetMapping("/listByResumeId/{id}")
     public Result<WorkVo> getResumeListByWorkId(@PathVariable Integer id){
+//            ,@RequestParam(value = "pageSize")Integer pageSize
+//    ,@RequestParam(value = "pageNum")Integer pageNum){
         //这里的简历列表被放入到了WorkVo中的ResumeList中
         return companyService.getResumeListByWorkId(id);
     }
@@ -73,7 +73,5 @@ public class ResumeController {
     public Result<ResumeVo> getResumeVoByResumeId(Integer resumeId){
         return companyService.getResumeVoByResumeId(resumeId);
     }
-
-
 
 }

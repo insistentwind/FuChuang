@@ -2,6 +2,7 @@ package com.ning.domain.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 /**
  * @author: qjn
@@ -16,6 +17,7 @@ public class WorkPageVo {
 //    private Integer pageSize;
 
     // id前端可传可不传
+
     @ApiModelProperty(value = "公司id")
     private Integer companyId;
 
