@@ -45,8 +45,6 @@ public class WorkController {
     @Autowired
     private CompanyService companyService;
     @Autowired
-    private NotifyService notifyService;
-    @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
     private RelationService relationService;

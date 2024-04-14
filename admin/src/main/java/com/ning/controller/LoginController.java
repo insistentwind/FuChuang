@@ -1,5 +1,7 @@
 package com.ning.controller;
 
+import com.ning.annotation.SecurityParameter;
+import com.ning.constants.SystemConstants;
 import com.ning.domain.Do.MenuDo;
 import com.ning.domain.dto.UserDto;
 import com.ning.domain.dto.UserLoginDto;
@@ -11,12 +13,14 @@ import com.ning.exception.BaseException;
 import com.ning.service.LoginService;
 import com.ning.service.MenuService;
 import com.ning.service.RoleService;
+import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +40,8 @@ public class LoginController {
     private MenuService menuService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private UserService userService;
 
 
     // todo 修改账号密码
@@ -109,5 +115,19 @@ public class LoginController {
     @GetMapping ("/user/logout")
     public Result<String> logOut(){
         return loginService.logout();
+    }
+
+    /**
+     * 修改当前用户的信息
+     * @param user
+     * @return
+     */
+    @PostMapping("/update")
+    @ApiOperation("修改当前用户的信息")
+    @SecurityParameter(inDecode = SystemConstants.IN_DECODE_BUTTON,outEncode = SystemConstants.OUT_ENCODE_BUTTON)
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_EDIT)")
+    public Result<String> update(@RequestBody UserVo user){
+        log.info("修改的用户信息是：{}",user);
+        return userService.updateByUser(user);
     }
 }

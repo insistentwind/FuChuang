@@ -1,7 +1,7 @@
 package com.ning.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ning.entity.UserKey;
+import com.ning.domain.entity.UserKey;
 import com.ning.service.UserKeyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

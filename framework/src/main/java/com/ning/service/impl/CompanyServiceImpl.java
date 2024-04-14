@@ -291,7 +291,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         LambdaQueryWrapper<WorkUser> wrapper1 = new LambdaQueryWrapper<>();
         wrapper1.eq(WorkUser::getWorkId, workId)
                 .orderByDesc(WorkUser::getCreateTime);
+        //因为一个职位会有多个用户投递简历，所以不能拿到第一个就做判断是需要的数据
         List<WorkUser> workUsers = workUserMapper.selectList(wrapper1);
+
         if (workUsers.size() < 1){
             return null;
         }
@@ -349,10 +351,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             LambdaQueryWrapper<Relation> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Relation::getWorkId, id);
             Relation relation = relationMapper.selectOne(wrapper);
+            //这里是relation职位对应的公司
             UserCompany userCompany = judgeUserMatchedCompany(relation.getCompanyId());
             companyId = relation.getCompanyId();
             if (userCompany == null) {
-                throw new BaseException(SystemConstants.HAS_NO_MATCHED_USER_COMPANY);
+                return Result.error(SystemConstants.HAS_NO_MATCHED_USER_COMPANY);
             }
         } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
@@ -461,8 +464,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         wrapper1.eq(UserPermitcompany::getUserId, userId)
                 .eq(UserPermitcompany::getCompanyPermitId, companyId);
         UserPermitcompany one = userPermitcompanyService.getOne(wrapper1);
+
         if (one != null || Objects.equals(resumeVo.getObscure(), SystemConstants.CAN_BE_SEEN)) {
             Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
+            //注意这里千万不要把不是这个人的简历放进来，因为会报错密钥解密不出来，错误很难找
             Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(userId, resume);
 
             resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
@@ -664,11 +669,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
                 resumeVo.setUserId(userId);
                 //todo 如果用户允许才能回显所有的数据
-                resumeVo = selectPermsToViewResume(userId, resumeId, resumeVo);
+                resumeVo = selectPermsToViewResume(userId, companyId, resumeVo);
                 return Result.success(resumeVo);
             }
             // 通过职位找到当前用户对应的简历id
-            throw new BaseException(SystemConstants.USER_NO_PERMITED);
+            return Result.error(SystemConstants.USER_NO_PERMITED);
 
         } catch (Exception e) {
             throw new BaseException(e.toString());
@@ -697,11 +702,35 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }
         Company company = companyMapper.selectById(companyId);
 
-        Ack ack = new Ack();
-        ack.setCompanyId(companyId)
-                .setUserId(userId)
-                .setContent(company.getBrandName() + "公司希望查看您的简历");
-        ackService.save(ack);
+        LambdaQueryWrapper<Ack> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Ack::getCompanyId,company.getId())
+                        .eq(Ack::getUserId,userId)
+                                .eq(Ack::getIsCompany,SystemConstants.IS_COMPANY);
+        Ack ack = ackService.getOne(wrapper);
+        if (ack == null){
+            ack = new Ack();
+            ack.setCompanyId(companyId)
+                    .setUserId(userId)
+                    .setCompanyName(company.getBrandName())
+                    .setUsername(userService.getById(userId).getName())
+                    .setIsCompany(SystemConstants.IS_COMPANY)
+                    .setIsRead(SystemConstants.HAS_NO_READ)
+                    .setTime(LocalDateTime.now())
+                    .setContent(company.getBrandName() + "公司希望查看您的简历");
+            ackService.save(ack);
+        }
+        else {
+            //否则更新这条信息
+            ack.setCompanyId(companyId)
+                    .setUserId(userId)
+                    .setCompanyName(company.getBrandName())
+                    .setUsername(userService.getById(userId).getName())
+                    .setIsCompany(SystemConstants.IS_COMPANY)
+                    .setIsRead(SystemConstants.HAS_NO_READ)
+                    .setTime(LocalDateTime.now())
+                    .setContent(company.getBrandName() + "公司希望查看您的简历");
+            ackService.updateById(ack);
+        }
 
         return Result.success(SystemConstants.SUCCESS);
     }

@@ -1,7 +1,7 @@
 package com.ning.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ning.entity.UserKey;
+import com.ning.domain.entity.UserKey;
 
 /**
  * (UserKey)表服务接口

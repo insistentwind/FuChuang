@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class MenuController {
      */
     @ApiOperation("新增菜单")
     @PostMapping
+    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_MENU_ADD)")
     public Result<String> insertMenu(@RequestBody Menu menu){
         log.info("新增菜单：{}",menu);
         return menuService.insertMenu(menu);
@@ -66,6 +68,7 @@ public class MenuController {
     /**
      * 根据id查询菜单数据
      */
+    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_MENU_EDIT)")
     @ApiOperation("根据id查询菜单数据")
     @GetMapping("/{id}")
     public Result<Menu> showMenuById(@PathVariable Long id){
@@ -80,6 +83,7 @@ public class MenuController {
      */
     @ApiOperation("更新菜单")
     @PutMapping
+    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_MENU_EDIT)")
     public Result<String> updateByEntity(@RequestBody Menu menu){
         log.info("更新菜单的内容：{}",menu);
         return menuService.updateByEntity(menu);
@@ -92,6 +96,7 @@ public class MenuController {
      */
     @DeleteMapping("/{id}")
     @ApiOperation("删除菜单")
+    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_MENU_DELETE)")
     public Result<String> deleteMenu(@PathVariable Long id){
         log.info("删除菜单:{}",id);
         return menuService.deleteById(id);

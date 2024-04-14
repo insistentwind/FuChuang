@@ -1,15 +1,12 @@
 package com.ning.Listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.injector.methods.Insert;
 import com.ning.constants.MqConstants;
 import com.ning.constants.SystemConstants;
-import com.ning.entity.UserKey;
-import com.ning.exception.BaseException;
+import com.ning.domain.entity.UserKey;
 import com.ning.service.UserKeyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +24,6 @@ public class UserKeyListener {
     @RabbitListener(queues = MqConstants.FUCHUANG_INSERT_QUEUE)
     public void listenKeyInsertOrUpdate(UserKey userKey){
         try {
-            System.out.println(userKey);
             //这里每个用户的密钥都唯一
             LambdaQueryWrapper<UserKey> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(UserKey::getUserId,userKey.getUserId());
@@ -44,7 +40,7 @@ public class UserKeyListener {
         }
         catch (Exception e){
             e.printStackTrace();
-            throw new BaseException(SystemConstants.UP_TIME);
+            throw new RuntimeException(SystemConstants.UP_TIME);
         }
     }
 

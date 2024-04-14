@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/system/python")
-@Api(tags = "python专属，另一个在职位画像接口")
+@Api(tags = "python接口，另一个在职位画像接口")
 public class PythonController {
     @Autowired
     private ResumeService resumeService;

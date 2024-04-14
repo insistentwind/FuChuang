@@ -1,5 +1,6 @@
 package com.ning.service.impl;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,9 +59,9 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Autowired
     private WorkUserMapper workUserMapper;
     @Autowired
-    private ClassifyService classifyService;
+    private UserResumeMapper userResumeMapper;
     @Autowired
-    private ResumeMapper resumeMapper;
+    private UserCompanyMapper userCompanyMapper;
 
 
     /**
@@ -200,38 +202,36 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
     @Override
     @Transactional
     public Result<String> updateByWork(WorkVo workVo) {
+        //判断当前公司是否有这个职位
+        try {
+            Integer userId = SecurityUtils.getLoginUser().getUser().getId();
+            if (userId == null){
+                return Result.error(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+            }
+            LambdaQueryWrapper<Relation> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.eq(Relation::getWorkId,workVo.getId());
+            Relation relation = relationMapper.selectOne(wrapper1);
+            if (relation == null){
+                return Result.error(SystemConstants.COMPANY_HAS_NO_POSITION);
+            }
+            Integer companyId = relation.getCompanyId();
+
+            LambdaQueryWrapper<UserCompany> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(UserCompany::getUserId,userId)
+                    .eq(UserCompany::getCompanyId,companyId);
+            UserCompany userCompany = userCompanyMapper.selectOne(wrapper);
+            if (userCompany == null){
+                return Result.error(SystemConstants.HAS_NO_MATCHED_USER_COMPANY);
+            }
+            if (!Objects.equals(userCompany.getCompanyId(), companyId)){
+                return Result.error(SystemConstants.COMPANY_HAS_NO_POSITION);
+            }
+        }catch (Exception e){
+            throw new BaseException(SystemConstants.UNKNOWN_ERROR);
+        }
+
+
         Work work = BeanCopyUtils.copyBean(workVo, Work.class);
-
-
-        //TODO 分类相关的要重写
-//        LambdaQueryWrapper<Classify> wrapper = new LambdaQueryWrapper<>();
-//        // 这里搜索所有的分类 后面设置分类的id
-//        wrapper.eq(workDto.getBigClassify() != null, Classify::getBigClassify, workDto.getBigClassify())
-//                .eq(workDto.getMidClassify() != null, Classify::getMidClassify, workDto.getMidClassify())
-//                .eq(workDto.getSmallClassify() != null, Classify::getSmallClassify, workDto.getSmallClassify())
-//                .eq(workDto.getSalaryClassify() != null, Classify::getSalaryClassify, workDto.getSalaryClassify());
-//        Classify classify = classifyService.getOne(wrapper);
-//
-//        if (classify == null) {
-//            throw new BaseException(SystemConstants.HAS_NO_CATIGORY);
-//        }
-//        Integer classifyId = classify.getId();
-
-//        //这个是设置了最大和最小的薪资
-//        if (workDto.getMinSa() != null && workDto.getMaxSa() != null) {
-//            work.setMinSa(workDto.getMinSa())
-//                    .setMaxSa(workDto.getMaxSa())
-//                    .setSalary(work.getMinSa() + "-" + work.getMaxSa());
-//        }
-
-//        LambdaQueryWrapper<Relation> wrapper1 = new LambdaQueryWrapper<>();
-//        wrapper1.eq(Relation::getWorkId, workDto.getId());
-//        Relation relation = relationMapper.selectOne(wrapper1);
-//        Company company = companyMapper.selectById(relation.getCompanyId());
-//        //由于职位-分类是多对1的，所以要先删除这个职位对应的分类，再添加分类
-//
-
-//        work.setClassifyId(classifyId);
 
         updateById(work);
         return Result.success();
@@ -325,6 +325,14 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         if (work == null) {
             throw new BaseException(SystemConstants.WORK_NOT_EXIST);
         }
+        //判断这份简历是否属于用户
+        LambdaQueryWrapper<UserResume> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.eq(UserResume::getResumeId,resumeCommitDto.getResumeId())
+                        .eq(UserResume::getUserId,user.getId());
+        UserResume userResume = userResumeMapper.selectOne(wrapper2);
+        if (userResume == null){
+            return Result.error(SystemConstants.USER_HAS_NO_RESUME);
+        }
 
         LambdaQueryWrapper<WorkUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(WorkUser::getWorkId, resumeCommitDto.getWorkId())
@@ -339,7 +347,8 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
             WorkUser workUser = new WorkUser();
             workUser.setUserId(user.getId())
                     .setWorkId(resumeCommitDto.getWorkId())
-                    .setResumeId(resumeCommitDto.getResumeId());
+                    .setResumeId(resumeCommitDto.getResumeId())
+                    .setCreateTime(LocalDateTime.now());
             workUserMapper.insert(workUser);
             return Result.success("投递成功");
         } catch (Exception e) {

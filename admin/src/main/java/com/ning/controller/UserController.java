@@ -40,7 +40,7 @@ public class UserController {
      * @param companyDto
      * @return
      */
-    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_QUERY)")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_EDIT)")
     @ApiOperation("分页查询公司信息")
     @GetMapping("/page")
     public Result<PageResult> getHrByPage(CompanyDto companyDto){
@@ -52,7 +52,7 @@ public class UserController {
      * @param userPageVo
      * @return
      */
-    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_QUERY)")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_EDIT)")
     @ApiOperation("分页条件查询用户信息")
     @GetMapping("/list")
     public Result<PageResult> page(UserPageVo userPageVo){
@@ -76,7 +76,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_REMOVE)")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_DELETE)")
     @ApiOperation("删除固定的某个用户（逻辑删除）")
     @DeleteMapping("/{id}")
     public Result<String> deleteById(@PathVariable List<Long> id){
@@ -91,6 +91,7 @@ public class UserController {
      */
     @ApiOperation("id用户信息回显")
     @GetMapping("/{id}")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_EDIT)")
     public Result<UserRoleInfoVo> getUserInfoById(@PathVariable Integer id){
         log.info("根据id查询用户信息回显接口:{}",id);
         return userService.getUserInfoById(id);
@@ -104,6 +105,7 @@ public class UserController {
      */
     @ApiOperation("更新用户信息")
     @PutMapping
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_EDIT)")
     public Result<String> updateUserInfo(@RequestBody UserRoleVo userRoleVo){
         log.info("更新用户信息接口:{}",userRoleVo);
         return userService.updateUserRoleVo(userRoleVo);
@@ -118,6 +120,7 @@ public class UserController {
      */
     @ApiOperation("批量删除公司")
     @DeleteMapping
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_DELETE)")
     public Result<String> deleteByIds(List<Integer> ids){
         return companyService.deleteByIds(ids);
     }

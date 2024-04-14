@@ -28,6 +28,8 @@ public class GetResumeInfoUtils {
      * @throws Exception
      */
     public Resume getResumeVoByKey(Integer userId, Resume resume) throws Exception {
+        //注意这里千万不要把不是这个人的简历放进来，因为会报错密钥解密不出来，错误很难找
+
         UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
         if (userKey == null) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);

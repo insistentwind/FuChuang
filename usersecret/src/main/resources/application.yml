@@ -5,10 +5,21 @@ spring:
     active: dev
   datasource:
     druid:
-      driver-class-name: ${fc.datasource.driver-class-name}
-      url: jdbc:mysql://${fc.datasource.host}:${fc.datasource.port}/${fc.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: ${fc.datasource.username}
-      password: ${fc.datasource.password}
+      db01:
+        driver-class-name: ${fc.datasource.driver-class-name}
+        url: jdbc:mysql://${fc.datasource.host}:${fc.datasource.port}/${fc.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        username: ${fc.datasource.username}
+        password: ${fc.datasource.password}
+        type: com.alibaba.druid.pool.DruidDataSource
+      db02:
+        driver-class-name: ${fc.datasource.driver-class-name}
+        url: jdbc:mysql://106.54.6.144:${fc.datasource.port}/${fc.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        username: ${fc.datasource.username}
+        password: ${fc.datasource.password}
+        type: com.alibaba.druid.pool.DruidDataSource
+
+
+
 #    password: ${fc.redis.password}
   #文件上传的配置
   servlet:
@@ -16,7 +27,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   rabbitmq:
-    host: 106.54.6.144
+    host: ${fc.rabbitmq.host}
     port: 5672
     username: user
     password: user123456

@@ -36,6 +36,12 @@ public class Ack  {
     //公司
     @ApiModelProperty(value = "公司")
     private Integer companyId;
+    //用户名
+    @ApiModelProperty(value = "用户名")
+    private String username;
+    //公司名
+    @ApiModelProperty(value = "公司名")
+    private String companyName;
     //内容
     @ApiModelProperty(value = "内容")
     private String content;
@@ -47,7 +53,7 @@ public class Ack  {
     private Integer isCompany;
     //是否已读(0否，1是)
     @ApiModelProperty(value = "是否已读(0否，1是)")
-    private Integer read;
+    private Integer isRead;
     @ApiModelProperty(value = "操作时间")
     private LocalDateTime time;
 

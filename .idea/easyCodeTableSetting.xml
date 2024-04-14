@@ -567,6 +567,7 @@
         <entry key="fuchuang_a15.notify">
           <value>
             <TableInfoDTO>
+              <option name="comment" value="消息表" />
               <option name="fullColumn">
                 <list>
                   <ColumnInfoDTO>
@@ -583,11 +584,11 @@
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
-                    <option name="comment" value="用户名" />
+                    <option name="comment" value="用户id" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="username" />
-                    <option name="type" value="java.lang.String" />
+                    <option name="name" value="userId" />
+                    <option name="type" value="java.lang.Integer" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
                     <option name="comment" value="消息是否已读(0未读，1已读)" />
@@ -603,13 +604,20 @@
                     <option name="name" value="time" />
                     <option name="type" value="java.util.Date" />
                   </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="删除标记" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="delFlag" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
                 </list>
               </option>
               <option name="name" value="Notify" />
               <option name="preName" value="" />
               <option name="saveModelName" value="framework" />
               <option name="savePackageName" value="" />
-              <option name="savePath" value="./framework/src/main/java" />
+              <option name="savePath" value="./usersecret/src/main/java/com/ning" />
               <option name="templateGroupName" value="MybatisPlus" />
             </TableInfoDTO>
           </value>

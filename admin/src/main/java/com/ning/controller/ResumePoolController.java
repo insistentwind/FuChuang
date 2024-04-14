@@ -36,16 +36,6 @@ public class ResumePoolController {
         return resumeService.getPage(resumePageDto);
     }
 
-    /**
-     * 设置简历是否放入公共池
-     * @param id
-     * @return
-     */
-    @ApiOperation("设置简历是否放入公共池")
-    @PutMapping("/set/{id}")
-    public Result<String> setResumePool(@PathVariable Integer id){
-        return resumeService.setNoPool(id);
-    }
 
     /**
      * 根据id查询简历数据

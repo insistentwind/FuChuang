@@ -1,5 +1,7 @@
 package com.ning.service.impl;
 
+import com.ning.constants.SystemConstants;
+import com.ning.exception.BaseException;
 import com.ning.service.PermissionService;
 import com.ning.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,12 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public boolean hasPermission(String permission){
         //判断当前用户是否具有permission
-
+        try {
+            SecurityUtils.getLoginUser();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
         //如果是超级管理员,直接返回true
         if(SecurityUtils.isAdmin()){
             return true;

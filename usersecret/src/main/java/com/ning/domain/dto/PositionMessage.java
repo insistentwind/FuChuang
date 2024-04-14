@@ -20,6 +20,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @ApiModel(value = "公司发布删除职位消息",description = "")
 public class PositionMessage implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "关注此公司的用户列表")

@@ -1,7 +1,7 @@
-package com.ning.mapper;
+package com.ning.mapper.db01;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ning.entity.UserKey;
+import com.ning.domain.entity.UserKey;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

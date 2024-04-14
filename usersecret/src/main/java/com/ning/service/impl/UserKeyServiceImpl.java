@@ -1,8 +1,8 @@
 package com.ning.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ning.entity.UserKey;
-import com.ning.mapper.UserKeyMapper;
+import com.ning.domain.entity.UserKey;
+import com.ning.mapper.db01.UserKeyMapper;
 import com.ning.service.UserKeyService;
 
 import org.springframework.stereotype.Service;

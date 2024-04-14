@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.ResumePageDto;
-import com.ning.domain.entity.Resume;
-import com.ning.domain.entity.ResumeDraw;
-import com.ning.domain.entity.UserResume;
-import com.ning.domain.entity.WorkUser;
+import com.ning.domain.entity.*;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.ResumeVo;
 import com.ning.exception.BaseException;
@@ -20,6 +17,7 @@ import com.ning.service.ResumeDrawService;
 import com.ning.service.ResumeService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.GetResumeInfoUtils;
+import com.ning.utils.SecurityUtils;
 import com.qiniu.sms.model.TemplateInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +52,15 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
      */
     @Override
     public Result<List<ResumeVo>> getPage(ResumePageDto resumePageDto) {
+        try {
+            User user = SecurityUtils.getLoginUser().getUser();
+            if (Objects.equals(user.getIsCompany(), SystemConstants.IS_NOT_COMPANY)){
+                return Result.error(SystemConstants.NOW_USER_IS_NOT_COMPANY);
+            }
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
         if (resumePageDto.getPageNum() == null || resumePageDto.getPageSize() == null){
             throw new BaseException(SystemConstants.CHECK_INPUT);
         }
@@ -76,6 +83,21 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
      */
     @Override
     public Result<String> setNoPool(Integer id) {
+        //判断当前操作者是否持有该简历
+        Integer userId = null;
+        try {
+            userId = SecurityUtils.getLoginUser().getUser().getId();
+        }
+        catch (Exception e){
+            throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
+        }
+        LambdaQueryWrapper<UserResume> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserResume::getResumeId,id)
+                        .eq(UserResume::getUserId,userId);
+        UserResume userResume = userResumeMapper.selectOne(wrapper);
+        if (userResume == null){
+            throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
+        }
         Resume resume1= new Resume();
 
         Resume resume = getById(id);

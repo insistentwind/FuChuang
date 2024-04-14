@@ -18,7 +18,7 @@ import java.util.List;
  * @create: 2024/04/05 16:03
  **/
 @RestController
-@Api(tags = "(前端在另一个类似接口)python职位操作失败日志")
+@Api(tags = "(不是前端)python职位操作失败日志")
 @RequestMapping("/log/python")
 @Slf4j
 public class PositionLogController {

@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class AdminLogController {
      */
     @ApiOperation("条件查询职位日志list")
     @PostMapping("/list")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DICT_EDIT)")
     public Result<List<AdminWorkLogVo>> getWorkLogByFlag(@RequestBody(required = false) WorkLogVo workLogVo){
         return WorkLogService.getWorkVoListByVo(workLogVo);
     }
@@ -42,6 +44,7 @@ public class AdminLogController {
      * @param workId
      * @return
      */
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DICT_EDIT)")
     @ApiOperation("根据id获取职位信息")
     @GetMapping("/list/{workId}")
     public Result<List<AdminWorkLogVo>> getWorkLogByWorkId(@PathVariable Integer workId){
@@ -55,6 +58,7 @@ public class AdminLogController {
      */
     @ApiOperation("批量删除日志信息")
     @DeleteMapping("/{ids}")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DICT_DELETE)")
     public Result<String> deleteBatch(@PathVariable List<Integer> ids){
         return WorkLogService.deleteBatch(ids);
     }
@@ -66,6 +70,7 @@ public class AdminLogController {
      */
     @ApiOperation("根据vo修改日志信息")
     @PutMapping("/update")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DICT_EDIT)")
     public Result<String> updateByVo(@RequestBody WorkLogVo workLogVo){
         return WorkLogService.updateByVo(workLogVo);
     }

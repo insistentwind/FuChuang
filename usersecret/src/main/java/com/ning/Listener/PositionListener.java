@@ -1,15 +1,12 @@
 package com.ning.Listener;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.constants.MqConstants;
 import com.ning.constants.SystemConstants;
 import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.dto.PositionMessage;
-import com.ning.domain.entity.Notify;
-import com.ning.entity.UserKey;
-import com.ning.exception.BaseException;
-import com.ning.service.CompanyService;
-import com.ning.service.NotifyService;
+import com.ning.domain.entity.UNotify;
+import com.ning.mapper.db02.UNotifyMapper;
+import com.ning.service.UNotifyService;
 import com.ning.utils.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -31,7 +28,9 @@ public class PositionListener {
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
-    private NotifyService notifyService;
+    private UNotifyService uNotifyService;
+    @Autowired
+    private UNotifyMapper uNotifyMapper;
 
     /**
      * 公司职位上新或者删除通知
@@ -39,17 +38,19 @@ public class PositionListener {
     @RabbitListener(queues = MqConstants.POSITION_INSERT_QUEUE)
     public void PositionInsertOrUpdate(PositionMessage positionMessage) {
         try {
-            String companyName = positionMessage.getCompanyName();
+            //因为设置redis的端口是不开放的，以防被攻击服务器压力倍增
             String message = positionMessage.getMessage();
             //拿到公司信息，在redis中遍历拿到关注用户的信息
-            Set<String> set = redisTemplate.opsForHash().keys(companyName);
+            Set<String> set = positionMessage.getSet();
             for (String user : set) {
                 NotifyDto notifyDto = new NotifyDto();
                 notifyDto.setUserId(Integer.valueOf(user));
                 notifyDto.setContent(message);
-                Notify notify = BeanCopyUtils.copyBean(notifyDto, Notify.class);
-                notify.setTime(LocalDateTime.now());
-                notifyService.save(notify);
+                UNotify uNotify = BeanCopyUtils.copyBean(notifyDto, UNotify.class);
+                uNotify.setTime(LocalDateTime.now())
+                        .setId(null)
+                        .setIsRead(SystemConstants.HAS_NO_READ);
+                uNotifyMapper.insert(uNotify);
             }
         } catch (Exception e) {
             e.printStackTrace();

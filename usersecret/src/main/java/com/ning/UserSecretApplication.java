@@ -10,10 +10,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan("com.ning.mapper")
 @Slf4j
 @EnableSwagger2
-@EnableScheduling
 // 启动异步服务
 @EnableAsync
 public class UserSecretApplication {

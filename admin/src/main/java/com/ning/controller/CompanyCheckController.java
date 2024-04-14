@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,7 @@ public class CompanyCheckController {
      */
     @PutMapping("/status")
     @ApiOperation("审核公司是否通过")
+    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DEPT_ADD)")
     public Result<String> companyCheck(@RequestParam(value = "id")Integer companyId,@RequestParam(value = "status")Integer status){
         if (Objects.equals(status, SystemConstants.COMPANY_CHECK_PASS)) {
             Company company = Company.builder()
@@ -81,6 +83,7 @@ public class CompanyCheckController {
      */
     @ApiOperation("分页查询待审核公司")
     @GetMapping("/list")
+    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DEPT_EDIT)")
     public Result<PageResult> getCheckCompanyList(CompanyDto companyDto){
         return companyService.getStatusList(companyDto);
     }

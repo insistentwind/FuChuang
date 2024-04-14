@@ -18,11 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
-
     /**
      * 重写这个方法，暴露它到容器当中
      * @return
@@ -43,23 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 对于登录接口 允许匿名访问
-                .antMatchers("/login").anonymous()
-
-                //对于注销接口，需要进行身份认证，即携带请求头
-//                .antMatchers("/logout").authenticated()
-//                .antMatchers("/user/userInfo").authenticated()
-//                .antMatchers("/upload").authenticated()
-                // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().permitAll();
 
-
-        //配置异常处理器
-        http.exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler);
-
-//        http.addFilterBefore(jwtAuthenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
         //这行代码的作用是禁用Spring Security提供的默认登出功能。
         http.logout().disable();
         //允许跨域

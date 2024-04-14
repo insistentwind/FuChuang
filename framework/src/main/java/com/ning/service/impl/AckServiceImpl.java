@@ -12,6 +12,7 @@ import com.ning.exception.BaseException;
 import com.ning.exception.SystemException;
 import com.ning.mapper.AckMapper;
 import com.ning.domain.entity.Ack;
+import com.ning.mapper.CompanyMapper;
 import com.ning.service.AckService;
 import com.ning.service.UserCompanyService;
 import com.ning.service.UserPermitcompanyService;
@@ -36,6 +37,10 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
     private UserPermitcompanyService userPermitcompanyService;
     @Autowired
     private UserCompanyService userCompanyService;
+    @Autowired
+    private AckMapper ackMapper;
+    @Autowired
+    private CompanyMapper companyMapper;
 
     /**
      * 查看所有收到的查看简历申请
@@ -51,9 +56,15 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
         LambdaQueryWrapper<Ack> wrapper = new LambdaQueryWrapper<>();
+        System.out.println(user.getId());
         wrapper.eq(Ack::getUserId, user.getId())
                 .eq(Ack::getIsCompany, SystemConstants.IS_COMPANY);
-        List<Ack> list = this.list(wrapper);
+        List<Ack> list = list(wrapper);
+        System.out.println(list.size());
+
+        if (list == null || list.size() < 1){
+            return Result.error("当前没有公司申请查看简历");
+        }
         return Result.success(list);
     }
 
@@ -65,29 +76,48 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
      */
     @Override
     public Result<String> allow(UserPermitcompanyVo userPermitcompanyVo) {
-        UserPermitcompany userPermitcompany = BeanCopyUtils.copyBean(userPermitcompanyVo, UserPermitcompany.class);
+
         User user = null;
         try {
+            //登录校验
             user = SecurityUtils.getLoginUser().getUser();
         } catch (Exception e) {
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
+
+
+        Integer id = userPermitcompanyVo.getId();
+        UserPermitcompany userPermitcompany = new UserPermitcompany();
+        Ack byId = this.getById(id);
+        userPermitcompany.setCompanyPermitId(byId.getCompanyId())
+                .setUserId(byId.getUserId());
+
+
         if (!Objects.equals(userPermitcompany.getUserId(), user.getId())) {
             return Result.error(SystemConstants.OPERATION_NOT_COMPARE_WITH_USER);
         }
         LambdaQueryWrapper<UserPermitcompany> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserPermitcompany::getUserId, userPermitcompanyVo.getUserId())
-                .eq(UserPermitcompany::getCompanyPermitId, userPermitcompanyVo.getCompanyPermitId());
+        wrapper.eq(UserPermitcompany::getUserId, user.getId())
+                .eq(UserPermitcompany::getCompanyPermitId, userPermitcompany.getCompanyPermitId());
         UserPermitcompany userPermit = userPermitcompanyService.getOne(wrapper);
 
         if (Objects.equals(userPermitcompanyVo.getAgree(), SystemConstants.AGREE_TO_SEE)) {
+            Ack oldAck = new Ack();
+            oldAck.setId(id)
+                            .setIsRead(SystemConstants.HAS_READ);
+            ackMapper.updateById(oldAck);
+            //这里如果同意了，那么就永远都可以查看，不需要再做判断
             Ack ack = new Ack();
             ack.setContent("用户同意了您的申请");
             ack.setIsCompany(SystemConstants.IS_NOT_COMPANY);
-            ack.setRead(SystemConstants.HAS_NO_READ)
+            ack.setIsRead(SystemConstants.HAS_NO_READ)
                     .setUserId(user.getId())
+                    .setUsername(user.getName())
+                    .setCompanyName(companyMapper.selectById(userPermitcompany.getCompanyPermitId()).getBrandName())
+                    .setIsCompany(SystemConstants.IS_NOT_COMPANY)
+                    .setIsRead(SystemConstants.HAS_NO_READ)
                     .setTime(LocalDateTime.now())
-                    .setCompanyId(userPermitcompanyVo.getCompanyPermitId());
+                    .setCompanyId(userPermitcompany.getCompanyPermitId());
             this.save(ack);
             if (userPermit == null) {
                 userPermitcompanyService.save(userPermitcompany);
@@ -98,21 +128,40 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
 
             return Result.success(SystemConstants.SUCCESS);
         } else {
+
+
             Ack ack = new Ack();
             ack.setContent("用户拒绝了您的申请");
-            ack.setIsCompany(SystemConstants.IS_NOT_COMPANY)
-                    .setRead(SystemConstants.HAS_NO_READ)
+            ack.setIsRead(SystemConstants.HAS_NO_READ)
                     .setUserId(user.getId())
+                    .setUsername(user.getName())
+                    .setCompanyName(companyMapper.selectById(userPermitcompany.getCompanyPermitId()).getBrandName())
+                    .setIsCompany(SystemConstants.IS_NOT_COMPANY)
+                    .setIsRead(SystemConstants.HAS_NO_READ)
                     .setTime(LocalDateTime.now())
-                    .setCompanyId(userPermitcompanyVo.getCompanyPermitId());
+                    .setCompanyId(userPermitcompany.getCompanyPermitId());
+            //先检查之前是不是拒绝过
+            LambdaQueryWrapper<Ack> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.eq(Ack::getUserId,user.getId())
+                    .eq(Ack::getCompanyId,userPermitcompany.getCompanyPermitId())
+                    .eq(Ack::getIsCompany,SystemConstants.IS_NOT_COMPANY);
+            Ack one = getOne(wrapper1);
+            if (one != null){
+                ack.setId(one.getId());
+                updateById(ack);
+                return Result.success(SystemConstants.SUCCESS);
+            }
+            //没有这条记录，直接新增
             this.save(ack);
 
-            if (userPermit == null) {
-                userPermitcompanyService.save(userPermitcompany);
-            } else {
-                userPermitcompany.setId(userPermit.getId());
-                userPermitcompanyService.updateById(userPermitcompany);
-            }
+
+            //不做判断了，如果同意过了一次，那么就固定必须同意
+//            if (userPermit == null) {
+//                userPermitcompanyService.save(userPermitcompany);
+//            } else {
+//                userPermitcompany.setId(userPermit.getId());
+//                userPermitcompanyService.updateById(userPermitcompany);
+//            }
             return Result.success(SystemConstants.SUCCESS);
         }
     }
