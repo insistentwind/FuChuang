@@ -6,8 +6,11 @@ import com.ning.service.UserKeyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+
 
 /**
  * @author: qjn
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("")
 @Api(tags = "密钥端接口")
 public class UserKeyController {
-    @Autowired
+    @Resource(name = "userKeyService")
     private UserKeyService userKeyService;
 
     /**
@@ -29,8 +32,6 @@ public class UserKeyController {
     public UserKey getUserKey(@PathVariable Integer id){
         LambdaQueryWrapper<UserKey> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserKey::getUserId,id);
-        UserKey one = userKeyService.getOne(wrapper);
-//        System.out.println(one);
-        return one;
+        return userKeyService.getOne(wrapper);
     }
 }

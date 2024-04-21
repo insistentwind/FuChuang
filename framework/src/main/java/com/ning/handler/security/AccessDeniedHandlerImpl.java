@@ -22,7 +22,10 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         AuthException authException = new AuthException();
         //打印异常信息
-        authException.printStackTrace();
+        e.printStackTrace();
+        System.out.println(httpServletRequest.getUserPrincipal());
+        System.out.println(httpServletResponse);
+//        authException.printStackTrace();
         //权限校验
         Result result = Result.success(AppHttpCodeEnum.NO_OPERATOR_AUTH);
 

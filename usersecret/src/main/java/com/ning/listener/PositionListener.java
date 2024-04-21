@@ -1,4 +1,4 @@
-package com.ning.Listener;
+package com.ning.listener;
 
 import com.ning.constants.MqConstants;
 import com.ning.constants.SystemConstants;
@@ -6,12 +6,9 @@ import com.ning.domain.dto.NotifyDto;
 import com.ning.domain.dto.PositionMessage;
 import com.ning.domain.entity.UNotify;
 import com.ning.mapper.db02.UNotifyMapper;
-import com.ning.service.UNotifyService;
 import com.ning.utils.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -25,18 +22,18 @@ import java.util.Set;
 @Slf4j
 public class PositionListener {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-    @Autowired
-    private UNotifyService uNotifyService;
-    @Autowired
-    private UNotifyMapper uNotifyMapper;
+    private final UNotifyMapper uNotifyMapper;
+
+    public PositionListener(UNotifyMapper uNotifyMapper) {
+        this.uNotifyMapper = uNotifyMapper;
+    }
 
     /**
      * 公司职位上新或者删除通知
      */
     @RabbitListener(queues = MqConstants.POSITION_INSERT_QUEUE)
-    public void PositionInsertOrUpdate(PositionMessage positionMessage) {
+    public void positionInsertOrUpdate(PositionMessage positionMessage) {
+
         try {
             //因为设置redis的端口是不开放的，以防被攻击服务器压力倍增
             String message = positionMessage.getMessage();
@@ -53,7 +50,7 @@ public class PositionListener {
                 uNotifyMapper.insert(uNotify);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
     }

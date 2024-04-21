@@ -41,7 +41,7 @@ public class Resume  {
     private String name ;
     /** 出生日期 */
     @ApiModelProperty(name = "出生日期",notes = "")
-    private LocalDateTime bir ;
+    private String bir ;
     /** 年龄 */
     @ApiModelProperty(name = "年龄",notes = "")
     private String age ;

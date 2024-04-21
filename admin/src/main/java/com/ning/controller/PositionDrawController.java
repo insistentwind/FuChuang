@@ -33,7 +33,7 @@ public class PositionDrawController {
      */
     @GetMapping("/{id}")
     @ApiOperation("根据职位id找职位画像")
-    public Result<DrawVo> getDrawVoByWorkId(@PathVariable Integer id){
+    public Result<DrawVo> getDrawVoByWorkId(@PathVariable(value = "id") Integer id){
         return drawService.getDrawVoByWorkId(id);
     }
 

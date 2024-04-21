@@ -1,4 +1,4 @@
-package com.ning.Listener;
+package com.ning.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ning.constants.MqConstants;
@@ -24,6 +24,7 @@ public class UserKeyListener {
     @RabbitListener(queues = MqConstants.FUCHUANG_INSERT_QUEUE)
     public void listenKeyInsertOrUpdate(UserKey userKey){
         try {
+            log.info("userKey",userKey);
             //这里每个用户的密钥都唯一
             LambdaQueryWrapper<UserKey> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(UserKey::getUserId,userKey.getUserId());
@@ -34,8 +35,6 @@ public class UserKeyListener {
             }
             else {
                 //不操作
-//                one.setSecretKey(userKey.getSecretKey());
-//                userKeyService.updateById(one);
             }
         }
         catch (Exception e){

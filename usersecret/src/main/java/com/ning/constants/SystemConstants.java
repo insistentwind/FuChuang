@@ -137,7 +137,7 @@ public class SystemConstants {
 
 
     /**
-     * TODO 这里为权限标识符
+     *这里为权限标识符
      */
     /**
      * 系统管理部分

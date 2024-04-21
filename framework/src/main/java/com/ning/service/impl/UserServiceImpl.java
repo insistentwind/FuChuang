@@ -472,7 +472,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return status;
         });
 
-        return Result.success("操作成功");
+        return Result.success("resumeId:" + resume.getId());
     }
 
     /**

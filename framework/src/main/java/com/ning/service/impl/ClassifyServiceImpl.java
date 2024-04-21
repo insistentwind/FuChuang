@@ -292,11 +292,11 @@ public class ClassifyServiceImpl extends ServiceImpl<ClassifyMapper, Classify> i
     public Result<List<UniversityVo>> getUniversityBySchoolName(UniversityDto Universitydto) {
         LambdaQueryWrapper<University> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Universitydto.getSchoolId() != null,University::getSchoolId,Universitydto.getSchoolId())
-                .eq(Universitydto.getName() != null,University::getName,Universitydto.getName())
-                .eq(Universitydto.getProvinceName() != null,University::getProvinceName,Universitydto.getProvinceName())
-                .eq(Universitydto.getCityName() != null,University::getCityName,Universitydto.getCityName())
-                .eq(Universitydto.getTownName() != null,University::getTownName,Universitydto.getTownName())
-                .eq(Universitydto.getArea() != null,University::getArea,Universitydto.getArea());
+                .like(Universitydto.getName() != null,University::getName,Universitydto.getName())
+                .like(Universitydto.getProvinceName() != null,University::getProvinceName,Universitydto.getProvinceName())
+                .like(Universitydto.getCityName() != null,University::getCityName,Universitydto.getCityName())
+                .like(Universitydto.getTownName() != null,University::getTownName,Universitydto.getTownName())
+                .like(Universitydto.getArea() != null,University::getArea,Universitydto.getArea());
         List<University> universityList = universityService.list(wrapper);
         List<UniversityVo> universityVos = BeanCopyUtils.copyBeanList(universityList, UniversityVo.class);
         return Result.success(universityVos);

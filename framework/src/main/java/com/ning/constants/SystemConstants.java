@@ -137,7 +137,7 @@ public class SystemConstants {
 
 
     /**
-     * TODO 这里为权限标识符
+     *这里为权限标识符
      */
     /**
      * 系统管理部分
@@ -287,4 +287,5 @@ public class SystemConstants {
     public static final String WORK_HAS_NO_RESUME = "当前职位下暂未有简历";
     public static final String UNKNOWN_ERROR = "发生未知错误";
     public static final String USER_HAS_NO_MSG = "当前用户没有此消息";
+    public static final String HAS_NO_RESUME = "没有此简历";
 }

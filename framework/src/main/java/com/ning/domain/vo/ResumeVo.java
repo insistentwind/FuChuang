@@ -31,7 +31,7 @@ public class ResumeVo {
     private String name ;
     /** 出生日期 */
     @ApiModelProperty(value = "出生日期")
-    private LocalDateTime bir ;
+    private String bir ;
     /** 年龄 */
     @ApiModelProperty(value = "年龄")
     private String age ;

@@ -123,6 +123,9 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
     @Override
     public Result<ResumeVo> getResumeVoByResumeId(Integer resumeId) {
         Resume resume = getById(resumeId);
+        if (resume == null){
+            return Result.error(SystemConstants.HAS_NO_RESUME);
+        }
         if (!Objects.equals(resume.getPublicPool(), SystemConstants.PUBLIC_POOL_OPEN)){
             throw new BaseException(SystemConstants.HAS_NO_POOL_PERMS);
         }

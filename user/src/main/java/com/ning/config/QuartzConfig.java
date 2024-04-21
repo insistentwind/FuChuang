@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Configuration
 @Slf4j
 public class QuartzConfig {
-    // MyJob2 需要 userService， 这两个都可以注入
+    // MyJob2 需要 workService， 这两个都可以注入
     @Autowired
     private WorkService workService;
     @Autowired

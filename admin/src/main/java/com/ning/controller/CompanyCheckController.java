@@ -9,6 +9,7 @@ import com.ning.domain.entity.UserCompany;
 import com.ning.domain.result.PageResult;
 import com.ning.domain.result.Result;
 import com.ning.domain.vo.CompanyVo;
+import com.ning.exception.BaseException;
 import com.ning.mapper.CompanyMapper;
 import com.ning.service.CompanyService;
 import com.ning.service.UserCompanyService;
@@ -57,13 +58,24 @@ public class CompanyCheckController {
      */
     @PutMapping("/status")
     @ApiOperation("审核公司是否通过")
-    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DEPT_ADD)")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DEPT_ADD)")
     public Result<String> companyCheck(@RequestParam(value = "id")Integer companyId,@RequestParam(value = "status")Integer status){
         if (Objects.equals(status, SystemConstants.COMPANY_CHECK_PASS)) {
             Company company = Company.builder()
                     .id(companyId)
                     .status(status)
                     .build();
+            try {
+                Result<CompanyVo> companyById = companyService.getCompanyById(companyId);
+                CompanyVo data = companyById.getData();
+                if (data == null){
+                    return Result.error(SystemConstants.HAS_NO_COMPANY);
+                }
+                company.setBrandName(data.getBrandName());
+            }
+            catch (Exception e){
+                throw new BaseException(SystemConstants.UNKNOWN_ERROR);
+            }
 
             companyService.updateById(company);
             //审核通过，更改状态后，放入redis中
@@ -83,7 +95,7 @@ public class CompanyCheckController {
      */
     @ApiOperation("分页查询待审核公司")
     @GetMapping("/list")
-    @PreAuthorize(value = "ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DEPT_EDIT)")
+    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_DEPT_EDIT)")
     public Result<PageResult> getCheckCompanyList(CompanyDto companyDto){
         return companyService.getStatusList(companyDto);
     }

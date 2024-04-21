@@ -45,7 +45,6 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
     /**
      * 查看所有收到的查看简历申请
      *
-     * @return
      */
     @Override
     public Result<List<Ack>> getAll() {

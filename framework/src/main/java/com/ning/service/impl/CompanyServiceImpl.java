@@ -22,11 +22,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -179,7 +181,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         }
 
         Company company = BeanCopyUtils.copyBean(companyDo, Company.class);
-        company.setCreateTime(LocalDateTime.now());
+        company.setCreateTime(LocalDateTime.now())
+                .setStatus(0);
         //这里就直接保存了
         //默认是没有被审核过的
         save(company);
@@ -526,6 +529,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 //        return Result.success(new PageResult(records.size(),records));
     }
 
+    @Autowired
+    private TransactionTemplate transactionTemplate;
     /**
      * 公司端投递简历
      *
@@ -534,17 +539,14 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     //todo 还没有写加密
     @Override
-    @Transactional
     public Result<String> commitResumeList(List<ResumeVo> resumeVoList) {
         User user = getUser();
         Integer userId = user.getId();
+        List<Integer> resumeIdList = new ArrayList<>();
+
         resumeVoList.forEach(item -> {
             Resume resume = BeanCopyUtils.copyBean(item, Resume.class);
-            resumeMapper.insert(resume);
-            Integer resumeId = resume.getId();
-            UserResume userResume = UserResume.builder().resumeId(resumeId)
-                    .userId(userId)
-                    .build();
+
             //todo 拿密钥
             String name = resume.getName();
             String email = resume.getEmail();
@@ -599,17 +601,26 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 throw new BaseException("加密时出现错误!请检查字段是否填写完整");
             }
 
+            transactionTemplate.execute(status -> {
+                resumeMapper.insert(resume);
+                Integer resumeId = resume.getId();
+                UserResume userResume = UserResume.builder().resumeId(resumeId)
+                        .userId(userId)
+                        .build();
 
-            userResumeMapper.insert(userResume);
-            //简历创建好后，把简历投递到自己公司
-            WorkUser workUser = WorkUser.builder().workId(item.getWorkId())
-                    .resumeId(resumeId)
-                    .userId(userId)
-                    .build();
-            workUserMapper.insert(workUser);
+                userResumeMapper.insert(userResume);
+                //简历创建好后，把简历投递到自己公司
+                WorkUser workUser = WorkUser.builder().workId(item.getWorkId())
+                        .resumeId(resumeId)
+                        .userId(userId)
+                        .build();
+                workUserMapper.insert(workUser);
+                resumeIdList.add(resumeId);
+                return null;
+            });
         });
 
-        return Result.success(SystemConstants.SUCCESS);
+        return Result.success("resumeIdList: " + resumeIdList);
     }
 
     /**
@@ -676,7 +687,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             return Result.error(SystemConstants.USER_NO_PERMITED);
 
         } catch (Exception e) {
-            throw new BaseException(e.toString());
+            throw new BaseException(SystemConstants.HAS_NO_RESUME);
         }
 
     }
