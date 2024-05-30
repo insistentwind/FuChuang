@@ -9,38 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="Update userSecret client, he can be RPC by rabbitMQ correctly now. Judged bugs. Maybe it's the first complete version. Ver2.0.0">
-      <change afterPath="$PROJECT_DIR$/qodana.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1b0b099b-ec96-4cc1-ae52-7696ae1a9edf.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1b0b099b-ec96-4cc1-ae52-7696ae1a9edf.xml" afterDir="false" />
+    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="final version. Ver2.0.1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/CompanyCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/CompanyCheckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/PositionDrawController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/PositionDrawController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/main/resources/application-start.yml" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/resources/application-start.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/annotation/SecurityParameter.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/annotation/SecurityParameter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Resume.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Resume.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ResumeVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ResumeVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/security/AccessDeniedHandlerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/handler/security/AccessDeniedHandlerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPermitcompanyVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPermitcompanyVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/AckServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/AckServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ClassifyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ClassifyServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/DrawServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/DrawServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/UserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/UserApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/config/QuartzConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/config/QuartzConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/ResumeDrawController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/ResumeDrawController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/runner/ViewCountRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/runner/ViewCountRunner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/Listener/PositionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/listener/PositionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/Listener/UserKeyListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/listener/UserKeyListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/config/dataSource/DataSourceConfigDB01.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/config/datasource/DataSourceConfigDB01.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/config/dataSource/DataSourceConfigDB02.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/config/datasource/DataSourceConfigDB02.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/constants/SystemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/constants/SystemConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/controller/UserKeyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/java/com/ning/controller/UserKeyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeDrawServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeDrawServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/taskjob/ViewCount.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/taskjob/ViewCount.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +100,8 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AdminApplication.executor&quot;: &quot;Run&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AdminApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Spring Boot.UserApplication.executor&quot;: &quot;Run&quot;,
     &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
@@ -134,7 +116,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
@@ -463,7 +445,23 @@
       <workItem from="1713605575546" duration="213000" />
       <workItem from="1713605795427" duration="103000" />
       <workItem from="1713605905590" duration="106000" />
-      <workItem from="1713698657982" duration="1222000" />
+      <workItem from="1713698657982" duration="2154000" />
+      <workItem from="1713797395563" duration="570000" />
+      <workItem from="1714311827966" duration="1048000" />
+      <workItem from="1714313372326" duration="3188000" />
+      <workItem from="1715427700332" duration="1973000" />
+      <workItem from="1715591268014" duration="471000" />
+      <workItem from="1716198611019" duration="20000" />
+      <workItem from="1716198637302" duration="1304000" />
+      <workItem from="1716380076454" duration="84000" />
+      <workItem from="1716428299618" duration="201000" />
+      <workItem from="1716429927780" duration="1218000" />
+      <workItem from="1716796133832" duration="486000" />
+      <workItem from="1716905923581" duration="6593000" />
+      <workItem from="1716985477974" duration="3487000" />
+      <workItem from="1716995885216" duration="1922000" />
+      <workItem from="1716998740326" duration="68000" />
+      <workItem from="1717053185245" duration="1581000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1705320423753</created>
@@ -612,7 +610,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713086290296</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="final version. Ver2.0.1">
+      <option name="closed" value="true" />
+      <created>1713705611418</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1713705611418</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -657,7 +663,8 @@
     <MESSAGE value="update schedule task to quartz sa-Token" />
     <MESSAGE value="permission check left" />
     <MESSAGE value="Update userSecret client, he can be RPC by rabbitMQ correctly now. Judged bugs. Maybe it's the first complete version. Ver2.0.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update userSecret client, he can be RPC by rabbitMQ correctly now. Judged bugs. Maybe it's the first complete version. Ver2.0.0" />
+    <MESSAGE value="final version. Ver2.0.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="final version. Ver2.0.1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -674,7 +681,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java</url>
-          <line>661</line>
+          <line>664</line>
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -686,6 +693,11 @@
           <url>file://$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/DrawServiceImpl.java</url>
           <line>44</line>
           <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeDrawServiceImpl.java</url>
+          <line>144</line>
+          <option name="timeStamp" value="72" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="javax.security.auth.message.AuthException" package="javax.security.auth.message" />

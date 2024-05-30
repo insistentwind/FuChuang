@@ -41,6 +41,8 @@ public class WorkUser  {
     /** 用户简历id */
     @ApiModelProperty(name = "用户简历id",notes = "")
     private Integer resumeId ;
+    @ApiModelProperty(name = "是否已读(0否1是)",notes = "")
+    private Integer isRead;
 
     @ApiModelProperty(value = "简历投递时间")
     private LocalDateTime createTime;

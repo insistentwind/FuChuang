@@ -43,7 +43,7 @@ public class UploadController {
             throw new BaseException("发生错误,文件上传失败,请重试");
         }
         String originalFilename = file.getOriginalFilename();
-        if(!originalFilename.endsWith(".pdf") && !originalFilename.endsWith(".word")){
+        if(!originalFilename.endsWith(".pdf") && !originalFilename.endsWith(".word")&& !originalFilename.endsWith(".txt")){
             //文件类型错误
             throw new RuntimeException("文件类型错误");
         }

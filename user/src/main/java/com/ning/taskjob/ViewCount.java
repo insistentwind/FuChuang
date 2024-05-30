@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//第二种方式：继承QuartzJobBean，重写executeInternal方法
+//继承QuartzJobBean，重写executeInternal方法
 @Component
 @Slf4j
 public class ViewCount extends QuartzJobBean {

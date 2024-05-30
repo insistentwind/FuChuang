@@ -119,6 +119,8 @@ public class ResumeVo {
     @ApiModelProperty(value = "要投递的职位id，公司端投递要用")
     private Integer workId;
 
+    @ApiModelProperty(name = "是否已读(0否1是)",notes = "")
+    private Integer isRead;
     //1为默认，0否
     @ApiModelProperty(value = "1为默认，0否")
     private Integer isDefault;

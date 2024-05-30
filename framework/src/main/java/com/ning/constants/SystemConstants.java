@@ -288,4 +288,5 @@ public class SystemConstants {
     public static final String UNKNOWN_ERROR = "发生未知错误";
     public static final String USER_HAS_NO_MSG = "当前用户没有此消息";
     public static final String HAS_NO_RESUME = "没有此简历";
+    public static final String HAS_NO_MESSAGE = "没有此消息";
 }

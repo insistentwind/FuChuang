@@ -88,6 +88,9 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
         Integer id = userPermitcompanyVo.getId();
         UserPermitcompany userPermitcompany = new UserPermitcompany();
         Ack byId = this.getById(id);
+        if (byId == null){
+            throw new BaseException(SystemConstants.HAS_NO_MESSAGE);
+        }
         userPermitcompany.setCompanyPermitId(byId.getCompanyId())
                 .setUserId(byId.getUserId());
 
@@ -98,16 +101,33 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
         LambdaQueryWrapper<UserPermitcompany> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserPermitcompany::getUserId, user.getId())
                 .eq(UserPermitcompany::getCompanyPermitId, userPermitcompany.getCompanyPermitId());
+        //这里拿到当前用户是否已经允许这个公司查看信息了
         UserPermitcompany userPermit = userPermitcompanyService.getOne(wrapper);
-
+        //同意的申请
         if (Objects.equals(userPermitcompanyVo.getAgree(), SystemConstants.AGREE_TO_SEE)) {
+            //先把公司那边发来的消息设置成已读
             Ack oldAck = new Ack();
             oldAck.setId(id)
                             .setIsRead(SystemConstants.HAS_READ);
             ackMapper.updateById(oldAck);
+
+
             //这里如果同意了，那么就永远都可以查看，不需要再做判断
+            LambdaQueryWrapper<Ack> checkWrapper = new LambdaQueryWrapper<>();
+            checkWrapper.eq(Ack::getUserId, user.getId())
+                    .eq(Ack::getCompanyId, byId.getCompanyId())
+                    .eq(Ack::getContent, "用户 "+ user.getUsername() +  " 同意了您的申请");
+            Ack checkAck = ackMapper.selectOne(checkWrapper);
+
+            //先检查之前是不是拒绝过
+            LambdaQueryWrapper<Ack> wrapper1 = new LambdaQueryWrapper<>();
+            wrapper1.eq(Ack::getUserId,user.getId())
+                    .eq(Ack::getCompanyId,byId.getCompanyId())
+                    .eq(Ack::getIsCompany,"用户 "+ user.getUsername() +  " 拒绝了您的申请");
+            Ack checkRefuse = ackMapper.selectOne(wrapper1);
+
             Ack ack = new Ack();
-            ack.setContent("用户同意了您的申请");
+            ack.setContent("用户 "+ user.getUsername() +  " 同意了您的申请");
             ack.setIsCompany(SystemConstants.IS_NOT_COMPANY);
             ack.setIsRead(SystemConstants.HAS_NO_READ)
                     .setUserId(user.getId())
@@ -117,7 +137,21 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
                     .setIsRead(SystemConstants.HAS_NO_READ)
                     .setTime(LocalDateTime.now())
                     .setCompanyId(userPermitcompany.getCompanyPermitId());
-            this.save(ack);
+            //先看之前是不是也同意过或者拒绝过
+            if(checkAck == null && checkRefuse == null){
+
+                this.save(ack);
+            }
+            else {
+                Integer ackId;
+
+                ackId = Objects.requireNonNullElse(checkAck, checkRefuse).getId();
+
+                ack.setId(ackId);
+                //此处可能是原先拒绝过或者是延迟时又发了一次
+                this.updateById(ack);
+            }
+            //这里把用户与公司的映射写入表中
             if (userPermit == null) {
                 userPermitcompanyService.save(userPermitcompany);
             } else {
@@ -126,11 +160,11 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
             }
 
             return Result.success(SystemConstants.SUCCESS);
-        } else {
-
-
+        }
+        //不同意的申请
+        else {
             Ack ack = new Ack();
-            ack.setContent("用户拒绝了您的申请");
+            ack.setContent("用户 "+ user.getUsername() +  " 拒绝了您的申请");
             ack.setIsRead(SystemConstants.HAS_NO_READ)
                     .setUserId(user.getId())
                     .setUsername(user.getName())
@@ -139,20 +173,34 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
                     .setIsRead(SystemConstants.HAS_NO_READ)
                     .setTime(LocalDateTime.now())
                     .setCompanyId(userPermitcompany.getCompanyPermitId());
-            //先检查之前是不是拒绝过
+            //先检查之前是不是拒绝过，或者同意过
             LambdaQueryWrapper<Ack> wrapper1 = new LambdaQueryWrapper<>();
             wrapper1.eq(Ack::getUserId,user.getId())
-                    .eq(Ack::getCompanyId,userPermitcompany.getCompanyPermitId())
-                    .eq(Ack::getIsCompany,SystemConstants.IS_NOT_COMPANY);
-            Ack one = getOne(wrapper1);
-            if (one != null){
-                ack.setId(one.getId());
-                updateById(ack);
-                return Result.success(SystemConstants.SUCCESS);
+                    .eq(Ack::getCompanyId,byId.getCompanyId())
+                    .eq(Ack::getIsCompany,"用户 "+ user.getUsername() +  " 拒绝了您的申请");
+            Ack refuse = getOne(wrapper1);
+            //看看是不是同意过
+            LambdaQueryWrapper<Ack> checkWrapper = new LambdaQueryWrapper<>();
+            checkWrapper.eq(Ack::getUserId, user.getId())
+                    .eq(Ack::getCompanyId, byId.getCompanyId())
+                    .eq(Ack::getContent, "用户 "+ user.getUsername() +  " 同意了您的申请");
+            Ack agreeAck = ackMapper.selectOne(checkWrapper);
+            //如果数据库中有之前拒绝过的消息
+            if (agreeAck != null){
+//                ack.setId(one.getId());
+//                updateById(ack);
+//                return Result.success(SystemConstants.SUCCESS);
+                return Result.error("同意查看简历后不可再次拒绝");
             }
-            //没有这条记录，直接新增
-            this.save(ack);
-
+            else if (refuse != null){
+                ack.setId(refuse.getId());
+                this.updateById(ack);
+            }
+            else
+            {
+                //没有这条记录，直接新增
+                this.save(ack);
+            }
 
             //不做判断了，如果同意过了一次，那么就固定必须同意
 //            if (userPermit == null) {

@@ -70,17 +70,17 @@ public class ResumeDrawServiceImpl extends ServiceImpl<ResumeDrawMapper, ResumeD
 
     /**
      * 插入对应简历画像
-     *
      * @param resumeDrawVo
      * @return
      */
     @Override
     public Result<String> insert(ResumeDrawVo resumeDrawVo) {
-        //查询这个简历是不是已经有了对应的简历画像
+
         Integer resumeId = resumeDrawVo.getResumeId();
         if (resumeId == null) {
             throw new BaseException(SystemConstants.RESUMEDRAW_MUST_HAVE_RESUMEID);
         }
+        //查询这个简历是不是已经有了对应的简历画像
         LambdaQueryWrapper<ResumeDraw> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(ResumeDraw::getResumeId, resumeId);
         ResumeDraw resumeDraw = getOne(wrapper);

@@ -304,11 +304,14 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         List<ResumeVo> ResumeList = workUsers.stream().map(o -> {
             Integer resumeId = o.getResumeId();
             Integer userId = o.getUserId();
+            Integer isRead = o.getIsRead();
             Resume resume = resumeMapper.selectById(resumeId);
+            ResumeVo resumeVo = BeanCopyUtils.copyBean(resume, ResumeVo.class);
+            resumeVo.setIsRead(isRead);
             //判断权限并拿到信息
             try {
-                return selectPermsToViewResume(userId, companyId,
-                        BeanCopyUtils.copyBean(resume, ResumeVo.class));
+                //判读权限
+                return selectPermsToViewResume(userId, companyId,resumeVo);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -673,6 +676,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             //这个找到了当前公司和用户的对应关系
             Integer userByCompany = relationMapper.getUserByCompany(companyId, userId);
             if (userByCompany > 0) {
+                //设置成已读
+                WorkUser workUser = relationMapper.getWorkUserEntity(companyId, userId,resumeId);
+                workUser.setIsRead(SystemConstants.HAS_READ);
+                workUserMapper.updateById(workUser);
                 //说明当前用户已经投递简历，直接回显即可
                 List<ResumeVo> resumeVos = resumeMapper.getInfoByUserId(userId);
                 //todo 与下面关联 根据用户id查询此用户的简历

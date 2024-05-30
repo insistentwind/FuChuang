@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ning.domain.entity.Company;
 import com.ning.domain.entity.Relation;
 import com.ning.domain.entity.Work;
+import com.ning.domain.entity.WorkUser;
 import com.ning.domain.vo.WorkPageVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -45,5 +46,7 @@ public interface RelationMapper extends BaseMapper<Relation> {
      * @return
      */
     List<Work> getWorkByCategory(WorkPageVo workPageVo);
+
+    WorkUser getWorkUserEntity(@Param("companyId") Integer companyId, @Param("userId") Integer userId,@Param("resumeId") Integer resumeId);
 }
 

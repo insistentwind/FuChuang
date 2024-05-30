@@ -46,5 +46,14 @@
         </where>
 
     </select>
+    <select id="getWorkUserEntity" resultType="com.ning.domain.entity.WorkUser">
+        SELECT wu.*
+        FROM relation re
+                 LEFT JOIN work w ON re.work_id = w.id
+                 LEFT JOIN work_user wu ON w.id = wu.work_id
+        WHERE wu.user_id = #{userId}
+          AND re.company_id = #{companyId}
+          AND wu.resume_id = #{resumeId}
+    </select>
 
 </mapper>
