@@ -207,7 +207,8 @@ public class SystemConstants {
     /**
      * 密钥端url地址
      */
-    public static final String KEY_CLIENT_URL = "http://124.220.208.63:8082";
+    public static final String KEY_CLIENT_URL = "http://119.91.138.143:8082";
+//    public static final String KEY_CLIENT_URL = "http://124.220.208.63:8082";
 //    public static final String KEY_CLIENT_URL = "http://127.0.0.1:8082";
     public static final String USER_HAS_NO_FAVOR = "该用户还没有收藏职位";
     public static final String USER_NOT_FAVOR_THIS_WORK = "该用户没有收藏该职位";
@@ -289,4 +290,6 @@ public class SystemConstants {
     public static final String USER_HAS_NO_MSG = "当前用户没有此消息";
     public static final String HAS_NO_RESUME = "没有此简历";
     public static final String HAS_NO_MESSAGE = "没有此消息";
+    public static final Integer IS_ENCODE = 1;
+    public static final Integer IS_DECODE = 0;
 }

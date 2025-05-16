@@ -13,9 +13,11 @@ import com.ning.exception.SystemException;
 import com.ning.mapper.AckMapper;
 import com.ning.domain.entity.Ack;
 import com.ning.mapper.CompanyMapper;
+import com.ning.mapper.UserMapper;
 import com.ning.service.AckService;
 import com.ning.service.UserCompanyService;
 import com.ning.service.UserPermitcompanyService;
+import com.ning.service.UserService;
 import com.ning.utils.BeanCopyUtils;
 import com.ning.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
     private AckMapper ackMapper;
     @Autowired
     private CompanyMapper companyMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 查看所有收到的查看简历申请
@@ -234,9 +238,14 @@ public class AckServiceImpl extends ServiceImpl<AckMapper, Ack> implements AckSe
             throw new BaseException(SystemConstants.USER_NOT_LOGIN_OR_ERROR);
         }
         LambdaQueryWrapper<Ack> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Ack::getCompanyId, companyId)
-                .eq(Ack::getIsCompany, SystemConstants.IS_NOT_COMPANY);
+        wrapper.eq(Ack::getCompanyId, companyId);
+//                .eq(Ack::getIsCompany, SystemConstants.IS_NOT_COMPANY);
         List<Ack> list = this.list(wrapper);
+        list.stream().forEach(item -> {
+            Integer userId = item.getUserId();
+            User user = userMapper.selectById(userId);
+            item.setName(user.getName());
+        });
         return Result.success(list);
     }
 }

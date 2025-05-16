@@ -118,6 +118,8 @@ public class ResumeVo {
     //要投递的职位id，公司端投递要用
     @ApiModelProperty(value = "要投递的职位id，公司端投递要用")
     private Integer workId;
+    @ApiModelProperty(value = "字段是否加密（0 否，1 是")
+    private Integer isEncode;
 
     @ApiModelProperty(name = "是否已读(0否1是)",notes = "")
     private Integer isRead;

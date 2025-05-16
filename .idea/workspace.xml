@@ -9,19 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="final version. Ver2.0.1">
+    <list default="true" id="07bf27df-635e-41af-8ce6-4685f5791ce9" name="Changes" comment="update day -5-30">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main/java/com/ning/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/constants/SystemConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/WorkUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Ack.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/entity/Ack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ResumeVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/ResumeVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPermitcompanyVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/domain/vo/UserPermitcompanyVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/mapper/RelationMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/AckServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/AckServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeDrawServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/ResumeDrawServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/resources/mapper/RelationMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/controller/UploadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/com/ning/taskjob/ViewCount.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/com/ning/taskjob/ViewCount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/GetResumeInfoUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/framework/src/main/java/com/ning/utils/GetResumeInfoUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usersecret/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/usersecret/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +94,9 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Maven.FuChuang [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.admin [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.user [clean].executor&quot;: &quot;Run&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
     &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
@@ -101,7 +104,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AdminApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.AdminApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.UserApplication.executor&quot;: &quot;Run&quot;,
     &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
@@ -110,13 +113,13 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/FuChuang/FuChuangC/usersecret/src/main/java/com/ning&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/FuChuang/FuChuangC/admin&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
@@ -161,7 +164,7 @@
       <recent name="com.ning.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.UserApplication">
+  <component name="RunManager" selected="Spring Boot.AdminApplication">
     <configuration name="interfaceUtils" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ning.utils.interfaceUtils" />
       <module name="framework" />
@@ -461,7 +464,47 @@
       <workItem from="1716985477974" duration="3487000" />
       <workItem from="1716995885216" duration="1922000" />
       <workItem from="1716998740326" duration="68000" />
-      <workItem from="1717053185245" duration="1581000" />
+      <workItem from="1717053185245" duration="2252000" />
+      <workItem from="1717070973401" duration="851000" />
+      <workItem from="1717141757509" duration="178000" />
+      <workItem from="1717161320826" duration="1647000" />
+      <workItem from="1717899364189" duration="1209000" />
+      <workItem from="1718895512454" duration="174000" />
+      <workItem from="1718896125380" duration="122000" />
+      <workItem from="1719236488776" duration="668000" />
+      <workItem from="1726929289087" duration="1317000" />
+      <workItem from="1728205717746" duration="107000" />
+      <workItem from="1729814224974" duration="1940000" />
+      <workItem from="1737274437861" duration="42000" />
+      <workItem from="1737274584660" duration="1980000" />
+      <workItem from="1737278575392" duration="3247000" />
+      <workItem from="1737721937523" duration="95000" />
+      <workItem from="1737878124650" duration="1375000" />
+      <workItem from="1737880126157" duration="2202000" />
+      <workItem from="1737887390913" duration="1222000" />
+      <workItem from="1739374762503" duration="279000" />
+      <workItem from="1739631706351" duration="15000" />
+      <workItem from="1739700399891" duration="161000" />
+      <workItem from="1739700782289" duration="2254000" />
+      <workItem from="1740061002105" duration="1333000" />
+      <workItem from="1740498201062" duration="2000" />
+      <workItem from="1740501444620" duration="234000" />
+      <workItem from="1742811188594" duration="2707000" />
+      <workItem from="1742913657954" duration="13558000" />
+      <workItem from="1743259489047" duration="1020000" />
+      <workItem from="1743670654138" duration="2824000" />
+      <workItem from="1743692561131" duration="1620000" />
+      <workItem from="1744096953431" duration="8000" />
+      <workItem from="1744097556040" duration="3608000" />
+      <workItem from="1744101332889" duration="11662000" />
+      <workItem from="1744710493316" duration="3798000" />
+      <workItem from="1744789901295" duration="2676000" />
+      <workItem from="1746239960623" duration="8388000" />
+      <workItem from="1746284401030" duration="23000" />
+      <workItem from="1746321809993" duration="5967000" />
+      <workItem from="1746372117297" duration="708000" />
+      <workItem from="1747321684380" duration="417000" />
+      <workItem from="1747365895099" duration="845000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1705320423753</created>
@@ -618,7 +661,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713705611418</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="update day -5-30">
+      <option name="closed" value="true" />
+      <created>1717054813469</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1717054813469</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -664,7 +715,8 @@
     <MESSAGE value="permission check left" />
     <MESSAGE value="Update userSecret client, he can be RPC by rabbitMQ correctly now. Judged bugs. Maybe it's the first complete version. Ver2.0.0" />
     <MESSAGE value="final version. Ver2.0.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="final version. Ver2.0.1" />
+    <MESSAGE value="update day -5-30" />
+    <option name="LAST_COMMIT_MESSAGE" value="update day -5-30" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -681,7 +733,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/framework/src/main/java/com/ning/service/impl/CompanyServiceImpl.java</url>
-          <line>664</line>
+          <line>667</line>
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint type="java-line">

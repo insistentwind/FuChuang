@@ -86,9 +86,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         //security会自动调用这里面的userdetailsservice方法进行登录校验
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        //TODO 没有进行到这一步
-//        System.err.println(authenticate);
-        //TODO 看是账号不存在还是密码错误
+
         //判断是否认证通过
         if (Objects.isNull(authenticate)) {
             throw new BaseException(MessageConstant.PLEASE_CHECK);
@@ -209,7 +207,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getId, id);
         if (StringUtils.hasText(user.getPassword())) {
-            String oldPass = nowUser.getPassword();
+            String oldPass = passwordEncoder.encode(nowUser.getPassword());
             String oldPassword = user.getOldPassword();
 
             if (!oldPass.equals(oldPassword)) throw new BaseException("密码校验错误，请检查后重试");

@@ -13,7 +13,7 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
       db02:
         driver-class-name: ${fc.datasource.driver-class-name}
-        url: jdbc:mysql://106.54.6.144:${fc.datasource.port}/${fc.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        url: jdbc:mysql://119.91.138.143:${fc.datasource.port}/${fc.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
         username: ${fc.datasource.username}
         password: ${fc.datasource.password}
         type: com.alibaba.druid.pool.DruidDataSource

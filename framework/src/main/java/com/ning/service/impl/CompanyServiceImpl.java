@@ -470,13 +470,16 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         wrapper1.eq(UserPermitcompany::getUserId, userId)
                 .eq(UserPermitcompany::getCompanyPermitId, companyId);
         UserPermitcompany one = userPermitcompanyService.getOne(wrapper1);
-
+        //设置为字段是加密的
+        resumeVo.setIsEncode(SystemConstants.IS_ENCODE);
         if (one != null || Objects.equals(resumeVo.getObscure(), SystemConstants.CAN_BE_SEEN)) {
             Resume resume = BeanCopyUtils.copyBean(resumeVo, Resume.class);
             //注意这里千万不要把不是这个人的简历放进来，因为会报错密钥解密不出来，错误很难找
             Resume resumeVoByKey = getResumeInfoUtils.getResumeVoByKey(userId, resume);
 
             resumeVo = BeanCopyUtils.copyBean(resumeVoByKey, ResumeVo.class);
+            //设置字段是解密状态
+            resumeVo.setIsEncode(SystemConstants.IS_DECODE);
         }
         return resumeVo;
 
@@ -684,7 +687,6 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 List<ResumeVo> resumeVos = resumeMapper.getInfoByUserId(userId);
                 //todo 与下面关联 根据用户id查询此用户的简历
                 ResumeVo resumeVo = resumeVos.get(0);
-
                 resumeVo.setUserId(userId);
                 //todo 如果用户允许才能回显所有的数据
                 resumeVo = selectPermsToViewResume(userId, companyId, resumeVo);

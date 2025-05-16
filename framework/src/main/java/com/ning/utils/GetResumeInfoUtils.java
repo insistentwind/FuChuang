@@ -104,7 +104,7 @@ public class GetResumeInfoUtils {
      * @return
      */
     public SecretKey getUserKey(Integer userId) {
-        UserKey userKey = KeyHttpUtils.sendGetRequest("http://124.220.208.63:8082", userId);
+        UserKey userKey = KeyHttpUtils.sendGetRequest(SystemConstants.KEY_CLIENT_URL, userId);
         if (userKey == null) {
             throw new BaseException(SystemConstants.USER_HAS_NO_RESUME);
         }

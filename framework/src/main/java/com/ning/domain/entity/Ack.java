@@ -4,6 +4,7 @@ package com.ning.domain.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,9 @@ public class Ack  {
     //公司
     @ApiModelProperty(value = "公司")
     private Integer companyId;
+    @ApiModelProperty(value = "用户昵称")
+    @TableField(exist = false)
+    private String name;
     //用户名
     @ApiModelProperty(value = "用户名")
     private String username;

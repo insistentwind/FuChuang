@@ -35,17 +35,6 @@ public class UserController {
     @Autowired
     private CompanyService companyService;
 
-    /**
-     * 分页查询公司信息
-     * @param companyDto
-     * @return
-     */
-    @PreAuthorize(value = "@ps.hasPermission(T(com.ning.constants.SystemConstants).SYSTEM_USER_EDIT)")
-    @ApiOperation("分页查询公司信息")
-    @GetMapping("/page")
-    public Result<PageResult> getHrByPage(CompanyDto companyDto){
-        return companyService.getListByDto(companyDto);
-    }
 
     /**
      * 分页条件查询用户信息
